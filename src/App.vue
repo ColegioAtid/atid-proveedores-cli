@@ -47,7 +47,7 @@
           Preschool to High School.
         </p>
         © {{ currentYear }} Copyright: Todos los derechos reservados
-        <a href="https://atid.edu.mx/">atid.edu.mx</a>
+        <a class="white--text" href="https://atid.edu.mx/">atid.edu.mx</a>
       </div>
     </v-footer>
   </v-app>
