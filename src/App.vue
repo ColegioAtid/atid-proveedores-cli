@@ -1,43 +1,35 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
+      <v-img
+        class="text-center"
+        contain
+        max-height="50"
+        max-width="50"
+        :src="require('./assets/atid_icon.png')"
+      ></v-img>
+      <v-toolbar-title>Sistema de proveedores Atid</v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-menu left bottom >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-logout</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>Cerrar sesión</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-main>
       <router-view />
     </v-main>
     <v-footer color="#36827B">
-      <div class="text-center  white--text">
+      <div class="text-center white--text">
         <h5>Colegio Atid</h5>
         <p>
           Atid School was established in 1993 within the network of schools of
@@ -58,7 +50,7 @@ export default {
   name: "App",
 
   data: () => ({
-    //
+    currentYear: new Date().getFullYear(),
   }),
 };
 </script>
