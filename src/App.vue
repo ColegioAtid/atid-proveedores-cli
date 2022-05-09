@@ -1,10 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -38,15 +34,28 @@
     </v-app-bar>
 
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
+    <v-footer color="#36827B">
+      <div class="text-center  white--text">
+        <h5>Colegio Atid</h5>
+        <p>
+          Atid School was established in 1993 within the network of schools of
+          the Jewish-Mexican community, as part of the Maguen David Community.
+          It offers an alternative for those families for whom English is a
+          priority within a Jewish context. Atid includes all sections from
+          Preschool to High School.
+        </p>
+        © {{ currentYear }} Copyright: Todos los derechos reservados
+        <a href="https://atid.edu.mx/">atid.edu.mx</a>
+      </div>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
+  name: "App",
 
   data: () => ({
     //
