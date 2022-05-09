@@ -11,6 +11,7 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <v-text-field
             outlined
+            color="teal"
             v-model="empresa"
             :rules="generalRules"
             label="Nombre de la empresa"
@@ -20,6 +21,7 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <v-text-field
             outlined
+            color="teal"
             v-model="domicilioFiscal"
             :rules="generalRules"
             label="Domicilio fiscal"
@@ -29,6 +31,7 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <v-text-field
             outlined
+            color="teal"
             v-model="razonSocial"
             :rules="generalRules"
             label="Razón social"
@@ -38,6 +41,7 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <v-text-field
             outlined
+            color="teal"
             v-model="nombreContacto"
             :rules="generalRules"
             label="Nombre de contacto"
@@ -47,6 +51,7 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <v-text-field
             outlined
+            color="teal"
             v-model="emailContacto"
             :rules="emailRules"
             label="Correo para contacto"
@@ -56,6 +61,7 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <v-text-field
             outlined
+            color="teal"
             v-model="numeroContacto1"
             :rules="generalRules"
             label="Número de contacto 1"
@@ -65,6 +71,7 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <v-text-field
             outlined
+            color="teal"
             v-model="numeroContacto2"
             :rules="generalRules"
             label="Número de contacto 2"
@@ -85,6 +92,7 @@
             :show-size="1000"
             counter
             outlined
+            color="teal"
             dense
           >
             <template v-slot:selection="{ index, text }">
@@ -110,6 +118,7 @@
             :show-size="1000"
             counter
             outlined
+            color="teal"
             dense
           >
             <template v-slot:selection="{ index, text }">
@@ -135,6 +144,7 @@
             :show-size="1000"
             counter
             outlined
+            color="teal"
             dense
           >
             <template v-slot:selection="{ index, text }">
@@ -160,6 +170,7 @@
             :show-size="1000"
             counter
             outlined
+            color="teal"
             dense
           >
             <template v-slot:selection="{ index, text }">
@@ -185,6 +196,7 @@
             :show-size="1000"
             counter
             outlined
+            color="teal"
             dense
           >
             <template v-slot:selection="{ index, text }">
