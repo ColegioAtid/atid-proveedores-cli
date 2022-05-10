@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-sheet color="white pa-3" elevation="16" class="justify-center">
+    <!-- Seccion datos generales del proveedor -->
       <v-card elevation="3" class="mx-auto" outlined>
         <v-list-item three-line>
           <v-list-item-content>
@@ -22,6 +23,17 @@
             outlined
             rounded
             text
+            color="purple"
+            @click="modalCorreo = true"
+          >
+            Envíar correo
+            <v-icon left> mdi-email </v-icon>
+          </v-btn>
+          <v-btn
+            v-if="!estatusValidacionProv"
+            outlined
+            rounded
+            text
             color="teal"
           >
             Validar información
@@ -36,11 +48,11 @@
             outlined
           >
             <v-icon left> mdi-account-check </v-icon>
-            Validado
+            Estatus: Validado
           </v-chip>
           <v-chip v-else class="ma-2" color="red" outlined>
             <v-icon left> mdi-account-alert </v-icon>
-            No válidado
+            Estatus: No validado
           </v-chip>
         </v-card-actions>
       </v-card>
@@ -63,13 +75,59 @@
         </v-card-text>
       </v-card>
     </v-sheet>
+    <!-- Modal de envio de correo -->
+    <div class="text-center">
+      <v-dialog persistent scrollable v-model="modalCorreo" width="500">
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            Envíar correo al proveedor
+          </v-card-title>
+
+          <v-card-text>
+            Esta acción envirá un correo electrónico al proveedor con un mensaje
+            personalizado. En la sección de abajo escriba el asunto y el cuerpo
+            del mensaje.
+          </v-card-text>
+          <v-card-text>
+            <v-text-field
+              v-model="customMailMessage.ausnto"
+              label="Asunto"
+              placeholder="Asunto"
+              outlined
+            ></v-text-field>
+            <v-textarea
+              v-model="customMailMessage.body"
+              outlined
+              name="input-7-4"
+              label="Mensaje a mandar"
+            ></v-textarea>
+          </v-card-text>
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="teal" text @click="modalCorreo = false">
+              Envíar correo
+            </v-btn>
+            <v-btn color="purple" text @click="modalCorreo = false">
+              Cancelar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
   </v-container>
 </template>
 <script>
 export default {
   data() {
     return {
-      estatusValidacionProv: true,
+      estatusValidacionProv: false,
+      modalCorreo: false,
+      customMailMessage: {
+        asunto: "",
+        body: "",
+      },
     };
   },
   computed: {},
