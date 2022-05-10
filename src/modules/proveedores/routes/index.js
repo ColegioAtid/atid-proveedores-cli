@@ -5,7 +5,7 @@ export default {
         {
             path: "home",
             name: "home-proveedores",
-            component: () => import(/* webpackChunkName: "ProveedorHomeView.vue" */ '@/modules/proveedores/views/ProveedorHomeView.vue'),
+            component: () => import(/* webpackChunkName: "ProveedorHomeView" */ '@/modules/proveedores/views/ProveedorHomeView.vue'),
         }
     ]
 }
