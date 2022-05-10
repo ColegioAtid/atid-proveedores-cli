@@ -10,7 +10,7 @@
           sistema:
         </p>
 
-        <datos-proveedor-form />
+        <datos-proveedor-form ref="dataProv"/>
         <documentos-proveedor-component />
 
         <v-card-actions>
@@ -31,7 +31,8 @@ export default {
   name: "ProveedorHomeView",
   methods: {
     sendForm() {
-      alert("Hola");
+      // alert("Hola");
+      console.log(this.$refs.dataProv.$refs.formDataProv);
     },
   },
 };
