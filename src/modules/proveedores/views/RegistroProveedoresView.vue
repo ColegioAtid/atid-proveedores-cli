@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters>
     <v-col cols="12">
-      <v-card class="mx-auto my-6 pa-3" shaped>
+      <v-card class="mx-auto my-6 pa-4" shaped>
         <h3 class="display-1 text-center">
           Sistema de registro para proveedores
         </h3>
@@ -14,7 +14,7 @@
         <documentos-proveedor-component />
 
         <v-card-actions>
-          <v-btn color="success" class="white--text pa-6" @click="sendForm">
+          <v-btn color="teal" class="white--text pa-6" @click="sendForm">
             Enviar
           </v-btn>
         </v-card-actions>

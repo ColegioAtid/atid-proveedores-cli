@@ -1,3 +1,5 @@
 export default () => ({
-    listaProveedores:[]
+    listaProveedores:[],
+    listaProveedoresExpirados:[],
+    listaProveedoresNoValidados:[],
 });

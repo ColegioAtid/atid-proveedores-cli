@@ -1,9 +1,9 @@
 <template>
   <v-row no-gutters>
     <v-col cols="12">
-      <h3 class="display-1 text-center">Datos de proveedor</h3>
 
-      <v-card class="mx-auto my-6" shaped>
+      <v-card class="mx-auto my-6 pa-4" shaped>
+      <h3 class="display-1 text-center">Datos de proveedor</h3>
         <v-img height="150" contain src="@/assets/data.png">
           <template v-slot:placeholder>
             <v-row class="fill-height ma-0" align="center" justify="center">
