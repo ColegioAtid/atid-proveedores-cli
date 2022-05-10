@@ -1,3 +1,3 @@
-export const getMessage = ( state ) => () => {
-    return state.message
+export const getListaProveedoresState = ( state ) => () => {
+    return state.listaProveedores
 }
