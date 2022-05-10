@@ -12,7 +12,7 @@
           <v-text-field
             outlined
             color="teal"
-            v-model="empresa"
+            v-model="nombreEmpresa"
             :rules="generalRules"
             label="Nombre de la empresa"
             required
@@ -52,7 +52,7 @@
           <v-text-field
             outlined
             color="teal"
-            v-model="emailContacto"
+            v-model="correoContacto"
             :rules="emailRules"
             label="Correo para contacto"
             required
@@ -63,7 +63,7 @@
             outlined
             color="teal"
             v-model="numeroContacto1"
-            :rules="generalRules"
+            :rules="phoneRules"
             label="Número de contacto 1"
             required
           ></v-text-field>
@@ -73,7 +73,7 @@
             outlined
             color="teal"
             v-model="numeroContacto2"
-            :rules="generalRules"
+            :rules="phoneRules"
             label="Número de contacto 2"
             required
           ></v-text-field>
@@ -96,13 +96,7 @@
             dense
           >
             <template v-slot:selection="{ index, text }">
-              <v-chip
-                v-if="index < 2"
-                color="deep-purple accent-4"
-                dark
-                label
-                small
-              >
+              <v-chip v-if="index < 2" color="#9b33b0" dark label small>
                 {{ text }}
               </v-chip>
             </template>
@@ -122,13 +116,7 @@
             dense
           >
             <template v-slot:selection="{ index, text }">
-              <v-chip
-                v-if="index < 2"
-                color="deep-purple accent-4"
-                dark
-                label
-                small
-              >
+              <v-chip v-if="index < 2" color="#9b33b0" dark label small>
                 {{ text }}
               </v-chip>
             </template>
@@ -148,13 +136,7 @@
             dense
           >
             <template v-slot:selection="{ index, text }">
-              <v-chip
-                v-if="index < 2"
-                color="deep-purple accent-4"
-                dark
-                label
-                small
-              >
+              <v-chip v-if="index < 2" color="#9b33b0" dark label small>
                 {{ text }}
               </v-chip>
             </template>
@@ -174,13 +156,7 @@
             dense
           >
             <template v-slot:selection="{ index, text }">
-              <v-chip
-                v-if="index < 2"
-                color="deep-purple accent-4"
-                dark
-                label
-                small
-              >
+              <v-chip v-if="index < 2" color="#9b33b0" dark label small>
                 {{ text }}
               </v-chip>
             </template>
@@ -200,21 +176,14 @@
             dense
           >
             <template v-slot:selection="{ index, text }">
-              <v-chip
-                v-if="index < 2"
-                color="deep-purple accent-4"
-                dark
-                label
-                small
-              >
+              <v-chip v-if="index < 2" color="#9b33b0" dark label small>
                 {{ text }}
               </v-chip>
             </template>
           </v-file-input>
         </v-col>
       </v-row>
-
-      <v-btn :disabled="!valid" color="success" class="mx-4" @click="validate">
+      <v-btn :disabled="!valid" color="success" class="mx-4" @click="sendForm">
         Enviar
       </v-btn>
     </v-form>
@@ -222,18 +191,24 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "ProveedoresFormComponent.",
   data: () => ({
     valid: true,
-    empresa: "",
+    nombreEmpresa: "",
     domicilioFiscal: "",
     razonSocial: "",
     nombreContacto: "",
-    emailContacto: "",
+    correoContacto: "",
     numeroContacto1: "",
     numeroContacto2: "",
     generalRules: [(v) => !!v || "Campo requerido"],
+    phoneRules: [
+      (v) => !!v || "Campo requerido",
+      (v) => /^[1-9]\d*$|^$/.test(v) || "El valor no es válido",
+      (v) => !v || v.length >= 10 || "Debes ingresar 10 dígitos",
+    ],
     emailRules: [
       (v) => !!v || "Campo requerido",
       (v) => /.+@.+\..+/.test(v) || "El formato no es válido",
@@ -250,9 +225,56 @@ export default {
   }),
 
   methods: {
-    validate() {
-      this.$refs.formContacto.validate();
+    /* VUEX */
+    ...mapMutations("proveedores", ["setDataForm", "setDocumentos"]),
+    /* MÉTODOS DE COMPONENTE */
+    sendForm() {
+      if (!this.$refs.formContacto.validate()) {
+        alert("Llena el formulario, por favor");
+        return;
+      }
+      let formProveedorData = {
+        nombreEmpresa: this.nombreEmpresa,
+        domicilioFiscal: this.domicilioFiscal,
+        razonSocial: this.razonSocial,
+        nombreContacto: this.nombreContacto,
+        correoContacto: this.correoContacto,
+        numeroContacto1: this.numeroContacto1,
+        numeroContacto2: this.numeroContacto2,
+      };
+      let files = [
+        {
+          keyName: "documento1",
+          nameFile: "DOCUMENTO1",
+          file: this.documento1,
+        },
+        {
+          keyName: "documento2",
+          nameFile: "DOCUMENTO2",
+          file: this.documento2,
+        },
+        {
+          keyName: "documento3",
+          nameFile: "DOCUMENTO3",
+          file: this.documento3,
+        },
+        {
+          keyName: "documento4",
+          nameFile: "DOCUMENTO4",
+          file: this.documento4,
+        },
+        {
+          keyName: "documento5",
+          nameFile: "DOCUMENTO5",
+          file: this.documento5,
+        },
+      ];
+      this.setDataForm(formProveedorData);
+      this.setDocumentos({ documentos: files });
     },
+  },
+  computed: {
+    ...mapGetters("proveedores", ["getDatosProveedor", "getDocumentos"]),
   },
 };
 </script>
