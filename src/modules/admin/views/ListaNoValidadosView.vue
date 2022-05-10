@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import DataTableComponent from '../components/DataTableComponent.vue'
 export default {
     components:{
@@ -31,6 +32,23 @@ export default {
         return{
             listaNoValidados:[]
         }
+    },
+    computed:{
+      /* Vuex */
+      ...mapGetters('admin',['getListaProvNoValidosState']),
+      /* Local */
+    },
+    methods:{
+      /* Vuex */
+      ...mapActions('admin',['getListaNoValidosAction']),
+      /* Local */
+      init(){
+        this.getListaNoValidosAction()
+        this.listaNoValidados = this.getListaProvNoValidosState()
+      }
+    },
+    created(){
+      this.init()
     }
 }
 </script>

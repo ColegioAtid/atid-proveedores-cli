@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import DataTableComponent from '../components/DataTableComponent.vue'
 export default {
     components:{
@@ -31,6 +32,24 @@ export default {
         return{
             listaExpirados:[]
         }
+    },
+    computed:{
+        /* Vuex */
+        ...mapGetters('admin',['getListaProvExpiradosState'])
+        /* Local */
+    },
+    methods:{
+        /* Vuex */
+        ...mapActions('admin',['getListaExpiradosAction']),
+        /* Local */
+        init(){
+            this.getListaExpiradosAction()
+            this.listaExpirados = this.getListaProvExpiradosState()
+        }
+    },
+    created(){
+        this.init()
     }
+    
 }
 </script>
