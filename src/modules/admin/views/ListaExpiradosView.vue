@@ -52,14 +52,13 @@
             </v-radio-group>
           </v-card-text>
           <v-card-text v-if="customMail === 'No'">
-            <b>Mesaje a mandar:</b> <br>
-            "Hola sus documentos A, B, C han expirado, se les pide de favor entrar a la
-            plataforma para actualizarlos, gracias."
+            <b>Mesaje a mandar:</b> <br />
+            "Hola sus documentos A, B, C han expirado, se les pide de favor
+            entrar a la plataforma para actualizarlos, gracias."
           </v-card-text>
           <v-card-text v-else>
             <v-text-field
-            
-                v-model="customMailMessage.ausnto"
+              v-model="customMailMessage.ausnto"
               label="Asunto"
               placeholder="Asunto"
               outlined
@@ -68,7 +67,7 @@
               v-model="customMailMessage.body"
               outlined
               name="input-7-4"
-              label="Mensaje a mandar"              
+              label="Mensaje a mandar"
             ></v-textarea>
           </v-card-text>
           <v-divider></v-divider>
@@ -98,9 +97,9 @@ export default {
   data() {
     return {
       dialog: false,
-      customMailMessage:{
-          ausnto:"",
-          body:""
+      customMailMessage: {
+        ausnto: "",
+        body: "",
       },
       customMail: "No",
       listaExpirados: [],
