@@ -3,9 +3,19 @@ export default {
     component: () => import(/* webpackChunkName: "ProveedoresRouterView" */ '@/modules/proveedores/views/HomeProveedores.vue'),
     children: [
         {
-            path: "home",
-            name: "home-proveedores",
-            component: () => import(/* webpackChunkName: "ProveedorHomeView" */ '@/modules/proveedores/views/ProveedorHomeView.vue'),
+            path: "registro-proveedores",
+            name: "registro-proveedores",
+            component: () => import(/* webpackChunkName: "ProveedorHomeView" */ '@/modules/proveedores/views/RegistroProveedoresView.vue'),
+        },
+        {
+            path:"datos-proveedor",
+            name:"datos-proveedores",
+            component: () => import(/* webpackChunkName: "DatosProveedorView" */ '@/modules/proveedores/views/DatosProveedorView.vue')
+        },
+        {
+            path:"documentos-proveedor",
+            name:"documentos-proveedores",
+            component: () => import(/* webpackChunkName: "DocumentosProveedorView" */ '@/modules/proveedores/views/DocumentosProveedorView.vue')
         }
     ]
 }

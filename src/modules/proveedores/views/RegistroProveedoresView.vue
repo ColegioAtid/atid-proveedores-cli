@@ -1,11 +1,9 @@
 <template>
-  <v-container fluid>
     <v-row no-gutters>
       <v-col cols="12">
         <proveedores-form-component />
       </v-col>
     </v-row>
-  </v-container>
 </template>
 
 <script>
