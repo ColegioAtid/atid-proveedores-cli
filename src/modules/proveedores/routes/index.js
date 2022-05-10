@@ -1,6 +1,6 @@
 export default {
     name: 'proveedores',
-    component: () => import(/* webpackChunkName: "ProveedoresRouterView" */ '@/modules/proveedores/views/ProveedoresRouterView.vue'),
+    component: () => import(/* webpackChunkName: "ProveedoresRouterView" */ '@/modules/proveedores/views/HomeProveedores.vue'),
     children: [
         {
             path: "home",
