@@ -1,6 +1,6 @@
 <template>
   <v-app class="custom-bg">
-    <v-navigation-drawer app color="purple" dark permanent>
+    <v-navigation-drawer app color="purple" dark  :mini-variant="mini" >
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
@@ -68,6 +68,11 @@ export default {
         },
       ],
     };
+  },
+  computed:{
+   mini() {
+    return this.$vuetify.breakpoint.mdAndDown
+    }
   },
   methods: {
     /**

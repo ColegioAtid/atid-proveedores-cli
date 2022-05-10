@@ -14,7 +14,9 @@
             <v-list-item-subtitle>Nombre de contacto</v-list-item-subtitle>
           </v-list-item-content>
 
-          <v-list-item-avatar tile size="80" color="grey"></v-list-item-avatar>
+          <v-list-item-avatar tile size="70" color="grey">
+              <img alt="user" :src="require('@/assets/admin/provider.png')" />
+          </v-list-item-avatar>
         </v-list-item>
 
         <v-card-actions>
