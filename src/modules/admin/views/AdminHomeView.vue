@@ -1,6 +1,6 @@
 <template>
   <v-app gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)">
-      <v-navigation-drawer app class="deep-purple accent-4" dark permanent>
+      <v-navigation-drawer app color="purple"  dark permanent>
           <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
@@ -30,7 +30,7 @@
 
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block> Logout </v-btn>
+          <v-btn color="teal" block> Logout </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
