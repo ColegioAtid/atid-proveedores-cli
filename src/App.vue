@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="custom-bg">
     <v-app-bar
       app
       color="primary"
@@ -39,3 +39,4 @@ export default {
   }),
 };
 </script>
+

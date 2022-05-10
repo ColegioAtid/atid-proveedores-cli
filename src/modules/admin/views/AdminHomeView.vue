@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)">
       <v-navigation-drawer app class="deep-purple accent-4" dark permanent>
           <template v-slot:prepend>
         <v-list-item two-line>
@@ -64,3 +64,10 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.custom-bg{
+  background: rgb(136,31,92);
+  background: radial-gradient(circle, rgba(136,31,92,1) 39%, rgba(130,54,120,1) 64%);
+}
+</style>
