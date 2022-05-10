@@ -47,8 +47,8 @@
           <v-card-text>
             ¿Correo personalizado?
             <v-radio-group v-model="customMail" row>
-              <v-radio label="No" value="No"></v-radio>
-              <v-radio label="Sí" value="Sí"></v-radio>
+              <v-radio color="purple" label="No" value="No"></v-radio>
+              <v-radio color="purple" label="Sí" value="Sí"></v-radio>
             </v-radio-group>
           </v-card-text>
           <v-card-text v-if="customMail === 'No'">

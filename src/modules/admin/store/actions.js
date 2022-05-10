@@ -2,7 +2,7 @@ export const getListaProveedoresAction = async ( {commit}  ) => {
     // TODO: Call service
     const data = [
         {
-          rfc: "RFCASD1234",
+          rfc: "ABCDE1234",
           nombreEmpresa: "Empresa",
           razonSocail:"Razón socail",
           tipoPersona:"Física",
