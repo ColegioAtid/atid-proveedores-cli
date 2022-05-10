@@ -40,7 +40,7 @@
       </template>
     </v-navigation-drawer>
     <v-main>
-      <v-container fill-height fluid>
+      <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-main>
