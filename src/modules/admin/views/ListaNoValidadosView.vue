@@ -1,14 +1,7 @@
 <template>
     <v-container>
     <!-- Progress data -->
-    <div v-if="false" class="text-center mt-6">
-      <v-progress-circular
-        :size="70"
-        color="teal"
-        indeterminate
-      ></v-progress-circular>
-      <p>Cargando datos...</p>
-    </div>
+    <progress-component v-if="false" />
     <!-- End progress data -->
     <v-card v-else :elevation="10">
       <v-card-title> Proveedores con documentación no validada </v-card-title>
@@ -24,9 +17,11 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import DataTableComponent from '../components/DataTableComponent.vue'
+import ProgressComponent from '../components/ProgressComponent.vue'
 export default {
     components:{
-        DataTableComponent
+        DataTableComponent,
+        ProgressComponent
     },
     data(){
         return{
