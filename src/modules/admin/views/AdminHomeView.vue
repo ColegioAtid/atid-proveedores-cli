@@ -1,7 +1,18 @@
 <template>
   <v-app class="custom-bg">
-    <v-fab-transition  class="ma-2">
-      <v-btn @click="showNavigator = true" class="ma-2" color="purple" :elevation="20" fab dark small fixed top left>
+    <v-fab-transition class="ma-2">
+      <v-btn
+        @click="showNavigator = true"
+        class="ma-2"
+        color="purple"
+        :elevation="20"
+        fab
+        dark
+        small
+        fixed
+        top
+        left
+      >
         <v-icon>mdi-menu</v-icon>
       </v-btn>
     </v-fab-transition>
@@ -23,7 +34,7 @@
 
       <v-list>
         <v-list-item
-          v-for="item in items"
+          v-for="item in rutasNavigator"
           :key="item.title"
           link
           @click="goTo(item.route)"
@@ -61,7 +72,7 @@ export default {
   data() {
     return {
       showNavigator: false,
-      items: [
+      rutasNavigator: [
         {
           title: "Lista de proveedores",
           icon: "mdi-view-dashboard",
@@ -79,13 +90,6 @@ export default {
         },
       ],
     };
-  },
-  computed: {
-    /* mini() {
-    this.isResponsive = true
-    this.showNavigator = false
-    return this.$vuetify.breakpoint.mdAndDown
-    } */
   },
   methods: {
     /**
