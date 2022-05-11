@@ -1,12 +1,17 @@
 <template>
-  <v-form ref="documentosProveedorForm" v-model="valid" lazy-validation class="px-7">
+  <v-form
+    ref="documentosProveedorForm"
+    v-model="valid"
+    lazy-validation
+    class="px-7"
+  >
     <v-row>
       <v-col cols="12"
         ><p>Por favor, adjunta los siguientes documentos:</p></v-col
       >
       <v-col cols="12" lg="6" md="6" sm="12">
         <v-file-input
-          v-model="documento1"
+          v-model="documentosProv.documento1"
           label="File input 1"
           :rules="documentosRules"
           accept=".pdf"
@@ -26,7 +31,7 @@
       </v-col>
       <v-col cols="12" lg="6" md="6" sm="12">
         <v-file-input
-          v-model="documento2"
+          v-model="documentosProv.documento2"
           label="File input 2"
           :rules="documentosRules"
           accept=".pdf"
@@ -46,7 +51,7 @@
       </v-col>
       <v-col cols="12" lg="6" md="6" sm="12">
         <v-file-input
-          v-model="documento3"
+          v-model="documentosProv.documento3"
           label="File input 3"
           :rules="documentosRules"
           accept=".pdf"
@@ -66,7 +71,7 @@
       </v-col>
       <v-col cols="12" lg="6" md="6" sm="12">
         <v-file-input
-          v-model="documento4"
+          v-model="documentosProv.documento4"
           label="File input 4"
           :rules="documentosRules"
           accept=".pdf"
@@ -86,7 +91,7 @@
       </v-col>
       <v-col cols="12" lg="6" md="6" sm="12">
         <v-file-input
-          v-model="documento5"
+          v-model="documentosProv.documento5"
           label="File input 5"
           :rules="documentosRules"
           accept=".pdf"
@@ -114,16 +119,31 @@ export default {
   data() {
     return {
       valid: true,
-      documento1: null,
-      documento2: null,
-      documento3: null,
-      documento4: null,
-      documento5: null,
+      documentosProv: {
+        documento1: null,
+        documento2: null,
+        documento3: null,
+        documento4: null,
+        documento5: null,
+      },
       documentosRules: [
         (value) => !!value || "Campo requerido.",
         (value) => !value || value.size < 3000000 || "Máximo deben ser 3 MB!",
       ],
     };
+  },
+  watch: {
+    documentosProv: {
+      handler: function () {
+        let valid = this.$refs.documentosProveedorForm.validate();
+        if (!valid) return;
+        return this.$emit("validDocs", {
+          isValid: valid,
+          data: this.documentosProv,
+        });
+      },
+      deep: true,
+    },
   },
 };
 </script>

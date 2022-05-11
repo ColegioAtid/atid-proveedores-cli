@@ -10,11 +10,16 @@
           sistema:
         </p>
 
-        <datos-proveedor-form ref="dataProv"/>
-        <documentos-proveedor-component />
+        <datos-proveedor-form ref="dataProv" @validForm="recibeDataProv" />
+        <documentos-proveedor-component @validDocs="recibeDocs" />
 
         <v-card-actions>
-          <v-btn color="teal" class="white--text pa-6" @click="sendForm">
+          <v-btn
+            :disabled="validForms"
+            color="teal"
+            class="white--text pa-6"
+            @click="sendForm"
+          >
             Enviar
           </v-btn>
         </v-card-actions>
@@ -29,10 +34,62 @@ import DocumentosProveedorComponent from "../components/DocumentosProveedorCompo
 export default {
   components: { DatosProveedorForm, DocumentosProveedorComponent },
   name: "ProveedorHomeView",
+  data() {
+    return {
+      validForms: true,
+      dataFormProveedores: null,
+      isValidProveedoresData: null,
+      isValidDocsData: null,
+      files: [
+        {
+          keyName: "documento1",
+          nameFile: "DOCUMENTO1",
+          file: null,
+        },
+        {
+          keyName: "documento2",
+          nameFile: "DOCUMENTO2",
+          file: null,
+        },
+        {
+          keyName: "documento3",
+          nameFile: "DOCUMENTO3",
+          file: null,
+        },
+        {
+          keyName: "documento4",
+          nameFile: "DOCUMENTO4",
+          file: null,
+        },
+        {
+          keyName: "documento5",
+          nameFile: "DOCUMENTO5",
+          file: null,
+        },
+      ],
+    };
+  },
   methods: {
     sendForm() {
       // alert("Hola");
-      console.log(this.$refs.dataProv.$refs.formDataProv);
+      console.log("Data from send ", this.dataFormProveedores);
+      console.log("Data from send ", this.isValidProveedoresData);
+      console.log("Data from files ", this.files);
+    },
+    recibeDataProv(data) {
+      this.dataFormProveedores = data.data;
+      this.isValidProveedoresData = data.isValid;
+    },
+    recibeDocs(data) {
+      this.isValidDocsData = data.isValid;
+      this.files.forEach((file) => {
+        console.log(file);
+        for (const key in data.data) {
+          if (file.keyName == key) {
+            file.file = data.data[key];
+          }
+        }
+      });
     },
   },
 };

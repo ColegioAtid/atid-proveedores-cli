@@ -5,7 +5,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="nombreEmpresa"
+          v-model="dataProveedorForm.nombreEmpresa"
           :rules="generalRules"
           label="Nombre de la empresa"
           required
@@ -15,7 +15,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="domicilioFiscal"
+          v-model="dataProveedorForm.domicilioFiscal"
           :rules="generalRules"
           label="Domicilio fiscal"
           required
@@ -25,7 +25,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="razonSocial"
+          v-model="dataProveedorForm.razonSocial"
           :rules="generalRules"
           label="Razón social"
           required
@@ -35,7 +35,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="nombreContacto"
+          v-model="dataProveedorForm.nombreContacto"
           :rules="generalRules"
           label="Nombre de contacto"
           required
@@ -45,7 +45,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="correoContacto"
+          v-model="dataProveedorForm.correoContacto"
           :rules="emailRules"
           label="Correo para contacto"
           required
@@ -55,7 +55,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="numeroContacto1"
+          v-model="dataProveedorForm.numeroContacto1"
           :rules="phoneRules"
           label="Número de contacto 1"
           required
@@ -65,7 +65,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="numeroContacto2"
+          v-model="dataProveedorForm.numeroContacto2"
           :rules="phoneRules"
           label="Número de contacto 2"
           required
@@ -81,13 +81,15 @@ export default {
   data() {
     return {
       valid: true,
-      nombreEmpresa: "",
-      domicilioFiscal: "",
-      razonSocial: "",
-      nombreContacto: "",
-      correoContacto: "",
-      numeroContacto1: "",
-      numeroContacto2: "",
+      dataProveedorForm: {
+        nombreEmpresa: "",
+        domicilioFiscal: "",
+        razonSocial: "",
+        nombreContacto: "",
+        correoContacto: "",
+        numeroContacto1: "",
+        numeroContacto2: "",
+      },
       generalRules: [(v) => !!v || "Campo requerido"],
       phoneRules: [
         (v) => !!v || "Campo requerido",
@@ -99,6 +101,19 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "El formato no es válido",
       ],
     };
+  },
+  watch: {
+    dataProveedorForm: {
+      handler: function () {
+        let valid = this.$refs.formDataProv.validate();
+        if (!valid) return;
+        return this.$emit("validForm", {
+          isValid: valid,
+          data: this.dataProveedorForm,
+        });
+      },
+      deep: true,
+    },
   },
 };
 </script>
