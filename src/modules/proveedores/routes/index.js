@@ -3,6 +3,11 @@ export default {
     component: () => import(/* webpackChunkName: "ProveedoresRouterView" */ '@/modules/proveedores/views/HomeProveedores.vue'),
     children: [
         {
+            path: "/proveedores",
+            name: "datos-generales-proveedores",
+            component: () => import(/* webpackChunkName: "ProveedorHomeView" */ '@/modules/proveedores/views/InformacionProveedoresView.vue'),
+        },
+        {
             path: "registro-proveedores",
             name: "registro-proveedores",
             component: () => import(/* webpackChunkName: "ProveedorHomeView" */ '@/modules/proveedores/views/RegistroProveedoresView.vue'),

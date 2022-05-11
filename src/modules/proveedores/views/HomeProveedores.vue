@@ -24,7 +24,7 @@
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img src="https://random.imagecdn.app/500/150" />
+            <img src="@/assets/admin/provider.png" />
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -65,7 +65,7 @@
       </template>
     </v-navigation-drawer>
     <v-main>
-      <v-container fluid>
+      <v-container fill-height fluid>
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -76,8 +76,13 @@
 export default {
   data() {
     return {
-      showNavigator: false,
+      showNavigator: true,
       rutasNavigator: [
+        {
+          title: "Datos generales",
+          icon: "mdi-home-circle",
+          route: { name: "datos-generales-proveedores", params: {} },
+        },
         {
           title: "Registro",
           icon: "mdi-border-color",
