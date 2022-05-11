@@ -14,11 +14,9 @@
         <h1 class="display-2 font-weight-bold mb-3">Sistema de proveedores</h1>
 
         <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br />please join our online
-          <a href="https://community.vuetifyjs.com" target="_blank"
-            >Discord Community</a
-          >
+          Sistema de gestión y registro de proveedores para el Colegio Atid
+          <br />© {{ currentYear }} Copyright: Todos los derechos reservados
+          <a href="https://www.atid.edu.mx" target="_blank">www.atid.edu.mx</a>
         </p>
       </v-col>
 
@@ -32,7 +30,11 @@
                     <v-col cols="12">
                       <v-card-text class="mt-12">
                         <v-col class="mb-5" cols="12">
-                          <h2 class="headline font-weight-bold mb-3 purple--text">Proveedores</h2>
+                          <h2
+                            class="headline font-weight-bold mb-3 purple--text"
+                          >
+                            Proveedores
+                          </h2>
                         </v-col>
                         <h4 class="text-center mt-4">
                           Ingresa tus credenciales
@@ -70,7 +72,7 @@
                           :loading="isUpdating"
                           color="teal darken-3"
                           depressed
-                          @click="login()"                          
+                          @click="login()"
                         >
                           <v-icon left> mdi-send </v-icon>
                           Login
@@ -82,18 +84,18 @@
                         <v-btn
                           class="ma-3 purple--text"
                           rounded
-                          outlined                          
+                          outlined
                           @click="step++"
                           >¿Eres administrador?</v-btn
                         >
                         <v-btn
                           class="ma-3 purple--text"
                           rounded
-                          outlined                          
+                          outlined
                           @click="step = 3"
                           >Regístrate</v-btn
                         >
-                      </div>                      
+                      </div>
                     </v-col>
                   </v-row>
                 </v-window-item>
@@ -102,7 +104,11 @@
                     <v-col cols="12" md="12">
                       <v-card-text class="mt-12">
                         <v-col class="mb-5" cols="12">
-                          <h2 class="headline font-weight-bold mb-3 purple--text">Administrador</h2>
+                          <h2
+                            class="headline font-weight-bold mb-3 purple--text"
+                          >
+                            Administrador
+                          </h2>
                         </v-col>
                         <h4 class="text-center mt-4">
                           Ingresa tus credenciales
@@ -155,7 +161,7 @@
                           <v-btn
                             class="ma-3 purple--text"
                             rounded
-                            outlined                           
+                            outlined
                             @click="step--"
                             >¿Eres proveedor?</v-btn
                           >
@@ -169,7 +175,11 @@
                     <v-col cols="12" md="12">
                       <v-card-text class="mt-12">
                         <v-col class="mb-5" cols="12">
-                          <h2 class="headline font-weight-bold mb-3 purple--text">Regístrate</h2>
+                          <h2
+                            class="headline font-weight-bold mb-3 purple--text"
+                          >
+                            Regístrate
+                          </h2>
                         </v-col>
                         <h4 class="text-center mt-4">
                           Ingresa tus credenciales
@@ -222,7 +232,7 @@
                           <v-btn
                             class="ma-3 purple--text"
                             rounded
-                            outlined                           
+                            outlined
                             @click="step = 1"
                             >¿Ya tienes cuenta?</v-btn
                           >
@@ -235,7 +245,6 @@
             </v-card>
           </v-col>
         </v-row>
-
       </v-col>
     </v-row>
   </v-container>
@@ -246,6 +255,21 @@ export default {
   name: "HelloWorld",
 
   data: () => ({
+    currentYear: new Date().getFullYear(),
+    registroProveedor:{
+      rfc:'',
+      correo:'',
+      password:'',
+      tipoPersona:'',
+    },
+    loginProveedor:{
+      password:'',
+      rfc:''
+    },
+    loginAdmin:{
+      password:'',
+      usuario:''
+    },
     step: 1,
     isUpdating: false,
     username: "",
@@ -257,56 +281,6 @@ export default {
     rules: {
       required: (value) => !!value || "Campo requerido.",
     },
-    ecosystem: [
-      {
-        text: "vuetify-loader",
-        href: "https://github.com/vuetifyjs/vuetify-loader",
-      },
-      {
-        text: "github",
-        href: "https://github.com/vuetifyjs/vuetify",
-      },
-      {
-        text: "awesome-vuetify",
-        href: "https://github.com/vuetifyjs/awesome-vuetify",
-      },
-    ],
-    importantLinks: [
-      {
-        text: "Documentation",
-        href: "https://vuetifyjs.com",
-      },
-      {
-        text: "Chat",
-        href: "https://community.vuetifyjs.com",
-      },
-      {
-        text: "Made with Vuetify",
-        href: "https://madewithvuejs.com/vuetify",
-      },
-      {
-        text: "Twitter",
-        href: "https://twitter.com/vuetifyjs",
-      },
-      {
-        text: "Articles",
-        href: "https://medium.com/vuetify",
-      },
-    ],
-    whatsNext: [
-      {
-        text: "Explore components",
-        href: "https://vuetifyjs.com/components/api-explorer",
-      },
-      {
-        text: "Select a layout",
-        href: "https://vuetifyjs.com/getting-started/pre-made-layouts",
-      },
-      {
-        text: "Frequently Asked Questions",
-        href: "https://vuetifyjs.com/getting-started/frequently-asked-questions",
-      },
-    ],
   }),
 };
 </script>
