@@ -3,7 +3,7 @@
     <v-col cols="12">
       <v-card class="mx-auto my-6 pa-4" shaped>
         <h3 class="display-1 text-center">Documentos anexados</h3>
-        <v-img height="150" contain src="@/assets/files.png">
+        <v-img height="150" contain src="@/assets/proveedor/files.png">
           <template v-slot:placeholder>
             <v-row class="fill-height ma-0" align="center" justify="center">
               <v-progress-circular

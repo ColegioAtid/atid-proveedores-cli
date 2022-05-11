@@ -1,10 +1,9 @@
 <template>
   <v-row no-gutters>
     <v-col cols="12">
-
       <v-card class="mx-auto my-6 pa-4" shaped>
-      <h3 class="display-1 text-center">Datos de proveedor</h3>
-        <v-img height="150" contain src="@/assets/data.png">
+        <h3 class="display-1 text-center">Datos de proveedor</h3>
+        <v-img height="150" contain src="@/assets/proveedor/data.png">
           <template v-slot:placeholder>
             <v-row class="fill-height ma-0" align="center" justify="center">
               <v-progress-circular
@@ -21,7 +20,7 @@
 
         <v-card-text>
           <div class="text-body-1">
-           <datos-proveedor-form ref="datosProveedor"/>
+            <datos-proveedor-form ref="datosProveedor" />
           </div>
         </v-card-text>
         <v-card-actions>
@@ -35,10 +34,10 @@
 </template>
 
 <script>
-import DatosProveedorForm from '../components/DatosProveedorForm.vue';
+import DatosProveedorForm from "../components/DatosProveedorForm.vue";
 
 export default {
-  components: {DatosProveedorForm  },
+  components: { DatosProveedorForm },
   methods: {
     check() {
       console.log(this.$refs.datosProveedor.$refs.formDataProv.validate());

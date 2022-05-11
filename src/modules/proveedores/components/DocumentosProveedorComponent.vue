@@ -136,7 +136,6 @@ export default {
     documentosProv: {
       handler: function () {
         let valid = this.$refs.documentosProveedorForm.validate();
-        if (!valid) return;
         return this.$emit("validDocs", {
           isValid: valid,
           data: this.documentosProv,

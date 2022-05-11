@@ -1,12 +1,18 @@
 <template>
   <v-app id="custom-bg">    
     <router-view/>
+    <success-error-message/>
   </v-app>
 </template>
 
 <script>
+import SuccessErrorMessage from '@/modules/shared/components/SuccessErrorMessage.vue';
 export default {
   name: "App",
+  components:{
+    SuccessErrorMessage
+
+  },
 
   data: () => ({
     currentYear: new Date().getFullYear(),
