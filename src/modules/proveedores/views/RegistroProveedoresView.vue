@@ -12,10 +12,9 @@
 
         <datos-proveedor-form ref="dataProv" @validForm="recibeDataProv" />
         <documentos-proveedor-component @validDocs="recibeDocs" />
-
         <v-card-actions>
           <v-btn
-            :disabled="validForms"
+            :disabled="verificaTrues"
             color="teal"
             class="white--text pa-6"
             @click="sendForm"
@@ -23,12 +22,15 @@
             Enviar
           </v-btn>
         </v-card-actions>
+        {{ getDatosProveedor() }} <br />
+        {{ getDocumentos() }}
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import DatosProveedorForm from "../components/DatosProveedorForm.vue";
 import DocumentosProveedorComponent from "../components/DocumentosProveedorComponent.vue";
 export default {
@@ -36,7 +38,6 @@ export default {
   name: "ProveedorHomeView",
   data() {
     return {
-      validForms: true,
       dataFormProveedores: null,
       isValidProveedoresData: null,
       isValidDocsData: null,
@@ -70,11 +71,12 @@ export default {
     };
   },
   methods: {
+    /* VUEX */
+    ...mapMutations("proveedores", ["setDataForm", "setDocumentos"]),
+    /* MÉTODOS DE COMPONENTE */
     sendForm() {
-      // alert("Hola");
-      console.log("Data from send ", this.dataFormProveedores);
-      console.log("Data from send ", this.isValidProveedoresData);
-      console.log("Data from files ", this.files);
+      this.setDataForm(this.dataFormProveedores);
+      this.setDocumentos({ documentos: this.files });
     },
     recibeDataProv(data) {
       this.dataFormProveedores = data.data;
@@ -83,13 +85,21 @@ export default {
     recibeDocs(data) {
       this.isValidDocsData = data.isValid;
       this.files.forEach((file) => {
-        console.log(file);
         for (const key in data.data) {
           if (file.keyName == key) {
             file.file = data.data[key];
           }
         }
       });
+    },
+  },
+  computed: {
+    ...mapGetters("proveedores", ["getDatosProveedor", "getDocumentos"]),
+    verificaTrues() {
+      if (this.isValidProveedoresData && this.isValidDocsData) {
+        return false;
+      }
+      return true;
     },
   },
 };
