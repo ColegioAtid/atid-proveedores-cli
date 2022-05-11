@@ -30,7 +30,7 @@
               @click="
                 $router.push({
                   name: 'detalle-proveedor',
-                  params: { 'detalle-proveedor': item },
+                  params: { 'dataProveedor': item },
                 })
               "
               v-bind="attrs"

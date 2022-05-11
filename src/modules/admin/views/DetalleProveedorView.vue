@@ -139,5 +139,9 @@ export default {
     };
   },
   computed: {},
+  created(){
+    console.log(this.$route.params.dataProveedor)
+   
+  }
 };
 </script>

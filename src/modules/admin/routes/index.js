@@ -18,7 +18,7 @@ export default {
             component: () => import(/* webpackChunkName: "ListaNoValidadosView" */ '@/modules/admin/views/ListaNoValidadosView.vue'),
         },
         {
-            path: "detalle-proveedor/:idProvedor",
+            path: "detalle-proveedor",
             name: "detalle-proveedor",
             component: () => import(/* webpackChunkName: "DetalleProveedorView" */ '@/modules/admin/views/DetalleProveedorView.vue'),
         },
