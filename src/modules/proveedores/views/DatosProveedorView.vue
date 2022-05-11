@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters>
+  <v-row>
     <v-col cols="12">
       <v-card class="mx-auto my-6 pa-4" shaped>
         <h3 class="display-1 text-center">Datos de proveedor</h3>
