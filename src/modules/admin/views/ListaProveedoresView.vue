@@ -15,7 +15,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import DataTableComponent from '../components/DataTableComponent.vue';
-import ProgressComponent from '../components/ProgressComponent.vue';
+import ProgressComponent from '../../../components/ProgressComponent.vue';
 
 export default {
   components:{
