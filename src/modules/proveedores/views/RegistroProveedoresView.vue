@@ -22,8 +22,6 @@
             Enviar
           </v-btn>
         </v-card-actions>
-        {{ getDatosProveedor() }} <br />
-        {{ getDocumentos() }}
       </v-card>
     </v-col>
   </v-row>

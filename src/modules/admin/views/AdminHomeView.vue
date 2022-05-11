@@ -8,7 +8,6 @@
         :elevation="20"
         fab
         dark
-        small
         fixed
         top
         left

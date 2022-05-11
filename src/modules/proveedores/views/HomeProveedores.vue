@@ -1,6 +1,26 @@
 <template>
   <v-app class="custom-bg">
-    <v-navigation-drawer app class="purple" dark permanent>
+    <v-fab-transition class="ma-2">
+      <v-btn
+        @click="showNavigator = true"
+        class="ma-2"
+        color="purple"
+        :elevation="20"
+        fab
+        dark
+        fixed
+        top
+        left
+      >
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+    </v-fab-transition>
+    <v-navigation-drawer
+      v-model="showNavigator"
+      app
+      class="purple"
+      dark
+    >
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
@@ -18,7 +38,7 @@
 
       <v-list>
         <v-list-item
-          v-for="item in items"
+          v-for="item in rutasNavigator"
           :key="item.title"
           link
           @click="goTo(item.route)"
@@ -34,6 +54,11 @@
       </v-list>
 
       <template v-slot:append>
+        <div class="pa-2">
+          <v-btn @click="showNavigator = false" color="red" block>
+            <v-icon>mdi-arrow-collapse</v-icon>
+          </v-btn>
+        </div>
         <div class="pa-2">
           <v-btn color="teal" block> Logout </v-btn>
         </div>
@@ -51,7 +76,8 @@
 export default {
   data() {
     return {
-      items: [
+      showNavigator: false,
+      rutasNavigator: [
         {
           title: "Registro",
           icon: "mdi-border-color",
