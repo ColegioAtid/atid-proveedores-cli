@@ -14,7 +14,7 @@
         <documentos-proveedor-component @validDocs="recibeDocs" />
         <v-card-actions>
           <v-btn
-            :disabled="verificaTrues"
+            :disabled="verificaValidsForms"
             color="teal"
             class="white--text pa-6"
             @click="sendForm"
@@ -31,6 +31,7 @@
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import DatosProveedorForm from "../components/DatosProveedorForm.vue";
 import DocumentosProveedorComponent from "../components/DocumentosProveedorComponent.vue";
+import { buildErrorMessage } from "@/helpers/utils";
 export default {
   components: { DatosProveedorForm, DocumentosProveedorComponent },
   name: "ProveedorHomeView",
@@ -76,16 +77,22 @@ export default {
   methods: {
     /* VUEX */
     ...mapMutations("proveedores", ["setDataForm", "setDocumentos"]),
-    ...mapActions("proveedores", ["sendFilesproveedor","sendDataProveedor"]),
+    ...mapMutations("shared", ["setShowErrorOrSuccessAlert"]),
+    ...mapActions("proveedores", ["sendFilesproveedor", "sendDataProveedor"]),
     /* MÉTODOS DE COMPONENTE */
-    sendForm() {
+    async sendForm() {
       this.setDataForm(this.dataFormProveedores);
       this.setDocumentos({ documentos: this.files });
       try {
-        this.sendFilesproveedor();
-        this.sendDataProveedor();
+        await this.sendFilesproveedor();
+        await this.sendDataProveedor();
       } catch (error) {
+        // Error
         console.log(error);
+        this.setShowErrorOrSuccessAlert({
+          message: buildErrorMessage(error),
+          errorOnPetition: true,
+        });
       }
     },
     recibeDataProv(data) {
@@ -105,7 +112,7 @@ export default {
   },
   computed: {
     ...mapGetters("proveedores", ["getDatosProveedor", "getDocumentos"]),
-    verificaTrues() {
+    verificaValidsForms() {
       if (this.isValidProveedoresData && this.isValidDocsData) {
         return false;
       }
