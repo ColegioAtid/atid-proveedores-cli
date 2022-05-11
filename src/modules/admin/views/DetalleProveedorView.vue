@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-sheet color="white pa-3" elevation="16" class="justify-center">
-    <!-- Seccion datos generales del proveedor -->
+      <!-- Seccion datos generales del proveedor -->
       <v-card elevation="3" class="mx-auto" outlined>
         <v-list-item three-line>
           <v-list-item-content>
@@ -15,47 +15,53 @@
           </v-list-item-content>
 
           <v-list-item-avatar tile size="70" color="grey">
-              <img alt="user" :src="require('@/assets/admin/provider.png')" />
+            <img alt="user" :src="require('@/assets/admin/provider.png')" />
           </v-list-item-avatar>
         </v-list-item>
 
         <v-card-actions>
-          <v-btn
-            v-if="!estatusValidacionProv"
-            outlined
-            rounded
-            text
-            color="purple"
-            @click="modalCorreo = true"
-          >
-            Envíar correo
-            <v-icon left> mdi-email </v-icon>
-          </v-btn>
-          <v-btn
-            v-if="!estatusValidacionProv"
-            outlined
-            rounded
-            text
-            color="teal"
-          >
-            Validar información
-          </v-btn>
-          <v-btn v-else outlined rounded text color="red">
-            Invalidar información
-          </v-btn>
-          <v-chip
-            v-if="estatusValidacionProv"
-            class="ma-2"
-            color="teal"
-            outlined
-          >
-            <v-icon left> mdi-account-check </v-icon>
-            Estatus: Validado
-          </v-chip>
-          <v-chip v-else class="ma-2" color="red" outlined>
-            <v-icon left> mdi-account-alert </v-icon>
-            Estatus: No validado
-          </v-chip>
+          <v-row class="text-center">
+            <v-col cols="12" md="4" lg="4" sm="12">
+              <v-btn             
+                outlined
+                rounded
+                text
+                color="purple"
+                @click="modalCorreo = true"
+              >
+                Envíar correo
+                <v-icon right> mdi-email </v-icon>
+              </v-btn>
+            </v-col>
+            <v-col
+              v-if="!estatusValidacionProv"
+              cols="12"
+              md="4"
+              lg="4"
+              sm="12"
+            >
+              <v-btn outlined rounded text color="teal">
+                Validar información
+              </v-btn>
+            </v-col>
+            <v-col v-else cols="12" md="4" lg="4" sm="12">
+              <v-btn outlined rounded text color="red">
+                Invalidar información
+              </v-btn>
+            </v-col>
+            <v-col v-if="estatusValidacionProv" cols="12" md="4" lg="4" sm="12">
+              <v-chip class="ma-2" color="teal" outlined>
+                <v-icon left> mdi-account-check </v-icon>
+                Estatus: Validado
+              </v-chip>
+            </v-col>
+            <v-col v-else>
+              <v-chip class="ma-2" color="red" outlined>
+                <v-icon left> mdi-account-alert </v-icon>
+                Estatus: No validado
+              </v-chip>
+            </v-col>
+          </v-row>
         </v-card-actions>
       </v-card>
       <!-- Sección de documentos -->
@@ -124,7 +130,7 @@
 export default {
   data() {
     return {
-      estatusValidacionProv: false,
+      estatusValidacionProv: true,
       modalCorreo: false,
       customMailMessage: {
         asunto: "",

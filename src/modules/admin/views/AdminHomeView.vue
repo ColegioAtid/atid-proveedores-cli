@@ -1,6 +1,11 @@
 <template>
   <v-app class="custom-bg">
-    <v-navigation-drawer app color="purple" dark  :mini-variant="mini" >
+    <v-fab-transition  class="ma-2">
+      <v-btn @click="showNavigator = true" class="ma-2" color="purple" :elevation="20" fab dark small fixed top left>
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+    </v-fab-transition>
+    <v-navigation-drawer v-model="showNavigator" app color="purple" dark>
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
@@ -35,6 +40,11 @@
 
       <template v-slot:append>
         <div class="pa-2">
+          <v-btn @click="showNavigator = false" color="red" block>
+            <v-icon>mdi-arrow-collapse</v-icon>
+          </v-btn>
+        </div>
+        <div class="pa-2">
           <v-btn color="teal" block> Logout </v-btn>
         </div>
       </template>
@@ -50,6 +60,7 @@
 export default {
   data() {
     return {
+      showNavigator: false,
       items: [
         {
           title: "Lista de proveedores",
@@ -69,10 +80,12 @@ export default {
       ],
     };
   },
-  computed:{
-   mini() {
+  computed: {
+    /* mini() {
+    this.isResponsive = true
+    this.showNavigator = false
     return this.$vuetify.breakpoint.mdAndDown
-    }
+    } */
   },
   methods: {
     /**
