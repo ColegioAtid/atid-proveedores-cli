@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import DatosProveedorForm from "../components/DatosProveedorForm.vue";
 import DocumentosProveedorComponent from "../components/DocumentosProveedorComponent.vue";
 export default {
@@ -44,26 +44,31 @@ export default {
           keyName: "documento1",
           nameFile: "DOCUMENTO1",
           file: null,
+          rfc: "0000",
         },
         {
           keyName: "documento2",
           nameFile: "DOCUMENTO2",
           file: null,
+          rfc: "0000",
         },
         {
           keyName: "documento3",
           nameFile: "DOCUMENTO3",
           file: null,
+          rfc: "0000",
         },
         {
           keyName: "documento4",
           nameFile: "DOCUMENTO4",
           file: null,
+          rfc: "0000",
         },
         {
           keyName: "documento5",
           nameFile: "DOCUMENTO5",
           file: null,
+          rfc: "0000",
         },
       ],
     };
@@ -71,10 +76,17 @@ export default {
   methods: {
     /* VUEX */
     ...mapMutations("proveedores", ["setDataForm", "setDocumentos"]),
+    ...mapActions("proveedores", ["sendFilesproveedor","sendDataProveedor"]),
     /* MÉTODOS DE COMPONENTE */
     sendForm() {
       this.setDataForm(this.dataFormProveedores);
       this.setDocumentos({ documentos: this.files });
+      try {
+        this.sendFilesproveedor();
+        this.sendDataProveedor();
+      } catch (error) {
+        console.log(error);
+      }
     },
     recibeDataProv(data) {
       this.dataFormProveedores = data.data;

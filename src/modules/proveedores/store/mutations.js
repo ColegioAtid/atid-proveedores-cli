@@ -14,6 +14,4 @@ export const setDocumentos = (state, value) => {
     }
   }
 
-  console.log(state.filesUpload);
-  console.log(state.datosProveedor);
 };
