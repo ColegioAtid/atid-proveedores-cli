@@ -82,13 +82,13 @@ export default {
     return {
       valid: true,
       dataProveedorForm: {
-        nombreEmpresa: "sdasdas",
-        domicilioFiscal: "dasdada",
-        razonSocial: "dasda",
-        nombreContacto: "dasdasdadas",
-        correoContacto: "dasdadsas@asdada.com",
-        numeroContacto1: "1234567890",
-        numeroContacto2: "1234567890",
+        nombreEmpresa: "",
+        domicilioFiscal: "",
+        razonSocial: "",
+        nombreContacto: "",
+        correoContacto: "",
+        numeroContacto1: "",
+        numeroContacto2: "",
       },
       generalRules: [(v) => !!v || "Campo requerido"],
       phoneRules: [
@@ -106,7 +106,6 @@ export default {
     dataProveedorForm: {
       handler: function () {
         let valid = this.$refs.formDataProv.validate();
-        if (!valid) return;
         return this.$emit("validForm", {
           isValid: valid,
           data: this.dataProveedorForm,

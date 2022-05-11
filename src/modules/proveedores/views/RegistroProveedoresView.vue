@@ -37,8 +37,8 @@ export default {
   data() {
     return {
       dataFormProveedores: null,
-      isValidProveedoresData: null,
-      isValidDocsData: null,
+      isValidProveedoresData: false,
+      isValidDocsData: false,
       files: [
         {
           keyName: "documento1",
