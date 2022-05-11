@@ -76,7 +76,7 @@
             <iframe
               width="100%"
               height="400"
-              :src="`https://www.atid.edu.mx/becasDocumentos/`"
+              :src="`https://www.atid.edu.mx/public_html/proveedoresDocumentos/0000_DOCUMENTO${i}.pdf`"
               frameborder="0"
             />
           </div>
