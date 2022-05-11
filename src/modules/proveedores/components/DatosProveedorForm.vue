@@ -82,13 +82,13 @@ export default {
     return {
       valid: true,
       dataProveedorForm: {
-        nombreEmpresa: "",
-        domicilioFiscal: "",
-        razonSocial: "",
-        nombreContacto: "",
-        correoContacto: "",
-        numeroContacto1: "",
-        numeroContacto2: "",
+        nombreEmpresa: "sdasdas",
+        domicilioFiscal: "dasdada",
+        razonSocial: "dasda",
+        nombreContacto: "dasdasdadas",
+        correoContacto: "dasdadsas@asdada.com",
+        numeroContacto1: "1234567890",
+        numeroContacto2: "1234567890",
       },
       generalRules: [(v) => !!v || "Campo requerido"],
       phoneRules: [
