@@ -42,7 +42,7 @@
           <div v-show="show">
             <v-divider></v-divider>
 
-            <v-card-text class="text-body-1 text-center" v-if="true">
+            <v-card-text class="text-body-1 text-center" v-if="false">
               <p>
                 <strong
                   >Aún no has registrado datos fiscales de tu empresa</strong
@@ -52,6 +52,7 @@
 
             <v-card-text class="text-body-1" v-else>
               <p><strong>Nombre de la empresa: </strong> Colegio Atid</p>
+              <p><strong>RFC: </strong> CGOMO990730NI5</p>
               <p>
                 <strong>Dirección fiscal: </strong> Constituyente C. Echanove,
                 Huizachito, Cuajimalpa de Morelos, 05249 Ciudad de México, CDMX
