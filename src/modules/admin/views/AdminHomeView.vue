@@ -1,6 +1,22 @@
 <template>
   <v-app class="custom-bg">
-    <v-navigation-drawer app color="purple" dark permanent>
+    <v-fab-transition class="ma-2">
+      <v-btn
+        @click="showNavigator = true"
+        class="ma-2"
+        color="purple"
+        :elevation="20"
+        fab
+        dark
+        small
+        fixed
+        top
+        left
+      >
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+    </v-fab-transition>
+    <v-navigation-drawer v-model="showNavigator" app color="purple" dark>
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
@@ -18,7 +34,7 @@
 
       <v-list>
         <v-list-item
-          v-for="item in items"
+          v-for="item in rutasNavigator"
           :key="item.title"
           link
           @click="goTo(item.route)"
@@ -35,6 +51,11 @@
 
       <template v-slot:append>
         <div class="pa-2">
+          <v-btn @click="showNavigator = false" color="red" block>
+            <v-icon>mdi-arrow-collapse</v-icon>
+          </v-btn>
+        </div>
+        <div class="pa-2">
           <v-btn color="teal" block> Logout </v-btn>
         </div>
       </template>
@@ -50,7 +71,8 @@
 export default {
   data() {
     return {
-      items: [
+      showNavigator: false,
+      rutasNavigator: [
         {
           title: "Lista de proveedores",
           icon: "mdi-view-dashboard",

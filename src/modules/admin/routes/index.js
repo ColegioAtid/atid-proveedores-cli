@@ -3,7 +3,7 @@ export default {
     component: () => import(/* webpackChunkName: "AdminHomeView" */ '@/modules/admin/views/AdminHomeView.vue'),
     children: [
         {
-            path: "lista-proveedores",
+            path: "/admin", // Default route
             name: "lista-proveedores",
             component: () => import(/* webpackChunkName: "ListaProveedoresView" */ '@/modules/admin/views/ListaProveedoresView.vue'),
         },
@@ -18,7 +18,7 @@ export default {
             component: () => import(/* webpackChunkName: "ListaNoValidadosView" */ '@/modules/admin/views/ListaNoValidadosView.vue'),
         },
         {
-            path: "detalle-proveedor/:idProvedor",
+            path: "detalle-proveedor",
             name: "detalle-proveedor",
             component: () => import(/* webpackChunkName: "DetalleProveedorView" */ '@/modules/admin/views/DetalleProveedorView.vue'),
         },
