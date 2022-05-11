@@ -12,13 +12,13 @@
 
 
  /**
-  * Crea una conexión con la API media-becas-api
+  * Crea una conexión con la API media-proveedores-atid
   */
  export const createFileAPIConnection = axios.create({
-     /* baseURL: process.env.VUE_APP_API_UPLOAD_FILES,
+     baseURL: process.env.VUE_APP_API_UPLOAD_FILES,
      headers: {
        "Content-type": "application/json",
-     } */
+     }
  });
  
  /**
