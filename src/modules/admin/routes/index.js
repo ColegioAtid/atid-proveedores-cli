@@ -3,7 +3,7 @@ export default {
     component: () => import(/* webpackChunkName: "AdminHomeView" */ '@/modules/admin/views/AdminHomeView.vue'),
     children: [
         {
-            path: "lista-proveedores",
+            path: "/admin", // Default route
             name: "lista-proveedores",
             component: () => import(/* webpackChunkName: "ListaProveedoresView" */ '@/modules/admin/views/ListaProveedoresView.vue'),
         },
