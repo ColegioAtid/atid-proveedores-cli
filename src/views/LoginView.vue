@@ -39,10 +39,11 @@
                         <h4 class="text-center mt-4">
                           Ingresa tus credenciales
                         </h4>
-                        <v-form ref="loginform">
+                        <v-form v-model="isValidLoginProveedor">
                           <v-text-field
+                            @input="loginProveedorForm.rfc = loginProveedorForm.rfc.toUpperCase()"
                             v-model="loginProveedorForm.rfc"
-                            :disabled="isUpdating"
+                            :disabled="loadingProcess"
                             :rules="[rules.required]"
                             filled
                             color="blue-grey lighten-2"
@@ -51,9 +52,11 @@
 
                           <v-text-field
                             filled
-                            :disabled="isUpdating"
+                            :disabled="loadingProcess"
                             v-model="loginProveedorForm.password"
-                            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                            :append-icon="
+                              showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                            "
                             :rules="[rules.required]"
                             :type="showPassword ? 'text' : 'password'"
                             name="input-10-1"
@@ -64,15 +67,22 @@
                         </v-form>
                       </v-card-text>
                       <div class="text-center">
-                        <v-btn class="ma-1" rounded x-small outlined color="red" dark>
+                        <v-btn
+                          class="ma-1"
+                          rounded
+                          x-small
+                          outlined
+                          color="red"
+                          dark
+                        >
                           Olvidé mi contraseña
                         </v-btn>
-                        <v-btn                                                  
+                        <v-btn
                           outlined
                           rounded
-                          x-small       
+                          x-small
                           color="teal"
-                          dark                   
+                          dark
                           @click="stepWindow = 3"
                           >Regístrate</v-btn
                         >
@@ -82,8 +92,8 @@
                           x-small
                           outlined
                           rounded
-                          :disabled="!isValidFormProvLogin || autoUpdate"
-                          :loading="isUpdating"
+                          :disabled="!isValidLoginProveedor"
+                          :loading="loadingProcess"
                           color="teal"
                           depressed
                           @click="loginProveedor()"
@@ -102,7 +112,7 @@
                           outlined
                           @click="stepWindow = 2"
                           >Soy administrador?</v-btn
-                        >                        
+                        >
                       </div>
                     </v-col>
                   </v-row>
@@ -122,26 +132,20 @@
                           Ingresa tus credenciales
                         </h4>
 
-                        <v-form ref="loginform">
-                          <v-select
-                            :items="[
-                              'PPATRONATO',
-                              'COMITEBECAS',
-                              'DIRECCIONADMIN',
-                              'ASISTENTE',
-                            ]"
-                            v-model="usernameAdmin"
-                            :disabled="isUpdating"
+                        <v-form v-model="isValidLoginAdmin">
+                          <v-text-field
+                            v-model="loginAdminForm.usuario"
+                            :disabled="loadingProcess"
                             :rules="[rules.required]"
                             filled
                             color="blue-grey lighten-2"
-                            label="Rol"
-                          ></v-select>
+                            label="Usuario"
+                          ></v-text-field>
 
                           <v-text-field
                             filled
-                            :disabled="isUpdating"
-                            v-model="passwordAdmin"
+                            :disabled="loadingProcess"
+                            v-model="loginAdminForm.password"
                             :append-icon="
                               showPassword ? 'mdi-eye' : 'mdi-eye-off'
                             "
@@ -156,11 +160,14 @@
                       </v-card-text>
                       <div class="text-center mt-n5 mb-5">
                         <v-btn
-                          :disabled="!isValidFormAdmin || autoUpdate"
-                          :loading="isUpdating"
-                          color="teal darken-3"
+                          :disabled="!isValidLoginAdmin"
+                          :loading="loadingProcess"
+                          color="teal"
                           depressed
-                          @click="login()"
+                          rounded
+                          outlined
+                          x-small
+                          @click="loginAdmin()"
                         >
                           <v-icon left> mdi-send </v-icon>
                           Login
@@ -172,8 +179,9 @@
                             class="ma-3 purple--text"
                             rounded
                             outlined
+                            x-small
                             @click="stepWindow--"
-                            >¿Eres proveedor?</v-btn
+                            >Soy proveedor</v-btn
                           >
                         </div>
                       </v-col>
@@ -195,58 +203,90 @@
                           Ingresa tus credenciales
                         </h4>
 
-                        <v-form ref="loginform">
+                        <v-form ref="registroProveedorRefForm" v-model="validRegistroForm">
                           <v-select
-                            :items="[
-                              'PPATRONATO',
-                              'COMITEBECAS',
-                              'DIRECCIONADMIN',
-                              'ASISTENTE',
-                            ]"
-                            v-model="usernameAdmin"
-                            :disabled="isUpdating"
+                            @change="registroProveedorForm.rfc = ''"
+                            :items="['FÍSICA', 'MORAL']"
+                            v-model="registroProveedorForm.tipoPersona"
+                            :disabled="loadingProcess"
                             :rules="[rules.required]"
                             filled
-                            color="blue-grey lighten-2"
-                            label="Rol"
+                            color="teal"
+                            label="Tipo de persona"
                           ></v-select>
 
                           <v-text-field
+                            v-model="registroProveedorForm.rfc"
+                            :disabled="loadingProcess"
+                            :rules="[rules.required, rfcRules]"
                             filled
-                            :disabled="isUpdating"
-                            v-model="passwordAdmin"
+                            @input="registroProveedorForm.rfc = registroProveedorForm.rfc.toUpperCase()"
+                            color="teal"
+                            label="RFC"
+                          ></v-text-field>
+
+                          <v-text-field
+                            color="teal"
+                            v-model="registroProveedorForm.correo"
+                            :rules="[rules.emailRules]"
+                            label="Correo de contacto (NO PERSONAL)"
+                            required
+                          ></v-text-field>
+
+                          <v-text-field
+                            filled
+                            :disabled="loadingProcess"
+                            v-model="registroProveedorForm.password"
                             :append-icon="
                               showPassword ? 'mdi-eye' : 'mdi-eye-off'
                             "
-                            :rules="[rules.required]"
+                            :rules="[rules.required, rules.strongPassword]"
                             :type="showPassword ? 'text' : 'password'"
                             name="input-10-1"
-                            color="blue-grey lighten-2"
+                            color="teal"
                             label="Password"
+                            @click:append="showPassword = !showPassword"
+                          ></v-text-field>
+                          <v-text-field
+                            filled
+                            :disabled="loadingProcess"
+                            v-model="registroProveedorForm.passwordConfirm"
+                            :append-icon="
+                              showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                            "
+                            :rules="[rules.required, confirmPasswordRules]"
+                            :type="showPassword ? 'text' : 'password'"
+                            name="input-10-1"
+                            color="teal"
+                            label="Confirma password"
                             @click:append="showPassword = !showPassword"
                           ></v-text-field>
                         </v-form>
                       </v-card-text>
                       <div class="text-center mt-n5 mb-5">
                         <v-btn
-                          :disabled="!isValidFormAdmin || autoUpdate"
-                          :loading="isUpdating"
-                          color="teal darken-3"
+                          :disabled="!validRegistroForm"
+                          :loading="loadingProcess"
+                          color="teal"
                           depressed
-                          @click="login()"
+                          outlined
+                          rounded
+                          x-small
+                          @click="registroNuevoProveedor()"
                         >
                           <v-icon left> mdi-send </v-icon>
-                          Login
+                          Registrar
                         </v-btn>
                       </div>
                       <v-col cols="12" md="12" class="bg-purple">
                         <div class="text-center">
                           <v-btn
-                            class="ma-3 purple--text"
+                            color="purple"
                             rounded
+                            x-small
                             outlined
                             @click="stepWindow = 1"
-                            >¿Ya tienes cuenta?</v-btn
+                            >Ya tengo cuenta</v-btn
                           >
                         </div>
                       </v-col>
@@ -268,14 +308,14 @@ export default {
 
   data: () => ({
     currentYear: new Date().getFullYear(),
-    isValidLoginProveedor:false,
-    isValidRegistroProveedor:false,
-    isValidLoginAdmin:false,
+    isValidLoginProveedor: false,
+    validRegistroForm: false,
+    isValidLoginAdmin: false,
     registroProveedorForm: {
       rfc: "",
       correo: "",
       password: "",
-      passwordConfirm:"",
+      passwordConfirm: "",
       tipoPersona: "",
     },
     loginProveedorForm: {
@@ -287,39 +327,64 @@ export default {
       usuario: "",
     },
     stepWindow: 1,
-    isUpdating: false,
+    loadingProcess: false,
 
     showPassword: false,
-    autoUpdate: false,
+    
     rules: {
       required: (value) => !!value || "Campo requerido.",
+      emailRules: (value) =>
+        /.+@.+\..+/.test(value) || "El formato no es válido.",
+      strongPassword: (value) => {        
+        const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+        return (
+          pattern.test(value) ||
+          "Min. 8 caracteres con almenos una mayúscula, un número y un caracter especial."
+        );
+      },
     },
   }),
 
-  computed:{
-    isValidFormProvLogin: function(){
-      return (
-        this.loginProveedor.password !== "" &&
-        this.loginProveedor.rfc !== ""
-      )
+  computed: {
+    /**
+     * Verifica que las contraseñas del registro
+     * sean iguales
+     * */    
+    confirmPasswordRules: function () {
+      return (value) =>
+        value === this.registroProveedorForm.password ||
+        "Las contraseñas no coinciden.";
     },
-    isValidFormAdminLogin: function(){
-      return (
-        this.loginAdmin.password !== "" &&
-        this.loginAdmin.usuario !== ""
-      )
+
+    /**
+     * Verifica que el numero de caracteres del RFC
+     * sea de acuerdo al tipo de persona seleccionada
+     */
+    rfcRules: function(){
+      if(this.registroProveedorForm.tipoPersona === ""){
+        return "Seleccione el tipo de persona"
+      }else if(this.registroProveedorForm.tipoPersona === 'MORAL'){
+        return (value) =>
+        value.length > 11 && value.length < 13 ||
+        "Deben ser 12 caráteres.";
+      }else{
+        return (value) =>
+        value.length > 12 && value.length < 14  ||
+        "Deben ser 13 caráteres.";
+      }
     },
+    
   },
-  methods:{
-    loginAdmin: function(){
-
+  methods: {
+    loginAdmin: function () {
+      console.log(this.loginAdminForm);      
     },
-    loginProveedor: function(){
-
+    loginProveedor: function () {
+      console.log(this.loginProveedorForm);
     },
-    registroNuevoProveedor: function(){
-
-    }
-  }
+    registroNuevoProveedor: function () {
+      console.log(this.registroProveedorForm);
+    },    
+  },
 };
 </script>
