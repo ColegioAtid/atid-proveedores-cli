@@ -15,12 +15,7 @@
         <v-icon>mdi-menu</v-icon>
       </v-btn>
     </v-fab-transition>
-    <v-navigation-drawer
-      v-model="showNavigator"
-      app
-      class="purple"
-      dark
-    >
+    <v-navigation-drawer v-model="showNavigator" app class="purple" dark>
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
@@ -42,12 +37,13 @@
           :key="item.title"
           link
           @click="goTo(item.route)"
+          :disabled="item.disable"
         >
-          <v-list-item-icon>
+          <v-list-item-icon v-if="!item.disable">
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-content>
+          <v-list-item-content v-if="!item.disable">
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -82,21 +78,25 @@ export default {
           title: "Datos generales",
           icon: "mdi-home-circle",
           route: { name: "datos-generales-proveedores", params: {} },
-        },
-        {
-          title: "Registro",
-          icon: "mdi-border-color",
-          route: { name: "registro-proveedores", params: {} },
+          disable: false,
         },
         {
           title: "Actualización de datos",
           icon: "mdi-sign-text",
           route: { name: "datos-proveedores", params: {} },
+          disable: false,
         },
         {
           title: "Actualización de documentos",
           icon: "mdi-file-send",
           route: { name: "documentos-proveedores", params: {} },
+          disable: false,
+        },
+        {
+          title: "Registro",
+          icon: "mdi-border-color",
+          route: { name: "registro-proveedores", params: {} },
+          disable: true,
         },
       ],
     };
@@ -109,6 +109,10 @@ export default {
       // Evitamos ruteo redundante
       if (this.$route.name !== route.name) this.$router.push(route);
     },
+  },
+  computed: {
+    //Propiedad que sabrá si hay datos registrados o no para poder mostrar el item de Registro
+    // verificaDatos() {},
   },
 };
 </script>
