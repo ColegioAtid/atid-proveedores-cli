@@ -19,7 +19,7 @@
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img src="https://randomuser.me/api/portraits/women/81.jpg" />
+            <img src="@/assets/admin/manager.png" />
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -74,17 +74,17 @@ export default {
       rutasNavigator: [
         {
           title: "Lista de proveedores",
-          icon: "mdi-view-dashboard",
+          icon: "mdi-format-list-checks",
           route: { name: "lista-proveedores", params: {} },
         },
         {
           title: "Sin validar ",
-          icon: "mdi-account-box",
+          icon: "mdi-account-alert",
           route: { name: "no-validados", params: {} },
         },
         {
           title: "Documentos expirados ",
-          icon: "mdi-gavel",
+          icon: "mdi-file-check",
           route: { name: "lista-expirados", params: {} },
         },
       ],

@@ -57,7 +57,7 @@
           color="teal"
           v-model="dataProveedorForm.numeroContacto1"
           :rules="phoneRules"
-          label="Número de contacto 1"
+          label="Número de contacto principal"
           required
         ></v-text-field>
       </v-col>
@@ -67,7 +67,7 @@
           color="teal"
           v-model="dataProveedorForm.numeroContacto2"
           :rules="phoneRules"
-          label="Número de contacto 2"
+          label="Número de contacto secundario"
           required
         ></v-text-field>
       </v-col>

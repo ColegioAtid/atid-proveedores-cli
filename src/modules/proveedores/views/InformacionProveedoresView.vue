@@ -63,8 +63,8 @@
                 Martínez
               </p>
               <p><strong>Correo de contacto: </strong> ogonzalez@atid.edu.mx</p>
-              <p><strong>Número de contacto(1): </strong> 5565085220</p>
-              <p><strong>Número de contacto(2): </strong> 5565085221</p>
+              <p><strong>Número de contacto principal: </strong> 5565085220</p>
+              <p><strong>Número de contacto secundario: </strong> 5565085221</p>
             </v-card-text>
           </div>
         </v-expand-transition>
