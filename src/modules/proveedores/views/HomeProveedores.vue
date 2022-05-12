@@ -96,7 +96,7 @@ export default {
           title: "Registro",
           icon: "mdi-border-color",
           route: { name: "registro-proveedores", params: {} },
-          disable: true,
+          disable: false,
         },
       ],
     };
