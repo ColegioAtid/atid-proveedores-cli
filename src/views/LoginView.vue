@@ -41,7 +41,10 @@
                         </h4>
                         <v-form v-model="isValidLoginProveedor">
                           <v-text-field
-                            @input="loginProveedorForm.rfc = loginProveedorForm.rfc.toUpperCase()"
+                            @input="
+                              loginProveedorForm.rfc =
+                                loginProveedorForm.rfc.toUpperCase()
+                            "
                             v-model="loginProveedorForm.rfc"
                             :disabled="loadingProcess"
                             :rules="[rules.required]"
@@ -74,6 +77,7 @@
                           outlined
                           color="red"
                           dark
+                          @click="mensajeRecuperacion = true"
                         >
                           Olvidé mi contraseña
                         </v-btn>
@@ -203,7 +207,10 @@
                           Ingresa tus credenciales
                         </h4>
 
-                        <v-form ref="registroProveedorRefForm" v-model="validRegistroForm">
+                        <v-form
+                          ref="registroProveedorRefForm"
+                          v-model="validRegistroForm"
+                        >
                           <v-select
                             @change="registroProveedorForm.rfc = ''"
                             :items="['FÍSICA', 'MORAL']"
@@ -220,7 +227,10 @@
                             :disabled="loadingProcess"
                             :rules="[rules.required, rfcRules]"
                             filled
-                            @input="registroProveedorForm.rfc = registroProveedorForm.rfc.toUpperCase()"
+                            @input="
+                              registroProveedorForm.rfc =
+                                registroProveedorForm.rfc.toUpperCase()
+                            "
                             color="teal"
                             label="RFC"
                           ></v-text-field>
@@ -298,6 +308,45 @@
           </v-col>
         </v-row>
       </v-col>
+
+      <!-- DIALOG -->
+      <v-dialog v-model="mensajeRecuperacion" persistent max-width="600px">
+        <v-card>
+          <v-card-title>
+            <span class="text-h5"
+              >Por favor, ingresa el correo que registraste y te llegará una liga para
+              restablecer tu contraseña.</span
+            >
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    :rules="[rules.required, rules.emailRules]"
+                   v-model="correoRecuperacion" label="Email*" required></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn small outlined color="purple" rounded @click="mensajeRecuperacion = false">
+              Cancelar
+            </v-btn>
+            <v-btn
+              color="teal"
+              rounded
+              outlined
+              small
+              class="white--text"
+              @click="mensajeRecuperacion = false"
+            >
+              Recuperar contraseña
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-row>
   </v-container>
 </template>
@@ -330,26 +379,28 @@ export default {
     loadingProcess: false,
 
     showPassword: false,
-    
+
     rules: {
       required: (value) => !!value || "Campo requerido.",
       emailRules: (value) =>
         /.+@.+\..+/.test(value) || "El formato no es válido.",
-      strongPassword: (value) => {        
-        const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+      strongPassword: (value) => {
+        const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
         return (
           pattern.test(value) ||
           "Min. 8 caracteres con almenos una mayúscula, un número y un caracter especial."
         );
       },
     },
+    mensajeRecuperacion: false,
+    correoRecuperacion: ""
   }),
 
   computed: {
     /**
      * Verifica que las contraseñas del registro
      * sean iguales
-     * */    
+     * */
     confirmPasswordRules: function () {
       return (value) =>
         value === this.registroProveedorForm.password ||
@@ -360,31 +411,28 @@ export default {
      * Verifica que el numero de caracteres del RFC
      * sea de acuerdo al tipo de persona seleccionada
      */
-    rfcRules: function(){
-      if(this.registroProveedorForm.tipoPersona === ""){
-        return "Seleccione el tipo de persona"
-      }else if(this.registroProveedorForm.tipoPersona === 'MORAL'){
+    rfcRules: function () {
+      if (this.registroProveedorForm.tipoPersona === "") {
+        return "Seleccione el tipo de persona";
+      } else if (this.registroProveedorForm.tipoPersona === "MORAL") {
         return (value) =>
-        value.length > 11 && value.length < 13 ||
-        "Deben ser 12 caráteres.";
-      }else{
+          (value.length > 11 && value.length < 13) || "Deben ser 12 caráteres.";
+      } else {
         return (value) =>
-        value.length > 12 && value.length < 14  ||
-        "Deben ser 13 caráteres.";
+          (value.length > 12 && value.length < 14) || "Deben ser 13 caráteres.";
       }
     },
-    
   },
   methods: {
     loginAdmin: function () {
-      console.log(this.loginAdminForm);      
+      console.log(this.loginAdminForm);
     },
     loginProveedor: function () {
       console.log(this.loginProveedorForm);
     },
     registroNuevoProveedor: function () {
       console.log(this.registroProveedorForm);
-    },    
+    },
   },
 };
 </script>
