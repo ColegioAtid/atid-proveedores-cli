@@ -22,10 +22,10 @@
         <v-card-actions>
           <v-row class="text-center">
             <v-col cols="12" md="4" lg="4" sm="12">
-              <v-btn             
+              <v-btn
                 outlined
                 rounded
-                text
+                small
                 color="purple"
                 @click="modalCorreo = true"
               >
@@ -40,17 +40,23 @@
               lg="4"
               sm="12"
             >
-              <v-btn outlined rounded text color="teal">
+              <v-btn
+                outlined
+                rounded
+                small
+                color="teal"
+                @click="dialogValidacion = true"
+              >
                 Validar información
               </v-btn>
             </v-col>
             <v-col v-else cols="12" md="4" lg="4" sm="12">
-              <v-btn outlined rounded text color="red">
+              <v-btn @click="dialogValidacion = true" outlined rounded small color="red">
                 Invalidar información
               </v-btn>
             </v-col>
             <v-col v-if="estatusValidacionProv" cols="12" md="4" lg="4" sm="12">
-              <v-chip class="ma-2" color="teal" outlined>
+              <v-chip small class="ma-2" color="teal" outlined>
                 <v-icon left> mdi-account-check </v-icon>
                 Estatus: Validado
               </v-chip>
@@ -83,6 +89,33 @@
         </v-card-text>
       </v-card>
     </v-sheet>
+    <!-- Modal invalidar información -->
+    <v-row justify="center">
+      <v-dialog v-model="dialogValidacion" persistent max-width="290">       
+        <v-card>
+          <v-card-title class="text-h5">
+            Estatus del proveedor
+          </v-card-title>
+          <v-card-text
+            >¿Estás segur@ que deseas actualizar el estatus de este proveedor?</v-card-text
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="purple"
+              text
+              @click="dialogValidacion = false"
+            >
+              Cancelar
+            </v-btn>
+            <v-btn color="teal" text @click="validarInformacion()">
+              Sí
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+
     <!-- Modal de envio de correo -->
     <div class="text-center">
       <v-dialog persistent scrollable v-model="modalCorreo" width="500">
@@ -130,6 +163,7 @@
 export default {
   data() {
     return {
+      dialogValidacion: false,
       estatusValidacionProv: true,
       modalCorreo: false,
       customMailMessage: {
@@ -138,10 +172,15 @@ export default {
       },
     };
   },
+  methods: {
+    validarInformacion: function () {
+      this.dialogValidacion = false
+      console.log("Informacion validada")
+    },
+  },
   computed: {},
-  created(){
-    console.log(this.$route.params.dataProveedor)
-   
-  }
+  created() {
+    console.log(this.$route.params.dataProveedor);
+  },
 };
 </script>
