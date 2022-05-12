@@ -329,11 +329,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red darken-1" text @click="mensajeRecuperacion = false">
+            <v-btn color="purple" text @click="mensajeRecuperacion = false">
               Cancelar
             </v-btn>
             <v-btn
-              color="green darken-1"
+              color="teal"
               class="white--text"
               @click="mensajeRecuperacion = false"
             >
