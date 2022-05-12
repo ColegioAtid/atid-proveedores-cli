@@ -1,6 +1,12 @@
 export default () => ({
-    successError:true,
-    activeSuccessAlert:false,
-    activeAlert:false,
-    messageAlert:''
+  // Error messages
+  successError: true,
+  activeSuccessAlert: false,
+  activeAlert: false,
+  messageAlert: "",
+  // Overlay varibales
+  overlayState: {
+    text: "",
+    visible: false,
+  },
 });

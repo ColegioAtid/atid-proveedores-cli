@@ -14,7 +14,7 @@ class ProveedoresService extends Service {
     );
     formData.append("pdf", fileCopy);
     return createFileAPIConnection.post(
-      "/media/upload-proveedores-filee",
+      "/media/upload-proveedores-file",
       formData,
       {
         headers: {

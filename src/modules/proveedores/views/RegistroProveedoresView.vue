@@ -77,22 +77,37 @@ export default {
   methods: {
     /* VUEX */
     ...mapMutations("proveedores", ["setDataForm", "setDocumentos"]),
-    ...mapMutations("shared", ["setShowErrorOrSuccessAlert"]),
+    ...mapMutations("shared", [
+      "setShowErrorOrSuccessAlert",
+      "setOverlayState",
+    ]),
     ...mapActions("proveedores", ["sendFilesproveedor", "sendDataProveedor"]),
     /* MÉTODOS DE COMPONENTE */
     async sendForm() {
+      this.setOverlayState({
+        text: "Guardando información, espere por favor",
+        visible: true,
+      });
+
       this.setDataForm(this.dataFormProveedores);
       this.setDocumentos({ documentos: this.files });
+
       try {
         await this.sendFilesproveedor();
         await this.sendDataProveedor();
+        this.setShowErrorOrSuccessAlert({
+          message: "¡Información guardada exitosamente!",
+          success: true,
+        });
+        this.setOverlayState({ text: "", visible: false });
+        this.$router.push('/proveedores')
       } catch (error) {
         // Error
-        console.log(error);
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
           errorOnPetition: true,
         });
+        this.setOverlayState({ text: "", visible: false });
       }
     },
     recibeDataProv(data) {
