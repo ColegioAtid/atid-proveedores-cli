@@ -314,8 +314,8 @@
         <v-card>
           <v-card-title>
             <span class="text-h5"
-              >Por favor, ingresa el correo que registraste y te llegará una liga para
-              restablecer tu contraseña.</span
+              >Por favor, ingresa el correo que registraste y te llegará una
+              liga para restablecer tu contraseña.</span
             >
           </v-card-title>
           <v-card-text>
@@ -324,14 +324,23 @@
                 <v-col cols="12">
                   <v-text-field
                     :rules="[rules.required, rules.emailRules]"
-                   v-model="correoRecuperacion" label="Email*" required></v-text-field>
+                    v-model="correoRecuperacion"
+                    label="Email*"
+                    required
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn small outlined color="purple" rounded @click="mensajeRecuperacion = false">
+            <v-btn
+              small
+              outlined
+              color="purple"
+              rounded
+              @click="mensajeRecuperacion = false"
+            >
               Cancelar
             </v-btn>
             <v-btn
@@ -393,7 +402,7 @@ export default {
       },
     },
     mensajeRecuperacion: false,
-    correoRecuperacion: ""
+    correoRecuperacion: "",
   }),
 
   computed: {
