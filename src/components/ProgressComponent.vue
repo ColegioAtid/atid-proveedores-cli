@@ -1,11 +1,12 @@
 <template>
     <div class="text-center mt-6">
         <v-progress-circular
-        :size="70"
+        :size="80"
+        :width="5"
         color="purple"
         indeterminate
       ></v-progress-circular>
-      <p>Cargando datos...</p>
+      <p class="mt-5">Cargando datos...</p>
     </div>
 </template>
 <script>
