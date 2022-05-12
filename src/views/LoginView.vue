@@ -24,7 +24,7 @@
         <v-row align="center" justify="center">
           <v-col cols="12" sm="12" md="">
             <v-card class="elevation-12" shaped>
-              <v-window v-model="step">
+              <v-window v-model="stepWindow">
                 <v-window-item :value="1">
                   <v-row>
                     <v-col cols="12">
@@ -41,7 +41,7 @@
                         </h4>
                         <v-form ref="loginform">
                           <v-text-field
-                            v-model="username"
+                            v-model="loginProveedorForm.rfc"
                             :disabled="isUpdating"
                             :rules="[rules.required]"
                             filled
@@ -52,27 +52,41 @@
                           <v-text-field
                             filled
                             :disabled="isUpdating"
-                            v-model="password"
-                            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                            v-model="loginProveedorForm.password"
+                            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                             :rules="[rules.required]"
-                            :type="show1 ? 'text' : 'password'"
+                            :type="showPassword ? 'text' : 'password'"
                             name="input-10-1"
                             color="blue-grey lighten-2"
                             label="Password"
-                            @click:append="show1 = !show1"
+                            @click:append="showPassword = !showPassword"
                           ></v-text-field>
                         </v-form>
                       </v-card-text>
                       <div class="text-center">
-                        <a>Olvidé mi contraseña</a>
+                        <v-btn class="ma-1" rounded x-small outlined color="red" dark>
+                          Olvidé mi contraseña
+                        </v-btn>
+                        <v-btn                                                  
+                          outlined
+                          rounded
+                          x-small       
+                          color="teal"
+                          dark                   
+                          @click="stepWindow = 3"
+                          >Regístrate</v-btn
+                        >
                       </div>
                       <div class="text-center mt-3 mb-5">
                         <v-btn
-                          :disabled="!isValidForm || autoUpdate"
+                          x-small
+                          outlined
+                          rounded
+                          :disabled="!isValidFormProvLogin || autoUpdate"
                           :loading="isUpdating"
-                          color="teal darken-3"
+                          color="teal"
                           depressed
-                          @click="login()"
+                          @click="loginProveedor()"
                         >
                           <v-icon left> mdi-send </v-icon>
                           Login
@@ -84,17 +98,11 @@
                         <v-btn
                           class="ma-3 purple--text"
                           rounded
+                          x-small
                           outlined
-                          @click="step++"
-                          >¿Eres administrador?</v-btn
-                        >
-                        <v-btn
-                          class="ma-3 purple--text"
-                          rounded
-                          outlined
-                          @click="step = 3"
-                          >Regístrate</v-btn
-                        >
+                          @click="stepWindow = 2"
+                          >Soy administrador?</v-btn
+                        >                        
                       </div>
                     </v-col>
                   </v-row>
@@ -134,13 +142,15 @@
                             filled
                             :disabled="isUpdating"
                             v-model="passwordAdmin"
-                            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                            :append-icon="
+                              showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                            "
                             :rules="[rules.required]"
-                            :type="show1 ? 'text' : 'password'"
+                            :type="showPassword ? 'text' : 'password'"
                             name="input-10-1"
                             color="blue-grey lighten-2"
                             label="Password"
-                            @click:append="show1 = !show1"
+                            @click:append="showPassword = !showPassword"
                           ></v-text-field>
                         </v-form>
                       </v-card-text>
@@ -162,7 +172,7 @@
                             class="ma-3 purple--text"
                             rounded
                             outlined
-                            @click="step--"
+                            @click="stepWindow--"
                             >¿Eres proveedor?</v-btn
                           >
                         </div>
@@ -205,13 +215,15 @@
                             filled
                             :disabled="isUpdating"
                             v-model="passwordAdmin"
-                            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                            :append-icon="
+                              showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                            "
                             :rules="[rules.required]"
-                            :type="show1 ? 'text' : 'password'"
+                            :type="showPassword ? 'text' : 'password'"
                             name="input-10-1"
                             color="blue-grey lighten-2"
                             label="Password"
-                            @click:append="show1 = !show1"
+                            @click:append="showPassword = !showPassword"
                           ></v-text-field>
                         </v-form>
                       </v-card-text>
@@ -233,7 +245,7 @@
                             class="ma-3 purple--text"
                             rounded
                             outlined
-                            @click="step = 1"
+                            @click="stepWindow = 1"
                             >¿Ya tienes cuenta?</v-btn
                           >
                         </div>
@@ -252,35 +264,62 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "LoginView",
 
   data: () => ({
     currentYear: new Date().getFullYear(),
-    registroProveedor:{
-      rfc:'',
-      correo:'',
-      password:'',
-      tipoPersona:'',
+    isValidLoginProveedor:false,
+    isValidRegistroProveedor:false,
+    isValidLoginAdmin:false,
+    registroProveedorForm: {
+      rfc: "",
+      correo: "",
+      password: "",
+      passwordConfirm:"",
+      tipoPersona: "",
     },
-    loginProveedor:{
-      password:'',
-      rfc:''
+    loginProveedorForm: {
+      password: "",
+      rfc: "",
     },
-    loginAdmin:{
-      password:'',
-      usuario:''
+    loginAdminForm: {
+      password: "",
+      usuario: "",
     },
-    step: 1,
+    stepWindow: 1,
     isUpdating: false,
-    username: "",
-    password: "",
-    usernameAdmin: "",
-    passwordAdmin: "",
-    show1: false,
+
+    showPassword: false,
     autoUpdate: false,
     rules: {
       required: (value) => !!value || "Campo requerido.",
     },
   }),
+
+  computed:{
+    isValidFormProvLogin: function(){
+      return (
+        this.loginProveedor.password !== "" &&
+        this.loginProveedor.rfc !== ""
+      )
+    },
+    isValidFormAdminLogin: function(){
+      return (
+        this.loginAdmin.password !== "" &&
+        this.loginAdmin.usuario !== ""
+      )
+    },
+  },
+  methods:{
+    loginAdmin: function(){
+
+    },
+    loginProveedor: function(){
+
+    },
+    registroNuevoProveedor: function(){
+
+    }
+  }
 };
 </script>
