@@ -24,11 +24,10 @@ class ProveedoresService extends Service {
     );
   }
 
-  sendDataProveedores(data){
-   console.log(data);
-   return;
+  sendDataProveedores(data) {
+    console.log(data);
+    return;
   }
 }
-
 
 export default new ProveedoresService();
