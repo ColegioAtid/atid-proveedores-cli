@@ -93,7 +93,7 @@ export default {
       this.setDocumentos({ documentos: this.files });
 
       try {
-        await this.sendFilesproveedor();
+        // await this.sendFilesproveedor();
         await this.sendDataProveedor();
         this.setShowErrorOrSuccessAlert({
           message: "¡Información guardada exitosamente!",

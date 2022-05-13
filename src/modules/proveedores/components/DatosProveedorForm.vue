@@ -5,7 +5,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="dataProveedorForm.nombreEmpresa"
+          v-model="dataProveedorForm.nombre_empresa"
           :rules="generalRules"
           label="Nombre de la empresa"
           required
@@ -15,7 +15,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="dataProveedorForm.domicilioFiscal"
+          v-model="dataProveedorForm.domicilio_fiscal"
           :rules="generalRules"
           label="Domicilio fiscal"
           required
@@ -25,7 +25,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="dataProveedorForm.razonSocial"
+          v-model="dataProveedorForm.razon_social"
           :rules="generalRules"
           label="Razón social"
           required
@@ -35,7 +35,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="dataProveedorForm.nombreContacto"
+          v-model="dataProveedorForm.nombre_proveedor"
           :rules="generalRules"
           label="Nombre de contacto"
           required
@@ -45,7 +45,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="dataProveedorForm.apPaContacto"
+          v-model="dataProveedorForm.appa_proveedor"
           :rules="generalRules"
           label="Apellido paterno de contacto"
           required
@@ -55,7 +55,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="dataProveedorForm.apMaContacto"
+          v-model="dataProveedorForm.apma_proveedor"
           :rules="generalRules"
           label="Apellido materno de contacto"
           required
@@ -65,7 +65,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="dataProveedorForm.numeroContacto1"
+          v-model="dataProveedorForm.numero_prim"
           :rules="phoneRules"
           label="Número de contacto principal"
           required
@@ -75,7 +75,7 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="dataProveedorForm.numeroContacto2"
+          v-model="dataProveedorForm.numero_sec"
           :rules="phoneRules"
           label="Número de contacto secundario"
           required
@@ -92,30 +92,29 @@ export default {
     return {
       valid: true,
       dataProveedorForm: {
-        nombreEmpresa: "dasdasda",
-        domicilioFiscal: "dasdadadas",
-        razonSocial: "dasdadas",
-        nombreContacto: "sadsadasda",
-        apPaContacto: "sadsadasda",
-        apMaContacto: "sadsadasda",
-        numeroContacto1: "1234567890",
-        numeroContacto2: "1234567890",
+        nombre_empresa: "",
+        domicilio_fiscal: "",
+        razon_social: "",
+        nombre_proveedor: "",
+        appa_proveedor: "",
+        apma_proveedor: "",
+        numero_prim: "",
+        numero_sec: "",
+        rfc:""
       },
       generalRules: [(v) => !!v || "Campo requerido"],
       phoneRules: [
         (v) => !!v || "Campo requerido",
         (v) => /^[1-9]\d*$|^$/.test(v) || "El valor no es válido",
-        (v) => !v || v.length >= 10 || "Debes ingresar 10 dígitos",
-      ],
-      emailRules: [
-        (v) => !!v || "Campo requerido",
-        (v) => /.+@.+\..+/.test(v) || "El formato no es válido",
-      ],
+        (v) => !v || v.length >= 9 && v.length <= 10 || "Debes ingresar 10 dígitos",
+      ]
     };
   },
   watch: {
     dataProveedorForm: {
       handler: function () {
+        let rfc = "GOM990730NI5"
+        this.dataProveedorForm.rfc = rfc;
         let valid = this.$refs.formDataProv.validate();
         return this.$emit("validForm", {
           isValid: valid,
