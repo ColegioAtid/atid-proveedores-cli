@@ -45,9 +45,19 @@
         <v-text-field
           outlined
           color="teal"
-          v-model="dataProveedorForm.correoContacto"
-          :rules="emailRules"
-          label="Correo para contacto"
+          v-model="dataProveedorForm.apPaContacto"
+          :rules="generalRules"
+          label="Apellido paterno de contacto"
+          required
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" lg="6" md="6" sm="12">
+        <v-text-field
+          outlined
+          color="teal"
+          v-model="dataProveedorForm.apMaContacto"
+          :rules="generalRules"
+          label="Apellido materno de contacto"
           required
         ></v-text-field>
       </v-col>
@@ -86,7 +96,8 @@ export default {
         domicilioFiscal: "dasdadadas",
         razonSocial: "dasdadas",
         nombreContacto: "sadsadasda",
-        correoContacto: "dasdaa@asdads.com",
+        apPaContacto: "sadsadasda",
+        apMaContacto: "sadsadasda",
         numeroContacto1: "1234567890",
         numeroContacto2: "1234567890",
       },
