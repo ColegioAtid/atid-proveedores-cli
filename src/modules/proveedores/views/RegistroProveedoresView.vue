@@ -10,7 +10,7 @@
           sistema:
         </p>
 
-        <datos-proveedor-form ref="dataProv" @validForm="recibeDataProv" />
+        <datos-proveedor-form @validForm="recibeDataProv" />
         <documentos-proveedor-component @validDocs="recibeDocs" />
         <v-card-actions>
           <v-btn

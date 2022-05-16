@@ -39,11 +39,11 @@
           @click="goTo(item.route)"
           :disabled="item.disable"
         >
-          <v-list-item-icon v-if="!item.disable">
+          <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-content v-if="!item.disable">
+          <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -69,7 +69,8 @@
 </template>
 
 <script>
-import AuthService from '@/services/AuthService';
+import AuthService from "@/services/AuthService";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -79,45 +80,68 @@ export default {
           title: "Datos generales",
           icon: "mdi-home-circle",
           route: { name: "datos-generales-proveedores", params: {} },
-          disable: false,
         },
         {
           title: "Actualización de datos",
           icon: "mdi-sign-text",
           route: { name: "datos-proveedores", params: {} },
-          disable: false,
         },
         {
           title: "Actualización de documentos",
           icon: "mdi-file-send",
           route: { name: "documentos-proveedores", params: {} },
-          disable: false,
         },
         {
           title: "Registro",
           icon: "mdi-border-color",
           route: { name: "registro-proveedores", params: {} },
-          disable: false,
         },
       ],
+      datosProveedor: {},
     };
   },
   methods: {
+    ...mapActions("proveedores", ["getDataproveedor"]),
     /**
      * LLeva al usuario a otra pantalla
      */
-    goTo: function(route) {
+    goTo: function (route) {
       // Evitamos ruteo redundante
       if (this.$route.name !== route.name) this.$router.push(route);
     },
 
-    logout:function(){
-      AuthService.logout()
-    }
+    logout: function () {
+      AuthService.logout();
+    },
+
+    /** FUNCIÓN QUE SIRVE PARA OBTENER LOS DATOS REGISTRADOS
+     * DE LOS PROVEEDORES
+     */
+    async getDataProveedor() {
+      try {
+        let { proveedorData } = await this.getDataproveedor();
+        this.datosProveedor = proveedorData;
+        if (!this.datosProveedor.datosGenerales) {
+          this.rutasNavigator = this.rutasNavigator.filter((ruta) => {
+            return (
+              ruta.title != "Actualización de datos" &&
+              ruta.title != "Actualización de documentos"
+            );
+          });
+        } else {
+          this.rutasNavigator = this.rutasNavigator.filter((ruta) => {
+            return (
+              ruta.title != "Registro"
+            );
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
-  computed: {
-    //Propiedad que sabrá si hay datos registrados o no para poder mostrar el item de Registro
-    // verificaDatos() {},
+  created() {
+    this.getDataProveedor();
   },
 };
 </script>

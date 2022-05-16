@@ -42,7 +42,10 @@
           <div v-show="show">
             <v-divider></v-divider>
 
-            <v-card-text class="text-body-1 text-center" v-if="false">
+            <v-card-text
+              class="text-body-1 text-center"
+              v-if="!datosProveedor || !datosProveedor.datosGenerales"
+            >
               <p>
                 <strong
                   >Aún no has registrado datos fiscales de tu empresa</strong
@@ -51,20 +54,40 @@
             </v-card-text>
 
             <v-card-text class="text-body-1" v-else>
-              <p><strong>Nombre de la empresa: </strong> Colegio Atid</p>
-              <p><strong>RFC: </strong> CGOMO990730NI5</p>
               <p>
-                <strong>Dirección fiscal: </strong> Constituyente C. Echanove,
-                Huizachito, Cuajimalpa de Morelos, 05249 Ciudad de México, CDMX
+                <strong>Nombre de la empresa: </strong>
+                {{ datosProveedor.datosGenerales.nombre_empresa }}
               </p>
-              <p><strong>Razón social: </strong> Colegio Atid ©</p>
+              <p><strong>RFC: </strong> {{ datosProveedor.rfc }}</p>
               <p>
-                <strong>Nombre de contacto: </strong> Osvaldo Jair González
-                Martínez
+                <strong>Persona: </strong> {{ datosProveedor.tipo_persona }}
               </p>
-              <p><strong>Correo de contacto: </strong> ogonzalez@atid.edu.mx</p>
-              <p><strong>Número de contacto principal: </strong> 5565085220</p>
-              <p><strong>Número de contacto secundario: </strong> 5565085221</p>
+              <p>
+                <strong>Dirección fiscal: </strong>
+                {{ datosProveedor.datosGenerales.domicilio_fiscal }}
+              </p>
+              <p>
+                <strong>Razón social: </strong>
+                {{ datosProveedor.datosGenerales.razon_social }}
+              </p>
+              <p>
+                <strong>Nombre de contacto: </strong>
+                {{ datosProveedor.datosGenerales.nombre_proveedor }}
+                {{ datosProveedor.datosGenerales.appa_proveedor }}
+                {{ datosProveedor.datosGenerales.apma_proveedor }}
+              </p>
+              <p>
+                <strong>Correo de contacto: </strong>
+                {{ datosProveedor.correo }}
+              </p>
+              <p>
+                <strong>Número de contacto principal: </strong>
+                {{ datosProveedor.datosGenerales.numero_prim }}
+              </p>
+              <p>
+                <strong>Número de contacto secundario: </strong>
+                {{ datosProveedor.datosGenerales.numero_sec }}
+              </p>
             </v-card-text>
           </div>
         </v-expand-transition>
@@ -74,19 +97,47 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { buildErrorMessage } from "@/helpers/utils";
+import { mapActions, mapMutations } from "vuex";
 export default {
   data() {
     return {
       show: false,
+      datosProveedor: {},
     };
   },
   methods: {
-    ...mapActions("proveedores",["getDataproveedor"]),
+    /*  VUEX  */
+    ...mapMutations("shared", [
+      "setShowErrorOrSuccessAlert",
+      "setOverlayState",
+    ]),
+    ...mapActions("proveedores", ["getDataproveedor"]),
+
+    /** FUNCIÓN QUE SIRVE PARA OBTENER LOS DATOS REGISTRADOS
+     * DE LOS PROVEEDORES
+     */
     async getDataProveedor() {
-      let rfcProveedor = "";
-      await this.getDataproveedor(rfcProveedor);
+      try {
+        this.setOverlayState({
+          text: "Obteniendo información, espere por favor",
+          visible: true,
+        });
+        let { proveedorData } = await this.getDataproveedor();
+        this.datosProveedor = proveedorData;
+        this.setOverlayState({ text: "", visible: false });
+
+      } catch (error) {
+        this.setShowErrorOrSuccessAlert({
+          message: buildErrorMessage(error),
+          errorOnPetition: true,
+        });
+        this.setOverlayState({ text: "", visible: false });
+      }
     },
+  },
+  created() {
+    this.getDataProveedor();
   },
 };
 </script>
