@@ -11,3 +11,7 @@ export const sendFilesproveedor = async ({state}) => {
 export const sendDataProveedor = async ({state}) => {
   await ProveedoresService.sendDataProveedores(state.datosProveedor);
 };
+
+export const getDataproveedor = async (rfcProveedor) => {
+  await ProveedoresService.getDataProveedor(rfcProveedor);
+}
