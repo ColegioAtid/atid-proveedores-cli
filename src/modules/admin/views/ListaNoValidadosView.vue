@@ -1,7 +1,7 @@
 <template>
     <v-container>
     <!-- Progress data -->
-    <progress-component v-if="false" />
+    <progress-component v-if="loading" />
     <!-- End progress data -->
     <v-card v-else :elevation="10">
       <v-card-title> Proveedores con documentación no validada </v-card-title>
@@ -25,7 +25,8 @@ export default {
     },
     data(){
         return{
-            listaNoValidados:[]
+          loading:false,
+          listaNoValidados:[]
         }
     },
     computed:{
@@ -37,8 +38,10 @@ export default {
       /* Vuex */
       ...mapActions('admin',['getListaNoValidosAction']),
       /* Local */
-      init(){
-        this.getListaNoValidosAction()
+      init: async function(){
+        this.loading = true
+        await this.getListaNoValidosAction()
+        this.loading = false
         this.listaNoValidados = this.getListaProvNoValidosState()
       }
     },

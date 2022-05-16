@@ -12,7 +12,7 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="data"
+      :items="dataTable"
       item-key="name"
       class="elevation-1"
       :search="search"
@@ -82,26 +82,34 @@
 </template>
 
 <script>
+import { mapActions, mapMutations } from 'vuex';
 export default {
   name: "DataTableComponent",
   props: ["data"],
   data() {
     return {
       search: "",
-      idProveedorToDelete: null,
+      dataTable:[],
+      rfcProveedorToDelete: null,
       dialogEliminar: false,
     };
   },
   methods: {
-    eliminarProveedor: function () {
-      this.dialogEliminar = false;
-      console.log("Proveedor eliminado!!");
+    /* Vuex */
+    ...mapMutations("shared", ["setOverlayState"]),
+    ...mapActions("admin",["eliminaProveedorAction"]),
+
+    /* Local */
+    eliminarProveedor: async function () {
+      this.dialogEliminar = false;      
+      const succes = await this.eliminaProveedorAction(this.rfcProveedorToDelete) 
+      if(succes)
+      this.dataTable = this.dataTable.filter( e => e.rfc != this.rfcProveedorToDelete)
     },
 
     setProveedorToDelete: function (idProveedor) {
-      console.log(idProveedor);
       this.dialogEliminar = true;
-      this.idProveedorToDelete = idProveedor;
+      this.rfcProveedorToDelete = idProveedor;
     },
   },
   computed: {
@@ -117,38 +125,20 @@ export default {
           text: "Nombre de la empresa",
           align: "center",
           sortable: false,
-          value: "nombreEmpresa",
-        },
-        {
-          text: "Información validada",
-          align: "center",
-          sortable: false,
-          value: "informacionValidada",
-        },
-        {
-          text: "Documentos vigentes",
-          align: "center",
-          sortable: false,
-          value: "documentosVigentes",
-        },
+          value: "datosGenerales.nombre_empresa",
+        },             
         {
           text: "Razón social",
           align: "center",
           sortable: false,
-          value: "razonSocail",
+          value: "datosGenerales.razon_social",
         },
         {
           text: "Tipo persona",
           align: "center",
           sortable: false,
-          value: "tipoPersona",
-        },
-        {
-          text: "Nombre de contacto",
-          align: "center",
-          sortable: false,
-          value: "nombreContacto",
-        },
+          value: "tipo_persona",
+        },        
         {
           text: "Ver detalle",
           value: "detalle",
@@ -164,5 +154,9 @@ export default {
       ];
     },
   },
+  mounted(){
+    this.dataTable = this.data
+  }
+
 };
 </script>

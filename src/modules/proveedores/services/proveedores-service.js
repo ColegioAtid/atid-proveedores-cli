@@ -1,5 +1,9 @@
 import { Service } from "@/services/serivce";
-import { createFileAPIConnection } from "@/services/http-common";
+import {
+  createFileAPIConnection,
+  createProveedoresAPIConnection,
+} from "@/services/http-common";
+import { getAuthToken } from "@/helpers/utils";
 
 class ProveedoresService extends Service {
   constructor() {
@@ -24,9 +28,39 @@ class ProveedoresService extends Service {
     );
   }
 
+  getDataProveedor(rfcProveedor) {
+    createProveedoresAPIConnection.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${getAuthToken()}`;
+    console.log("HOLA GET DATA, rfc ", rfcProveedor);
+    return createProveedoresAPIConnection.get(
+      `/get-data-proveedor?rfc=${rfcProveedor}`
+    );
+  }
+
   sendDataProveedores(data) {
+    createProveedoresAPIConnection.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${getAuthToken()}`;
     console.log(data);
+    // return createProveedoresAPIConnection.post('/registra-datos-proveedor', data);
     return;
+  }
+
+  updateCorreoProv(dataToUpdate) {
+    createProveedoresAPIConnection.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${getAuthToken()}`;
+    console.log(dataToUpdate);
+    // return createProveedoresAPIConnection.put('/update-correo', dataToUpdate);
+  }
+
+  updateDataProveedor(dataToUpdate) {
+    createProveedoresAPIConnection.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${getAuthToken()}`;
+    console.log(dataToUpdate);
+    // return createProveedoresAPIConnection.put('/update-data', dataToUpdate);
   }
 }
 

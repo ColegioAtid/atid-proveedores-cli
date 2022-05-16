@@ -74,11 +74,19 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
       show: false,
     };
+  },
+  methods: {
+    ...mapActions("proveedores",["getDataproveedor"]),
+    async getDataProveedor() {
+      let rfcProveedor = "";
+      await this.getDataproveedor(rfcProveedor);
+    },
   },
 };
 </script>

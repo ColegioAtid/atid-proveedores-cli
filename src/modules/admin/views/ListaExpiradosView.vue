@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- Progress data -->
-    <progress-component v-if="false" />
+    <progress-component v-if="loading" />
     <!-- End progress data -->
     <v-card v-else :elevation="10">
       <v-card-title>
@@ -14,6 +14,7 @@
           depressed
           small
           color="teal"
+          :disabled="listaExpirados.length === 0"
           class="white--text"
           @click="dialog = true"
         >
@@ -39,25 +40,19 @@
           </v-card-text>
           <v-card-text>
             ¿Correo personalizado?
-            <v-radio-group v-model="customMail" row>
+            <v-radio-group v-model="customMailMessage.isCustom" row>
               <v-radio color="purple" label="No" value="No"></v-radio>
               <v-radio color="purple" label="Sí" value="Sí"></v-radio>
             </v-radio-group>
           </v-card-text>
-          <v-card-text v-if="customMail === 'No'">
+          <v-card-text v-if="customMailMessage.isCustom === 'No'">
             <b>Mesaje a mandar:</b> <br />
             "Hola sus documentos A, B, C han expirado, se les pide de favor
             entrar a la plataforma para actualizarlos, gracias."
           </v-card-text>
-          <v-card-text v-else>
-            <v-text-field
-              v-model="customMailMessage.ausnto"
-              label="Asunto"
-              placeholder="Asunto"
-              outlined
-            ></v-text-field>
+          <v-card-text v-else>            
             <v-textarea
-              v-model="customMailMessage.body"
+              v-model="customMailMessage.bodyMessage"
               outlined
               name="input-7-4"
               label="Mensaje a mandar"
@@ -67,7 +62,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="teal" text @click="dialog = false">
+            <v-btn color="teal" text @click="enviaCorreo()">
               Mandar aviso
             </v-btn>
             <v-btn color="purple" text @click="dialog = false">
@@ -92,11 +87,11 @@ export default {
   data() {
     return {
       dialog: false,
+      loading:false,
       customMailMessage: {
-        ausnto: "",
-        body: "",
+        bodyMessage: "",
+        isCustom:"No",
       },
-      customMail: "No",
       listaExpirados: [],
     };
   },
@@ -107,12 +102,18 @@ export default {
   },
   methods: {
     /* Vuex */
-    ...mapActions("admin", ["getListaExpiradosAction"]),
+    ...mapActions("admin", ["getListaExpiradosAction","correoAvisoExpiracionAction"]),
     /* Local */
-    init() {
-      this.getListaExpiradosAction();
-      this.listaExpirados = this.getListaProvExpiradosState();
+    init: async function () {
+      this.loading = true
+      await this.getListaExpiradosAction()
+      this.loading = false
+      this.listaExpirados = this.getListaProvExpiradosState()
     },
+    enviaCorreo: async function(){
+      this.dialog = false
+      await this.correoAvisoExpiracionAction(this.customMailMessage)
+    }
   },
   created() {
     this.init();
