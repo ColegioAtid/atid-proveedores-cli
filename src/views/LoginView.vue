@@ -444,7 +444,19 @@ export default {
 
   /* Local */
     loginAdmin: async function () {
-      
+      try {
+        this.setOverlayState({ text: "Autenticando usuario...", visible: true });
+        const response =  await AuthService.loginAdmin(this.loginAdminForm)
+        localStorage.setItem('proveedores-tkn', response.data.jwt)
+        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
+        this.$router.push('/admin')
+      } catch (error) {
+        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
+        this.setShowErrorOrSuccessAlert({
+          message: buildErrorMessage(error),
+          errorOnPetition: true,
+        });        
+      }
     },
     loginProveedor: async function () {
       try {
@@ -461,8 +473,19 @@ export default {
         });        
       }
     },
-    registroNuevoProveedor: function () {
-      console.log(this.registroProveedorForm);
+    registroNuevoProveedor: async function () {
+      try {
+        this.setOverlayState({ text: "Registrando usuario...", visible: true });
+        await AuthService.registraProveedor(this.registroProveedorForm)
+        this.setOverlayState({ text: "", visible: false });
+        this.stepWindow = 1
+      } catch (error) {
+        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
+        this.setShowErrorOrSuccessAlert({
+          message: buildErrorMessage(error),
+          errorOnPetition: true,
+        });        
+      }      
     },
   },
 };

@@ -1,6 +1,6 @@
 import { createProveedoresAPIConnection } from "./http-common";
 import { Service } from "./serivce";
-
+import Router from '../router'
 
 class AuthService extends Service{
     constructor(){
@@ -39,10 +39,12 @@ class AuthService extends Service{
         return createProveedoresAPIConnection.post('/authorize/nuevo-proveedor',datosProveedor)
     }
 
-
+    /**
+     * Cierra la sesión de usuario, borradno el token del storage
+     */
     logout(){
         localStorage.removeItem('proveedores-tkn')
-        
+        Router.go('/')
     }
 }
 
