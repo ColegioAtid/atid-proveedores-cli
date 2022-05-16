@@ -6,14 +6,6 @@ import shared from '@/modules/shared/store/index'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
- /*  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  }, */
   modules: {
     proveedores,
     admin,
