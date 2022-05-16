@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- Progress data -->
-    <progress-component v-if="true" />
+    <progress-component v-if="false" />
     <!-- End progress data -->
     <v-card v-else :elevation="10">
       <v-card-title>

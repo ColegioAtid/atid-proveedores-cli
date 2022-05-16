@@ -22,14 +22,14 @@
  });
  
  /**
-  * Crea una conexión con la API becas-atid-api
+  * Crea una conexión con la API proveedores-atid-api
   */
  export const createBecasAPIConnection = axios.create({
-     /* baseURL: process.env.VUE_APP_API_BECAS_BASE,
+     baseURL: process.env.VUE_APP_API_PROVEEDORES,
      headers: {      
        Accept: "applicacion/json",
        "Content-type": "application/json",      
-     } */
+     }
  });
  
  
