@@ -32,9 +32,8 @@ class ProveedoresService extends Service {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    console.log("HOLA GET DATA, rfc ", rfcProveedor);
     return createProveedoresAPIConnection.get(
-      `/get-data-proveedor?rfc=${rfcProveedor}`
+      `/proveedores/get-data-proveedor?rfc=${rfcProveedor}`
     );
   }
 
@@ -42,17 +41,14 @@ class ProveedoresService extends Service {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    console.log(data);
-    // return createProveedoresAPIConnection.post('/registra-datos-proveedor', data);
-    return;
+    return createProveedoresAPIConnection.post('/proveedores/registra-datos-proveedor', data);
   }
 
   updateCorreoProv(dataToUpdate) {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    console.log(dataToUpdate);
-    // return createProveedoresAPIConnection.put('/update-correo', dataToUpdate);
+    return createProveedoresAPIConnection.put('/proveedores/update-correo', dataToUpdate);
   }
 
   updateDataProveedor(dataToUpdate) {
@@ -60,7 +56,7 @@ class ProveedoresService extends Service {
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
     console.log(dataToUpdate);
-    // return createProveedoresAPIConnection.put('/update-data', dataToUpdate);
+    // return createProveedoresAPIConnection.put('/proveedores/update-data', dataToUpdate);
   }
 }
 
