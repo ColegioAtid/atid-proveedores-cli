@@ -7,7 +7,7 @@ import decode from "jwt-decode";
  */
 
 export const getAuthToken = () => {
-  const token = localStorage.getItem("jwt-proveedores") || null;
+  const token = localStorage.getItem("proveedores-tkn") || null;
   return token;
 };
 

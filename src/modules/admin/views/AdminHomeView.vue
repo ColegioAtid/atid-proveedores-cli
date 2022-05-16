@@ -55,7 +55,7 @@
           </v-btn>
         </div>
         <div class="pa-2">
-          <v-btn color="teal" block> Logout </v-btn>
+          <v-btn @click="logOut()" color="teal" block> Logout </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -67,6 +67,7 @@
   </v-app>
 </template>
 <script>
+import AuthService from '@/services/AuthService';
 export default {
   data() {
     return {
@@ -98,6 +99,10 @@ export default {
       // Evitamos ruteo redundante
       if (this.$route.name !== route.name) this.$router.push(route);
     },
+
+    logOut: function(){
+      AuthService.logout()
+    }
   },
 };
 </script>

@@ -115,7 +115,7 @@
                           x-small
                           outlined
                           @click="stepWindow = 2"
-                          >Soy administrador?</v-btn
+                          >Soy administrador</v-btn
                         >
                       </div>
                     </v-col>
@@ -361,6 +361,9 @@
 </template>
 
 <script>
+import { buildErrorMessage } from '@/helpers/utils';
+import AuthService from '../services/AuthService'
+import { mapMutations } from 'vuex';
 export default {
   name: "LoginView",
 
@@ -433,11 +436,30 @@ export default {
     },
   },
   methods: {
-    loginAdmin: function () {
-      console.log(this.loginAdminForm);
+  /* Vuex */
+  ...mapMutations("shared", [
+      "setShowErrorOrSuccessAlert",
+      "setOverlayState",
+    ]),
+
+  /* Local */
+    loginAdmin: async function () {
+      
     },
-    loginProveedor: function () {
-      console.log(this.loginProveedorForm);
+    loginProveedor: async function () {
+      try {
+        this.setOverlayState({ text: "Autenticando usuario...", visible: true });
+        const response =  await AuthService.loginProveedor(this.loginProveedorForm)
+        localStorage.setItem('proveedores-tkn', response.data.jwt)
+        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
+        this.$router.push('/proveedores')
+      } catch (error) {
+        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
+        this.setShowErrorOrSuccessAlert({
+          message: buildErrorMessage(error),
+          errorOnPetition: true,
+        });        
+      }
     },
     registroNuevoProveedor: function () {
       console.log(this.registroProveedorForm);

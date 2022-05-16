@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import ProveedoresRouter from '@/modules/proveedores/routes'
 import AdminRouter from '@/modules/admin/routes'
 import LoginView from '@/views/LoginView.vue'
-//import { getUserInfo, isLoggedIn } from '@/helpers/utils'
+import { getUserInfo, isLoggedIn } from '@/helpers/utils'
 Vue.use(VueRouter)
 
 const routes = [
@@ -48,7 +48,7 @@ const router = new VueRouter({
 
 
 // Protección de rutas
-/* router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(r => r.meta.requiresAuth);
   if (requiresAuth) { // ¿La ruta require autenticación?
     if (isLoggedIn()) { // ¿ El usuario esta logeado ?
@@ -73,5 +73,5 @@ const router = new VueRouter({
       next();
     }
   }
-}); */
+});
 export default router
