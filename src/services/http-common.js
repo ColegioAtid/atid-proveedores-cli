@@ -24,7 +24,7 @@
  /**
   * Crea una conexión con la API proveedores-atid-api
   */
- export const createBecasAPIConnection = axios.create({
+ export const createProveedoresAPIConnection = axios.create({
      baseURL: process.env.VUE_APP_API_PROVEEDORES,
      headers: {      
        Accept: "applicacion/json",
