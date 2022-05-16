@@ -95,7 +95,7 @@ export default {
     /**
      * LLeva al usuario a otra pantalla
      */
-    goTo(route) {
+    goTo: function(route) {
       // Evitamos ruteo redundante
       if (this.$route.name !== route.name) this.$router.push(route);
     },

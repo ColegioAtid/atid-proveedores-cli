@@ -56,7 +56,7 @@
           </v-btn>
         </div>
         <div class="pa-2">
-          <v-btn color="teal" block> Logout </v-btn>
+          <v-btn @click="logout()" color="teal" block> Logout </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import AuthService from '@/services/AuthService';
 export default {
   data() {
     return {
@@ -105,10 +106,14 @@ export default {
     /**
      * LLeva al usuario a otra pantalla
      */
-    goTo(route) {
+    goTo: function(route) {
       // Evitamos ruteo redundante
       if (this.$route.name !== route.name) this.$router.push(route);
     },
+
+    logout:function(){
+      AuthService.logout()
+    }
   },
   computed: {
     //Propiedad que sabrá si hay datos registrados o no para poder mostrar el item de Registro
