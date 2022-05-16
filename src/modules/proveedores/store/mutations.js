@@ -15,3 +15,7 @@ export const setDocumentos = (state, value) => {
   }
 
 };
+
+export const setCorreoUpdate = (state, value) => {
+  state.correoToUpdate = value;
+}

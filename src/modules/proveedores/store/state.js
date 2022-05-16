@@ -9,7 +9,7 @@ export default () => ({
     apma_proveedor: null,
     numero_prim: null,
     numero_sec: null,
-    rfc:null
+    rfc: null,
   },
   documentosProveedor: {
     documento1: {
@@ -37,5 +37,7 @@ export default () => ({
       filetag: "documento 5",
       attached: false,
     },
+  },
+  correoToUpdate: {
   },
 });

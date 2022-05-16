@@ -88,6 +88,7 @@
 <script>
 export default {
   name: "DatosProveedorForm",
+  // props: ["dataToUpdate"],
   data() {
     return {
       valid: true,
@@ -107,7 +108,8 @@ export default {
         (v) => !!v || "Campo requerido",
         (v) => /^[1-9]\d*$|^$/.test(v) || "El valor no es válido",
         (v) => !v || v.length >= 9 && v.length <= 10 || "Debes ingresar 10 dígitos",
-      ]
+      ],
+      dataNew:{}
     };
   },
   watch: {
