@@ -88,7 +88,7 @@
 <script>
 export default {
   name: "DatosProveedorForm",
-  // props: ["dataToUpdate"],
+  props: ["data", "isPost"],
   data() {
     return {
       valid: true,
@@ -101,22 +101,21 @@ export default {
         apma_proveedor: "",
         numero_prim: "",
         numero_sec: "",
-        rfc:""
       },
       generalRules: [(v) => !!v || "Campo requerido"],
       phoneRules: [
         (v) => !!v || "Campo requerido",
         (v) => /^[1-9]\d*$|^$/.test(v) || "El valor no es válido",
-        (v) => !v || v.length >= 9 && v.length <= 10 || "Debes ingresar 10 dígitos",
+        (v) =>
+          !v ||
+          (v.length >= 9 && v.length <= 10) ||
+          "Debes ingresar 10 dígitos",
       ],
-      dataNew:{}
     };
   },
   watch: {
     dataProveedorForm: {
       handler: function () {
-        let rfc = "GOM990730NI5"
-        this.dataProveedorForm.rfc = rfc;
         let valid = this.$refs.formDataProv.validate();
         return this.$emit("validForm", {
           isValid: valid,
@@ -124,6 +123,12 @@ export default {
         });
       },
       deep: true,
+    },
+    data: {
+      deep: true,
+      handler: function () {
+        if (!this.isPost) this.dataProveedorForm = this.data;
+      },
     },
   },
 };

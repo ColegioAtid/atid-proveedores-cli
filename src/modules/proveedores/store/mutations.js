@@ -1,5 +1,9 @@
+import { getUserInfo } from "@/helpers/utils";
+
 export const setDataForm = (state, value) => {
+  let { rfc } = getUserInfo();
   state.datosProveedor = value;
+  state.datosProveedor.rfc = rfc;
 };
 export const setDocumentos = (state, value) => {
   state.filesUpload = value.documentos;

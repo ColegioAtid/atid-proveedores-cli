@@ -55,8 +55,7 @@ class ProveedoresService extends Service {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    console.log(dataToUpdate);
-    // return createProveedoresAPIConnection.put('/proveedores/update-data', dataToUpdate);
+    return createProveedoresAPIConnection.put('/proveedores/update-data', dataToUpdate);
   }
 }
 

@@ -43,29 +43,24 @@
           <div class="text-body-1">
             <datos-proveedor-form
               @validForm="recibeDataProv"
-              :dataToUpdate="datosProveedor.datosGenerales"
+              :data="dataToChild"
+              :isPost="false"
             />
           </div>
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            :disabled="isValidToSend"
-            color="teal"
-            class="white--text pa-6"
-            @click="check"
-          >
+          <v-btn color="teal" class="white--text pa-6" @click="updateProvInfo">
             Actualizar
           </v-btn>
         </v-card-actions>
-        {{datosProveedor().rfc}}
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { buildErrorMessage } from "@/helpers/utils";
-import { mapActions, mapMutations, mapState } from "vuex";
+import { buildErrorMessage, getUserInfo } from "@/helpers/utils";
+import { mapActions, mapMutations } from "vuex";
 import DatosProveedorForm from "../components/DatosProveedorForm.vue";
 
 export default {
@@ -81,7 +76,9 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "El formato no es válido",
       ],
       isValidToSend: true,
-      datosProveedorInfo: {},
+      dataToChild: {},
+      datosGeneralesInfo: {},
+      dataFormProveedores: null,
     };
   },
   methods: {
@@ -90,18 +87,47 @@ export default {
       "setShowErrorOrSuccessAlert",
       "setOverlayState",
     ]),
-    ...mapMutations("proveedores", ["setCorreoUpdate"]),
+    ...mapMutations("proveedores", ["setCorreoUpdate", "setDataForm"]),
+    ...mapActions("proveedores", [
+      "getDataproveedor",
+      "updateCorreoProv",
+      "updateDataProv",
+    ]),
 
-    ...mapActions("proveedores", ["getDataproveedor", "updateCorreoProv"]),
-    ...mapState("proveedores",["datosProveedor"]),
+    /* MÉTODOS DE COMPONENTE */
 
-    /**  FUNCIONES  */
-
-    check() {
-      // console.log(this.$refs.correoField.validate());
-      // // if(this.correoField){
-      // // }
+    /**
+     * Función que sirve para actualizar los datos
+     * generales de los proveedores
+     */
+    async updateProvInfo() {
+      this.setDataForm(this.dataFormProveedores);
+      this.setOverlayState({
+        text: "Guardando información, espere por favor",
+        visible: true,
+      });
+      try {
+        await this.updateDataProv();
+        this.setShowErrorOrSuccessAlert({
+          message: "¡Información guardada exitosamente!",
+          success: true,
+        });
+        this.setOverlayState({ text: "", visible: false });
+        this.getDataProveedor();
+      } catch (error) {
+        // Error
+        this.setShowErrorOrSuccessAlert({
+          message: buildErrorMessage(error),
+          errorOnPetition: true,
+        });
+        this.setOverlayState({ text: "", visible: false });
+      }
     },
+
+    /**
+     * Función que sirve para actualizar el correo de contacto
+     * del proveedor registrado
+     */
     async updateCorreo() {
       if (!this.$refs.correoField.validate()) return;
 
@@ -127,20 +153,25 @@ export default {
         this.setOverlayState({ text: "", visible: false });
       }
     },
-    recibeDataProv({ data, isValid }) {
-      if (isValid) this.isValidToSend = false;
-      console.log(data);
-      console.log(isValid);
+    /**
+     * Función que recibe la información
+     * del EMIT del componente hijo "datos-proveedor-form"
+     * para setear la información en el state
+     */
+    recibeDataProv({ data }) {
+      this.dataFormProveedores = data;
     },
+
     /** FUNCIÓN QUE SIRVE PARA OBTENER LOS DATOS REGISTRADOS
      * DE LOS PROVEEDORES
      */
     async getDataProveedor() {
       try {
+        let { rfc } = getUserInfo();
         let { proveedorData } = await this.getDataproveedor();
+        this.datosGeneralesInfo = proveedorData.datosGenerales;
         this.correoUpdate.correoNuevo = proveedorData.correo;
-        this.correoUpdate.rfc = proveedorData.rfc;
-        this.datosProveedorInfo = proveedorData;
+        this.correoUpdate.rfc = rfc;
       } catch (error) {
         console.log(error);
       }
@@ -148,6 +179,23 @@ export default {
   },
   created() {
     this.getDataProveedor();
+  },
+  watch: {
+    /**
+     * Sirve para detectar los cambios de la información
+     * cuando se hace la petición al servidor
+     * y el valor de la variable "datosGeneralesInfo"
+     * se llena
+     */
+    datosGeneralesInfo: {
+      handler: function (dataUpdated) {
+        delete dataUpdated.created_at;
+        delete dataUpdated.updated_at;
+        delete dataUpdated.idProveedor;
+        this.dataToChild = dataUpdated;
+      },
+      deep: true,
+    },
   },
 };
 </script>
