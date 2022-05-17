@@ -314,7 +314,8 @@
         <v-card>
           <v-card-title>
             <span class="text-h5"
-              >Por favor, ingresa tu RFC registrada y te llegará un link al correo que registraste para poder actualizar tu password.</span
+              >Por favor, ingresa tu RFC registrada y te llegará un link al
+              correo que registraste para poder actualizar tu password.</span
             >
           </v-card-title>
           <v-card-text>
@@ -323,9 +324,11 @@
                 <v-col cols="12">
                   <v-text-field
                     :rules="[rules.required]"
+                    color="teal"
                     v-model="rfcRecuperacion"
                     label="RFC"
                     required
+                    @input="rfcRecuperacion = rfcRecuperacion.toUpperCase()"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -360,9 +363,9 @@
 </template>
 
 <script>
-import { buildErrorMessage } from '@/helpers/utils';
-import AuthService from '../services/AuthService'
-import { mapMutations } from 'vuex';
+import { buildErrorMessage } from "@/helpers/utils";
+import AuthService from "../services/AuthService";
+import { mapMutations } from "vuex";
 export default {
   name: "LoginView",
 
@@ -435,78 +438,99 @@ export default {
     },
   },
   methods: {
-  /* Vuex */
-  ...mapMutations("shared", [
+    /* Vuex */
+    ...mapMutations("shared", [
       "setShowErrorOrSuccessAlert",
       "setOverlayState",
     ]),
 
-  /* Local */
+    /* Local */
     loginAdmin: async function () {
       try {
-        this.setOverlayState({ text: "Autenticando usuario...", visible: true });
-        const response =  await AuthService.loginAdmin(this.loginAdminForm)
-        localStorage.setItem('proveedores-tkn', response.data.jwt)
-        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
-        this.$router.push('/admin')
+        this.setOverlayState({
+          text: "Autenticando usuario...",
+          visible: true,
+        });
+        const response = await AuthService.loginAdmin(this.loginAdminForm);
+        localStorage.setItem("proveedores-tkn", response.data.jwt);
+        this.setOverlayState({
+          text: "Autenticando usuario...",
+          visible: false,
+        });
+        this.$router.push("/admin");
       } catch (error) {
-        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
+        this.setOverlayState({
+          text: "Autenticando usuario...",
+          visible: false,
+        });
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
           errorOnPetition: true,
-        });        
+        });
       }
     },
     loginProveedor: async function () {
       try {
-        this.setOverlayState({ text: "Autenticando usuario...", visible: true });
-        const response =  await AuthService.loginProveedor(this.loginProveedorForm)
-        localStorage.setItem('proveedores-tkn', response.data.jwt)
-        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
-        this.$router.push('/proveedores')
+        this.setOverlayState({
+          text: "Autenticando usuario...",
+          visible: true,
+        });
+        const response = await AuthService.loginProveedor(
+          this.loginProveedorForm
+        );
+        localStorage.setItem("proveedores-tkn", response.data.jwt);
+        this.setOverlayState({
+          text: "Autenticando usuario...",
+          visible: false,
+        });
+        this.$router.push("/proveedores");
       } catch (error) {
-        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
+        this.setOverlayState({
+          text: "Autenticando usuario...",
+          visible: false,
+        });
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
           errorOnPetition: true,
-        });        
+        });
       }
     },
     registroNuevoProveedor: async function () {
       try {
         this.setOverlayState({ text: "Registrando usuario...", visible: true });
-        await AuthService.registraProveedor(this.registroProveedorForm)
+        await AuthService.registraProveedor(this.registroProveedorForm);
         this.setOverlayState({ text: "", visible: false });
-        this.stepWindow = 1
+        this.stepWindow = 1;
       } catch (error) {
         this.setOverlayState({ text: "", visible: false });
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
           errorOnPetition: true,
-        });        
-      }      
+        });
+      }
     },
 
-    sendRestablecerPassword:async function(){
+    sendRestablecerPassword: async function () {
       try {
-        this.mensajeRecuperacion = false
-        this.setOverlayState({ text: "Enviando correo", visible: true })
-        const resp = await AuthService.sendResetPassword({rfc:this.rfcRecuperacion})
+        this.mensajeRecuperacion = false;
+        this.setOverlayState({ text: "Enviando correo", visible: true });
+        const resp = await AuthService.sendResetPassword({
+          rfc: this.rfcRecuperacion,
+        });
         console.log(resp);
-        this.setOverlayState({ text: "", visible: false })
+        this.setOverlayState({ text: "", visible: false });
         this.setShowErrorOrSuccessAlert({
-          message: "Se envió link al correo "+resp.data.correo,
+          message: "Se envió link al correo " + resp.data.correo,
           success: true,
         });
-
       } catch (error) {
         this.setOverlayState({ text: "", visible: false });
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
           errorOnPetition: true,
-        }); 
+        });
       }
-    }
+    },
   },
 };
 </script>
