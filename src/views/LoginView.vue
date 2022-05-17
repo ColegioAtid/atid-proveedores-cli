@@ -314,8 +314,7 @@
         <v-card>
           <v-card-title>
             <span class="text-h5"
-              >Por favor, ingresa el correo que registraste y te llegará una
-              liga para restablecer tu contraseña.</span
+              >Por favor, ingresa tu RFC registrada y te llegará un link al correo que registraste para poder actualizar tu password.</span
             >
           </v-card-title>
           <v-card-text>
@@ -323,9 +322,9 @@
               <v-row>
                 <v-col cols="12">
                   <v-text-field
-                    :rules="[rules.required, rules.emailRules]"
-                    v-model="correoRecuperacion"
-                    label="Email*"
+                    :rules="[rules.required]"
+                    v-model="rfcRecuperacion"
+                    label="RFC"
                     required
                   ></v-text-field>
                 </v-col>
@@ -349,9 +348,9 @@
               outlined
               small
               class="white--text"
-              @click="mensajeRecuperacion = false"
+              @click="sendRestablecerPassword()"
             >
-              Recuperar contraseña
+              Envíar correo
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -405,7 +404,7 @@ export default {
       },
     },
     mensajeRecuperacion: false,
-    correoRecuperacion: "",
+    rfcRecuperacion: "",
   }),
 
   computed: {
@@ -480,13 +479,34 @@ export default {
         this.setOverlayState({ text: "", visible: false });
         this.stepWindow = 1
       } catch (error) {
-        this.setOverlayState({ text: "Autenticando usuario...", visible: false });
+        this.setOverlayState({ text: "", visible: false });
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
           errorOnPetition: true,
         });        
       }      
     },
+
+    sendRestablecerPassword:async function(){
+      try {
+        this.mensajeRecuperacion = false
+        this.setOverlayState({ text: "Enviando correo", visible: true })
+        const resp = await AuthService.sendResetPassword({rfc:this.rfcRecuperacion})
+        console.log(resp);
+        this.setOverlayState({ text: "", visible: false })
+        this.setShowErrorOrSuccessAlert({
+          message: "Se envió link al correo "+resp.data.correo,
+          success: true,
+        });
+
+      } catch (error) {
+        this.setOverlayState({ text: "", visible: false });
+        this.setShowErrorOrSuccessAlert({
+          message: buildErrorMessage(error),
+          errorOnPetition: true,
+        }); 
+      }
+    }
   },
 };
 </script>

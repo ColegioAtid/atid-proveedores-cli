@@ -46,6 +46,33 @@ class AuthService extends Service{
         localStorage.removeItem('proveedores-tkn')
         Router.go('/')
     }
+
+    /**
+     * Valida token de reseteo de contraseña
+     * @param {*} token 
+     * @returns {Promise}
+     */
+    validToken(token){
+        return createProveedoresAPIConnection.get(`/authorize/password-reset/${token}`)        
+    }
+
+    /**
+     * Valida token de reseteo de contraseña
+     * @param {*} token 
+     * @returns {Promise}
+     */
+    changePassword(form){
+        return createProveedoresAPIConnection.post(`/authorize/change-password/`,form)        
+    }
+
+    /**
+     * Envia al correo electronico un link para restablecer password
+     * @param {*} form 
+     * @returns {Promise}
+     */
+    sendResetPassword(form){
+        return createProveedoresAPIConnection.post(`/authorize/send-reset-pwd`,form)        
+    }
 }
 
 

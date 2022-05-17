@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import ProveedoresRouter from '@/modules/proveedores/routes'
 import AdminRouter from '@/modules/admin/routes'
 import LoginView from '@/views/LoginView.vue'
+import ResetPasswordView from '@/views/ResetPasswordView.vue'
 import { getUserInfo, isLoggedIn } from '@/helpers/utils'
 Vue.use(VueRouter)
 
@@ -11,6 +12,14 @@ const routes = [
     path: '/',
     name: 'login',
     component: LoginView,
+    meta: {
+      requiresAuth: false,
+    }
+  },
+  {
+    path: '/reset/:token',
+    name: 'reset',
+    component: ResetPasswordView,
     meta: {
       requiresAuth: false,
     }
