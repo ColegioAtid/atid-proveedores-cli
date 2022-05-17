@@ -1,18 +1,30 @@
 <template>
-  <v-container>
+  <v-container v-if="datosProveedor">
     <v-sheet color="white pa-3" elevation="16" class="justify-center">
       <!-- Seccion datos generales del proveedor -->
       <v-card elevation="3" class="mx-auto" outlined>
         <v-list-item three-line>
-          <v-list-item-content>
-            <div class="text-overline mb-4">RFC1234567123</div>
+          <v-list-item-content v-if="datosProveedor.datosGenerales">
+            <div class="text-overline mb-4">{{datosProveedor.rfc}}</div>
             <v-list-item-title class="text-h5 mb-1">
-              Nombre de la empresa
+              {{datosProveedor.datosGenerales.nombre_empresa}}
             </v-list-item-title>
-            <v-list-item-subtitle>Nombre de contacto</v-list-item-subtitle>
-            <v-list-item-subtitle>Nombre de contacto</v-list-item-subtitle>
-            <v-list-item-subtitle>Nombre de contacto</v-list-item-subtitle>
+            <v-list-item-subtitle>Fecha de registro: {{datosProveedor.created_at.slice(0,10) }}</v-list-item-subtitle>
+            <v-list-item-subtitle>Tipo persona: {{datosProveedor.tipo_persona}}</v-list-item-subtitle>
+            <v-list-item-subtitle>Correo: {{datosProveedor.correo}}</v-list-item-subtitle>
+            <v-list-item-subtitle>Nombre de contacto: {{datosProveedor.datosGenerales.nombre_proveedor}} {{datosProveedor.datosGenerales.appa_proveedor}} {{datosProveedor.datosGenerales.apma_proveedor}}</v-list-item-subtitle>
+            <v-list-item-subtitle>Número primario: {{datosProveedor.datosGenerales.numero_prim}} </v-list-item-subtitle>
+            <v-list-item-subtitle>Número secundario: {{datosProveedor.datosGenerales.numero_sec}} </v-list-item-subtitle>
+            <v-list-item-subtitle>Razón social: {{datosProveedor.datosGenerales.razon_social}} </v-list-item-subtitle>
+            <v-list-item-subtitle>Domicilio fiscal: {{datosProveedor.datosGenerales.domicilio_fiscal}} </v-list-item-subtitle>
           </v-list-item-content>
+          <v-list-item-content v-else>
+            <b>El proveedor aún no registra sus datos generales</b> <br> <br>
+            <v-list-item-subtitle>Fecha de registro: {{datosProveedor.created_at.slice(0,10) }}</v-list-item-subtitle>
+            <v-list-item-subtitle>Tipo persona: {{datosProveedor.tipo_persona}}</v-list-item-subtitle>
+            <v-list-item-subtitle>Correo: {{datosProveedor.correo}}</v-list-item-subtitle>
+          </v-list-item-content> 
+          
 
           <v-list-item-avatar tile size="70" color="grey">
             <img alt="user" :src="require('@/assets/admin/provider.png')" />
@@ -33,8 +45,9 @@
                 <v-icon right> mdi-email </v-icon>
               </v-btn>
             </v-col>
-            <v-col
-              v-if="!estatusValidacionProv"
+            <template v-if="datosProveedor.datosGenerales">
+              <v-col
+              v-if="!estatusProveedor"
               cols="12"
               md="4"
               lg="4"
@@ -55,7 +68,7 @@
                 Invalidar información
               </v-btn>
             </v-col>
-            <v-col v-if="estatusValidacionProv" cols="12" md="4" lg="4" sm="12">
+            <v-col v-if="estatusProveedor" cols="12" md="4" lg="4" sm="12">
               <v-chip small class="ma-2" color="teal" outlined>
                 <v-icon left> mdi-account-check </v-icon>
                 Estatus: Validado
@@ -67,11 +80,12 @@
                 Estatus: No validado
               </v-chip>
             </v-col>
+            </template>
           </v-row>
         </v-card-actions>
       </v-card>
       <!-- Sección de documentos -->
-      <v-card elevation="3" class="mx-auto mt-7" outlined>
+      <v-card v-if="datosProveedor.datosGenerales" elevation="3" class="mx-auto mt-7" outlined>
         <v-card-title> Documentos anexados </v-card-title>
         <v-card-subtitle>
           Documentos anexados por el proveedor
@@ -131,13 +145,13 @@
           </v-card-text>
           <v-card-text>
             <v-text-field
-              v-model="customMailMessage.ausnto"
+              v-model="customMailMessage.asunto"
               label="Asunto"
               placeholder="Asunto"
               outlined
             ></v-text-field>
             <v-textarea
-              v-model="customMailMessage.body"
+              v-model="customMailMessage.bodyMessage"
               outlined
               name="input-7-4"
               label="Mensaje a mandar"
@@ -147,7 +161,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="teal" text @click="modalCorreo = false">
+            <v-btn color="teal" text @click="enviarCorreo()">
               Envíar correo
             </v-btn>
             <v-btn color="purple" text @click="modalCorreo = false">
@@ -160,27 +174,50 @@
   </v-container>
 </template>
 <script>
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
-      dialogValidacion: false,
-      estatusValidacionProv: true,
+      dialogValidacion: false, 
+      estatusProveedor:null,
       modalCorreo: false,
+      datosProveedor:null,
       customMailMessage: {
         asunto: "",
-        body: "",
+        bodyMessage: "",
+        correoProveedor:""
       },
     };
   },
   methods: {
-    validarInformacion: function () {
+    /* Vuex */
+    ...mapActions('admin',[
+      'actualizaEstatusProveedorAction',
+      'enviaCorreoIndividualAction',
+      ]),
+    /* Local */
+    validarInformacion: async function () {
       this.dialogValidacion = false
-      console.log("Informacion validada")
+      const succes = await this.actualizaEstatusProveedorAction(this.datosProveedor.rfc)
+      if(succes)
+      this.estatusProveedor = !this.estatusProveedor      
     },
+    enviarCorreo: async function(){
+      this.modalCorreo = false
+      this.customMailMessage.correoProveedor = this.datosProveedor.correo
+      await this.enviaCorreoIndividualAction(this.customMailMessage)
+    },
+
+    init:function(){
+      this.datosProveedor = this.$route.params.dataProveedor
+      if(!this.datosProveedor)
+        this.$router.go(-1)
+      else
+        this.estatusProveedor = this.datosProveedor.estatus           
+    }
   },
-  computed: {},
   created() {
-    console.log(this.$route.params.dataProveedor);
+    this.init()    
   },
 };
 </script>
