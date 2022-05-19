@@ -11,7 +11,10 @@
         </p>
 
         <datos-proveedor-form @validForm="recibeDataProv" :isPost="true" />
-        <documentos-proveedor-component @validDocs="recibeDocs" />
+        <documentos-proveedor-component
+          :tipoPersona="tipoPersona"
+          @validDocs="recibeDocs"
+        />
         <v-card-actions>
           <v-btn
             :disabled="verificaValidsForms"
@@ -31,7 +34,7 @@
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import DatosProveedorForm from "../components/DatosProveedorForm.vue";
 import DocumentosProveedorComponent from "../components/DocumentosProveedorComponent.vue";
-import { buildErrorMessage, getUserInfo } from "@/helpers/utils";
+import { buildErrorMessage } from "@/helpers/utils";
 export default {
   components: { DatosProveedorForm, DocumentosProveedorComponent },
   name: "ProveedorHomeView",
@@ -40,38 +43,8 @@ export default {
       dataFormProveedores: null,
       isValidProveedoresData: false,
       isValidDocsData: false,
-      files: [
-        {
-          keyName: "documento1",
-          nameFile: "DOCUMENTO1",
-          file: null,
-          rfc: "",
-        },
-        {
-          keyName: "documento2",
-          nameFile: "DOCUMENTO2",
-          file: null,
-          rfc: "",
-        },
-        {
-          keyName: "documento3",
-          nameFile: "DOCUMENTO3",
-          file: null,
-          rfc: "",
-        },
-        {
-          keyName: "documento4",
-          nameFile: "DOCUMENTO4",
-          file: null,
-          rfc: "",
-        },
-        {
-          keyName: "documento5",
-          nameFile: "DOCUMENTO5",
-          file: null,
-          rfc: "",
-        },
-      ],
+      files: [],
+      tipoPersona: null
     };
   },
   methods: {
@@ -95,10 +68,10 @@ export default {
       });
 
       this.setDataForm(this.dataFormProveedores);
-      this.setDocumentos({ documentos: this.files });
+      // this.setDocumentos({ documentos: this.files });
 
       try {
-        // await this.sendFilesproveedor();
+        await this.sendFilesproveedor(this.files);
         await this.sendDataProveedor();
         this.setShowErrorOrSuccessAlert({
           message: "¡Información guardada exitosamente!",
@@ -130,21 +103,13 @@ export default {
      * del EMIT del componente hijo "documentos-proveedor-component"
      * para setear la información en el state
      */
-    recibeDocs(data) {
-      this.isValidDocsData = data.isValid;
-      let { rfc } = getUserInfo();
-      this.files.forEach((file) => {
-        for (const key in data.data) {
-          if (file.keyName == key) {
-            file.file = data.data[key];
-            file.rfc = rfc;
-          }
-        }
-      });
+    recibeDocs({dataFilesInputs, isValid}) {
+      this.isValidDocsData = isValid;
+      this.files = dataFilesInputs;
     },
   },
   computed: {
-    ...mapGetters("proveedores", ["getDatosProveedor", "getDocumentos"]),
+    ...mapGetters("proveedores", ["getDataProveedor", "getDocumentos"]),
     /**
      * Verifica que los componentes sean válidos
      */
@@ -154,6 +119,9 @@ export default {
       }
       return true;
     },
+  },
+  mounted() {
+    this.tipoPersona = this.getDataProveedor().tipo_persona;
   },
 };
 </script>

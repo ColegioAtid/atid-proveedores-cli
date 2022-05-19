@@ -41,11 +41,7 @@
 
         <v-card-text>
           <div class="text-body-1">
-            <datos-proveedor-form
-              @validForm="recibeDataProv"
-              :data="dataToChild"
-              :isPost="false"
-            />
+            <datos-proveedor-form @validForm="recibeDataProv" :isPost="false" />
           </div>
         </v-card-text>
         <v-card-actions>
@@ -59,8 +55,8 @@
 </template>
 
 <script>
-import { buildErrorMessage, getUserInfo } from "@/helpers/utils";
-import { mapActions, mapMutations } from "vuex";
+import { buildErrorMessage } from "@/helpers/utils";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import DatosProveedorForm from "../components/DatosProveedorForm.vue";
 
 export default {
@@ -75,8 +71,6 @@ export default {
         (v) => !!v || "Campo requerido",
         (v) => /.+@.+\..+/.test(v) || "El formato no es válido",
       ],
-      isValidToSend: true,
-      dataToChild: {},
       datosGeneralesInfo: {},
       dataFormProveedores: null,
     };
@@ -89,7 +83,6 @@ export default {
     ]),
     ...mapMutations("proveedores", ["setCorreoUpdate", "setDataForm"]),
     ...mapActions("proveedores", [
-      "getDataproveedor",
       "updateCorreoProv",
       "updateDataProv",
     ]),
@@ -113,7 +106,7 @@ export default {
           success: true,
         });
         this.setOverlayState({ text: "", visible: false });
-        this.getDataProveedor();
+        this.$router.push("/proveedores");
       } catch (error) {
         // Error
         this.setShowErrorOrSuccessAlert({
@@ -143,7 +136,7 @@ export default {
           success: true,
         });
         this.setOverlayState({ text: "", visible: false });
-        this.getDataProveedor();
+        this.$router.push("/proveedores");
       } catch (error) {
         // Error
         this.setShowErrorOrSuccessAlert({
@@ -161,41 +154,14 @@ export default {
     recibeDataProv({ data }) {
       this.dataFormProveedores = data;
     },
-
-    /** FUNCIÓN QUE SIRVE PARA OBTENER LOS DATOS REGISTRADOS
-     * DE LOS PROVEEDORES
-     */
-    async getDataProveedor() {
-      try {
-        let { rfc } = getUserInfo();
-        let { proveedorData } = await this.getDataproveedor();
-        this.datosGeneralesInfo = proveedorData.datosGenerales;
-        this.correoUpdate.correoNuevo = proveedorData.correo;
-        this.correoUpdate.rfc = rfc;
-      } catch (error) {
-        console.log(error);
-      }
-    },
+  },
+  computed: {
+    ...mapGetters("proveedores", ["getDataProveedor"]),
   },
   created() {
-    this.getDataProveedor();
-  },
-  watch: {
-    /**
-     * Sirve para detectar los cambios de la información
-     * cuando se hace la petición al servidor
-     * y el valor de la variable "datosGeneralesInfo"
-     * se llena
-     */
-    datosGeneralesInfo: {
-      handler: function (dataUpdated) {
-        delete dataUpdated.created_at;
-        delete dataUpdated.updated_at;
-        delete dataUpdated.idProveedor;
-        this.dataToChild = dataUpdated;
-      },
-      deep: true,
-    },
+    this.datosGeneralesInfo = this.getDataProveedor().datosGenerales;
+    this.correoUpdate.correoNuevo = this.getDataProveedor().correo;
+    this.correoUpdate.rfc = this.getDataProveedor().rfc;
   },
 };
 </script>

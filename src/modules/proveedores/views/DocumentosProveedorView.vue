@@ -20,7 +20,10 @@
 
         <v-card-text>
           <div class="text-body-1">
-            <documentos-proveedor-component ref="documentosForm" />
+            <documentos-proveedor-component
+              ref="documentosForm"
+              :tipoPersona="tipoPersona"
+            />
           </div>
         </v-card-text>
         <v-card-actions>
@@ -34,15 +37,27 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import DocumentosProveedorComponent from "../components/DocumentosProveedorComponent.vue";
 export default {
   components: { DocumentosProveedorComponent },
+  data() {
+    return {
+      tipoPersona: null,
+    };
+  },
+  computed: {
+    ...mapGetters("proveedores", ["getDataProveedor", "getDocumentos"]),
+  },
   methods: {
     check() {
       console.log(
         this.$refs.documentosForm.$refs.documentosProveedorForm.validate()
       );
     },
+  },
+  mounted() {
+    this.tipoPersona = this.getDataProveedor().tipo_persona;
   },
 };
 </script>

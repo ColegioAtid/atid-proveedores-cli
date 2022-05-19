@@ -14,7 +14,7 @@ class ProveedoresService extends Service {
     let formData = new FormData();
     let fileCopy = new File(
       [payload.file],
-      `${payload.rfc}_${payload.nameFile}.pdf`
+      `${payload.rfc}_${payload.filename}.pdf`
     );
     formData.append("pdf", fileCopy);
     return createFileAPIConnection.post(
