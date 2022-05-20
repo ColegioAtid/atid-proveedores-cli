@@ -169,14 +169,6 @@ export default {
   computed: {
     ...mapGetters("proveedores", ["getDataProveedor"]),
   },
-  created() {
-    // if (!this.getDataProveedor()) {
-    //   this.$router.push("/proveedores");
-    // } else {
-    // this.datosGeneralesInfo = this.getDataProveedor().datosGenerales;
-    // this.correoUpdate.correoNuevo = this.getDataProveedor().correo;
-    // }
-  },
 };
 </script>
 
