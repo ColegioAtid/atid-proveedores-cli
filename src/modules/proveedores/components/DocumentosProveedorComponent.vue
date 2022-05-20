@@ -64,16 +64,16 @@ export default {
           rfc: null,
         },
         {
-          filetag: "Carátula de estado de cuenta",
+          filetag: "Comprobante de domicilio",
           tipoPersona: ["FÍSICA", "MORAL"],
-          filename: "CARATULACUENTA.pdf",
+          filename: "COMPROBANTEDOMICILIO.pdf",
           file: null,
           rfc: null,
         },
         {
-          filetag: "Comprobante de domicilio",
+          filetag: "Carátula de estado de cuenta",
           tipoPersona: ["FÍSICA", "MORAL"],
-          filename: "COMPROBANTEDOMICILIO.pdf",
+          filename: "CARATULACUENTA.pdf",
           file: null,
           rfc: null,
         },
@@ -126,7 +126,7 @@ export default {
     },
     tipoPersona: {
       deep: true,
-      handler: function (){
+      handler: function () {
         this.arrayFiles = this.arrayFiles.filter((e) => {
           const { rfc } = getUserInfo();
           e.rfc = rfc;
