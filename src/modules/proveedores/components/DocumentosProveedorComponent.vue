@@ -135,20 +135,6 @@ export default {
       },
     },
   },
-  // created() {
-  //   this.arrayFiles = this.arrayFiles.filter((e) => {
-  //     const { rfc } = getUserInfo();
-  //     e.rfc = rfc;
-  //     return e.tipoPersona.includes(this.tipoPersona);
-  //   });
-  // },
-  // updated() {
-  //   this.arrayFiles = this.arrayFiles.filter((e) => {
-  //     const { rfc } = getUserInfo();
-  //     e.rfc = rfc;
-  //     return e.tipoPersona.includes(this.tipoPersona);
-  //   });
-  // },
 };
 </script>
 

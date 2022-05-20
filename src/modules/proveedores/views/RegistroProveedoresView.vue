@@ -68,7 +68,7 @@ export default {
       });
 
       this.setDataForm(this.dataFormProveedores);
-      // this.setDocumentos({ documentos: this.files });
+      this.setDocumentos({ documentos: this.files });
 
       try {
         await this.sendFilesproveedor(this.files);

@@ -11,6 +11,6 @@ export default () => ({
     numero_sec: null,
     rfc: null,
   },
-  dataProveedor:{},
-  correoToUpdate: {},
+  dataProveedor:null,
+  correoToUpdate: null,
 });
