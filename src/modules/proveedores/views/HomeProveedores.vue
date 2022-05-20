@@ -30,8 +30,13 @@
       </template>
 
       <v-divider></v-divider>
-
-      <v-list>
+      <progress-component
+        v-if="isLoading"
+        :color="'white'"
+        :size="40"
+        :texto="''"
+      />
+      <v-list v-else>
         <v-list-item
           v-for="item in rutasNavigator"
           :key="item.title"
@@ -71,10 +76,14 @@
 <script>
 import AuthService from "@/services/AuthService";
 import { mapActions, mapMutations } from "vuex";
+import ProgressComponent from "@/components/ProgressComponent.vue";
 export default {
+  components: {
+    ProgressComponent,
+  },
   data() {
     return {
-      showNavigator: true,
+      showNavigator: false,
       rutasNavigator: [
         {
           title: "Datos generales",
@@ -110,11 +119,12 @@ export default {
         },
       ],
       datosProveedor: {},
+      isLoading:false,
     };
   },
   methods: {
     ...mapActions("proveedores", ["getDataproveedor"]),
-    ...mapMutations("proveedores",["setDataProveedor"]),
+    ...mapMutations("proveedores", ["setDataProveedor"]),
     /**
      * LLeva al usuario a otra pantalla
      */
@@ -130,7 +140,8 @@ export default {
     /** FUNCIÓN QUE SIRVE PARA OBTENER LOS DATOS REGISTRADOS
      * DE LOS PROVEEDORES
      */
-    async getDataProveedor() {
+    async init() {
+      this.isLoading = true;
       try {
         let { proveedorData } = await this.getDataproveedor();
         this.datosProveedor = proveedorData;
@@ -147,17 +158,16 @@ export default {
             return ruta.title != "Registro";
           });
         }
+        this.isLoading = false;
       } catch (error) {
         console.log(error);
+        this.isLoading = false;
       }
     },
   },
-  created() {
-    this.getDataProveedor();
-  },
-  // updated() {
-  //   this.getDataProveedor();
-  // },
+  created(){
+    this.init();
+  }
 };
 </script>
 

@@ -20,10 +20,7 @@
 
         <v-card-text>
           <div class="text-body-1">
-            <documentos-proveedor-component
-              ref="documentosForm"
-              :tipoPersona="tipoPersona"
-            />
+            <h1>Hola</h1>
           </div>
         </v-card-text>
         <v-card-actions>
@@ -38,9 +35,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import DocumentosProveedorComponent from "../components/DocumentosProveedorComponent.vue";
 export default {
-  components: { DocumentosProveedorComponent },
   data() {
     return {
       tipoPersona: null,

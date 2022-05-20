@@ -1,66 +1,80 @@
 <template>
-  <v-row>
-    <v-col cols="12">
-      <v-card class="mx-auto my-6 pa-4" shaped>
-        <h3 class="display-1 text-center">Datos de proveedor</h3>
-        <v-img height="150" contain src="@/assets/proveedor/data.png">
-          <template v-slot:placeholder>
-            <v-row class="fill-height ma-0" align="center" justify="center">
-              <v-progress-circular
-                indeterminate
-                color="teal lighten-5"
-              ></v-progress-circular>
-            </v-row> </template
-        ></v-img>
+  <v-container>
+    <progress-component
+      v-if="!getDataProveedor()"
+      :color="'purple'"
+      :size="80"
+    />
+    <v-row v-else>
+      <v-col cols="12">
+        <v-card class="mx-auto my-6 pa-4" shaped>
+          <h3 class="display-1 text-center">Datos de proveedor</h3>
+          <v-img height="150" contain src="@/assets/proveedor/data.png">
+            <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="teal lighten-5"
+                ></v-progress-circular>
+              </v-row> </template
+          ></v-img>
 
-        <v-card-title class="text-subtitle-1">
-          Aquí podrás actualizar el correo registrado:
-        </v-card-title>
+          <v-card-title class="text-subtitle-1">
+            Aquí podrás actualizar el correo registrado:
+          </v-card-title>
 
-        <v-col cols="12" lg="6" md="6" sm="12">
-          <v-form lazy-validation ref="correoField">
-            <v-text-field
-              outlined
+          <v-col cols="12" lg="6" md="6" sm="12">
+            <v-form lazy-validation ref="correoField">
+              <v-text-field
+                outlined
+                color="teal"
+                type="email"
+                v-model="correoUpdate.correoNuevo"
+                :rules="emailRules"
+                :label="getDataProveedor().correo"
+                required
+              ></v-text-field>
+            </v-form>
+            <v-btn color="teal" class="white--text pa-6" @click="updateCorreo">
+              Actualizar correo
+            </v-btn>
+          </v-col>
+          <v-card-title class="text-subtitle-1">
+            A continuación, se muestran los datos registrados al almacenados en
+            el sistema:
+          </v-card-title>
+
+          <v-card-text>
+            <div class="text-body-1">
+              <datos-proveedor-form
+                @validForm="recibeDataProv"
+                :isPost="false"
+              />
+            </div>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
               color="teal"
-              type="email"
-              v-model="correoUpdate.correoNuevo"
-              :rules="emailRules"
-              label="Correo"
-              required
-            ></v-text-field>
-          </v-form>
-          <v-btn color="teal" class="white--text pa-6" @click="updateCorreo">
-            Actualizar correo
-          </v-btn>
-        </v-col>
-
-        <v-card-title class="text-subtitle-1">
-          A continuación, se muestran los datos registrados al almacenados en el
-          sistema:
-        </v-card-title>
-
-        <v-card-text>
-          <div class="text-body-1">
-            <datos-proveedor-form @validForm="recibeDataProv" :isPost="false" />
-          </div>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="teal" class="white--text pa-6" @click="updateProvInfo">
-            Actualizar
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+              class="white--text pa-6"
+              @click="updateProvInfo"
+            >
+              Actualizar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import { buildErrorMessage } from "@/helpers/utils";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import DatosProveedorForm from "../components/DatosProveedorForm.vue";
+import ProgressComponent from "@/components/ProgressComponent.vue";
 
 export default {
-  components: { DatosProveedorForm },
+  components: { DatosProveedorForm, ProgressComponent },
   data() {
     return {
       correoUpdate: {
@@ -71,7 +85,7 @@ export default {
         (v) => !!v || "Campo requerido",
         (v) => /.+@.+\..+/.test(v) || "El formato no es válido",
       ],
-      datosGeneralesInfo: {},
+      // datosGeneralesInfo: {},
       dataFormProveedores: null,
     };
   },
@@ -82,10 +96,7 @@ export default {
       "setOverlayState",
     ]),
     ...mapMutations("proveedores", ["setCorreoUpdate", "setDataForm"]),
-    ...mapActions("proveedores", [
-      "updateCorreoProv",
-      "updateDataProv",
-    ]),
+    ...mapActions("proveedores", ["updateCorreoProv", "updateDataProv"]),
 
     /* MÉTODOS DE COMPONENTE */
 
@@ -106,7 +117,7 @@ export default {
           success: true,
         });
         this.setOverlayState({ text: "", visible: false });
-        this.$router.push("/proveedores");
+        window.location.reload();
       } catch (error) {
         // Error
         this.setShowErrorOrSuccessAlert({
@@ -123,7 +134,7 @@ export default {
      */
     async updateCorreo() {
       if (!this.$refs.correoField.validate()) return;
-
+      this.correoUpdate.rfc = this.getDataProveedor().rfc;
       this.setCorreoUpdate(this.correoUpdate);
       this.setOverlayState({
         text: "Guardando información, espere por favor",
@@ -136,7 +147,7 @@ export default {
           success: true,
         });
         this.setOverlayState({ text: "", visible: false });
-        this.$router.push("/proveedores");
+        window.location.reload();
       } catch (error) {
         // Error
         this.setShowErrorOrSuccessAlert({
@@ -159,9 +170,12 @@ export default {
     ...mapGetters("proveedores", ["getDataProveedor"]),
   },
   created() {
-    this.datosGeneralesInfo = this.getDataProveedor().datosGenerales;
-    this.correoUpdate.correoNuevo = this.getDataProveedor().correo;
-    this.correoUpdate.rfc = this.getDataProveedor().rfc;
+    // if (!this.getDataProveedor()) {
+    //   this.$router.push("/proveedores");
+    // } else {
+    // this.datosGeneralesInfo = this.getDataProveedor().datosGenerales;
+    // this.correoUpdate.correoNuevo = this.getDataProveedor().correo;
+    // }
   },
 };
 </script>

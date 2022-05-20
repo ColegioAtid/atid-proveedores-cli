@@ -164,7 +164,7 @@ export default {
           message: "Password restablecido exitosamente!",
           success: true,
         })
-      } catch (error) {
+      } catch (error) {        
         this.setOverlayState({ text: "", visible: false })
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
@@ -186,6 +186,7 @@ export default {
           this.$router.push("/")
         }                
       } catch (error) {
+        this.$router.push("/")
         this.setOverlayState({ text: "", visible: false });
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
