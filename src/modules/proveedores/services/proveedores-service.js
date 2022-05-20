@@ -27,6 +27,23 @@ class ProveedoresService extends Service {
       }
     );
   }
+  updateFile(payload) {
+    let formData = new FormData();
+    let fileCopy = new File(
+      [payload.file],
+      `${payload.rfc}_${payload.nameFile}.pdf`
+    );
+    formData.append("pdf", fileCopy);
+    return createFileAPIConnection.post(
+      `/media/update-proveedores-file/${payload.rfc}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  }
 
   getDataProveedor(rfcProveedor) {
     createProveedoresAPIConnection.defaults.headers.common[
@@ -41,21 +58,30 @@ class ProveedoresService extends Service {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    return createProveedoresAPIConnection.post('/proveedores/registra-datos-proveedor', data);
+    return createProveedoresAPIConnection.post(
+      "/proveedores/registra-datos-proveedor",
+      data
+    );
   }
 
   updateCorreoProv(dataToUpdate) {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    return createProveedoresAPIConnection.put('/proveedores/update-correo', dataToUpdate);
+    return createProveedoresAPIConnection.put(
+      "/proveedores/update-correo",
+      dataToUpdate
+    );
   }
 
   updateDataProveedor(dataToUpdate) {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    return createProveedoresAPIConnection.put('/proveedores/update-data', dataToUpdate);
+    return createProveedoresAPIConnection.put(
+      "/proveedores/update-data",
+      dataToUpdate
+    );
   }
 }
 

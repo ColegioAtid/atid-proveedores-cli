@@ -26,3 +26,7 @@ export const updateCorreoProv = async ({ state }) => {
 export const updateDataProv = async ({ state }) => {
   await ProveedoresService.updateDataProveedor(state.datosProveedor);
 };
+
+export const updateFile = async (_, file) =>{
+  await ProveedoresService.updateFile(file);
+}

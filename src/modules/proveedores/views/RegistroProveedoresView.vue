@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     /* VUEX */
-    ...mapMutations("proveedores", ["setDataForm", "setDocumentos"]),
+    ...mapMutations("proveedores", ["setDataForm"]),
     ...mapMutations("shared", [
       "setShowErrorOrSuccessAlert",
       "setOverlayState",
@@ -68,7 +68,6 @@ export default {
       });
 
       this.setDataForm(this.dataFormProveedores);
-      this.setDocumentos({ documentos: this.files });
 
       try {
         await this.sendFilesproveedor(this.files);
