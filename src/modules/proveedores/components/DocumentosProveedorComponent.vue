@@ -9,90 +9,17 @@
       <v-col cols="12"
         ><p>Por favor, adjunta los siguientes documentos:</p></v-col
       >
-      <v-col cols="12" lg="6" md="6" sm="12">
+      <v-col
+        cols="12"
+        lg="6"
+        md="6"
+        sm="12"
+        v-for="item of arrayFiles"
+        :key="item.filetag"
+      >
         <v-file-input
-          v-model="documentosProv.documento1"
-          label="File input 1"
-          :rules="documentosRules"
-          accept=".pdf"
-          required
-          :show-size="1000"
-          counter
-          outlined
-          color="teal"
-          dense
-        >
-          <template v-slot:selection="{ index, text }">
-            <v-chip v-if="index < 2" color="#9b33b0" dark label small>
-              {{ text }}
-            </v-chip>
-          </template>
-        </v-file-input>
-      </v-col>
-      <v-col cols="12" lg="6" md="6" sm="12">
-        <v-file-input
-          v-model="documentosProv.documento2"
-          label="File input 2"
-          :rules="documentosRules"
-          accept=".pdf"
-          required
-          :show-size="1000"
-          counter
-          outlined
-          color="teal"
-          dense
-        >
-          <template v-slot:selection="{ index, text }">
-            <v-chip v-if="index < 2" color="#9b33b0" dark label small>
-              {{ text }}
-            </v-chip>
-          </template>
-        </v-file-input>
-      </v-col>
-      <v-col cols="12" lg="6" md="6" sm="12">
-        <v-file-input
-          v-model="documentosProv.documento3"
-          label="File input 3"
-          :rules="documentosRules"
-          accept=".pdf"
-          required
-          :show-size="1000"
-          counter
-          outlined
-          color="teal"
-          dense
-        >
-          <template v-slot:selection="{ index, text }">
-            <v-chip v-if="index < 2" color="#9b33b0" dark label small>
-              {{ text }}
-            </v-chip>
-          </template>
-        </v-file-input>
-      </v-col>
-      <v-col cols="12" lg="6" md="6" sm="12">
-        <v-file-input
-          v-model="documentosProv.documento4"
-          label="File input 4"
-          :rules="documentosRules"
-          accept=".pdf"
-          required
-          :show-size="1000"
-          counter
-          outlined
-          color="teal"
-          dense
-        >
-          <template v-slot:selection="{ index, text }">
-            <v-chip v-if="index < 2" color="#9b33b0" dark label small>
-              {{ text }}
-            </v-chip>
-          </template>
-        </v-file-input>
-      </v-col>
-      <v-col cols="12" lg="6" md="6" sm="12">
-        <v-file-input
-          v-model="documentosProv.documento5"
-          label="File input 5"
+          v-model="item.file"
+          :label="item.filetag"
           :rules="documentosRules"
           accept=".pdf"
           required
@@ -114,18 +41,72 @@
 </template>
 
 <script>
+import { getUserInfo } from "@/helpers/utils";
 export default {
   name: "DocumentosProveedorComponent",
+  props: ["tipoPersona"],
   data() {
     return {
       valid: true,
-      documentosProv: {
-        documento1: null,
-        documento2: null,
-        documento3: null,
-        documento4: null,
-        documento5: null,
-      },
+      arrayFiles: [
+        {
+          filetag: " Constancia de situación fiscal ",
+          tipoPersona: ["FÍSICA", "MORAL"],
+          filename: "CONSTANCIAFISCAL.pdf",
+          file: null,
+          rfc: null,
+        },
+        {
+          filetag: "Opinión de cumplimiento",
+          tipoPersona: ["FÍSICA", "MORAL"],
+          filename: "OPINIONCUMPLIMIENTO.pdf",
+          file: null,
+          rfc: null,
+        },
+        {
+          filetag: "Carátula de estado de cuenta",
+          tipoPersona: ["FÍSICA", "MORAL"],
+          filename: "CARATULACUENTA.pdf",
+          file: null,
+          rfc: null,
+        },
+        {
+          filetag: "Comprobante de domicilio",
+          tipoPersona: ["FÍSICA", "MORAL"],
+          filename: "COMPROBANTEDOMICILIO.pdf",
+          file: null,
+          rfc: null,
+        },
+        {
+          filetag:
+            "Actualización de cambio de domicilio ante el SAT (último cambio  realizado)",
+          tipoPersona: ["FÍSICA", "MORAL"],
+          filename: "ACTUALIZACIONDOMICILIOSAT.pdf",
+          file: null,
+          rfc: null,
+        },
+        {
+          filetag: "Acta constitutiva",
+          tipoPersona: ["MORAL"],
+          filename: "ACTACONSTITUTIVA.pdf",
+          file: null,
+          rfc: null,
+        },
+        {
+          filetag: "Poder notarial",
+          filename: "PODERNOTARIAL.pdf",
+          tipoPersona: ["MORAL"],
+          file: null,
+          rfc: null,
+        },
+        {
+          filetag: "INE del representante legal",
+          tipoPersona: ["MORAL"],
+          filename: "INE.pdf",
+          file: null,
+          rfc: null,
+        },
+      ],
       documentosRules: [
         (value) => !!value || "Campo requerido.",
         (value) => !value || value.size < 3000000 || "Máximo deben ser 3 MB!",
@@ -133,17 +114,41 @@ export default {
     };
   },
   watch: {
-    documentosProv: {
+    arrayFiles: {
       handler: function () {
         let valid = this.$refs.documentosProveedorForm.validate();
         return this.$emit("validDocs", {
           isValid: valid,
-          data: this.documentosProv,
+          dataFilesInputs: this.arrayFiles,
         });
       },
       deep: true,
     },
+    tipoPersona: {
+      deep: true,
+      handler: function (){
+        this.arrayFiles = this.arrayFiles.filter((e) => {
+          const { rfc } = getUserInfo();
+          e.rfc = rfc;
+          return e.tipoPersona.includes(this.tipoPersona);
+        });
+      },
+    },
   },
+  // created() {
+  //   this.arrayFiles = this.arrayFiles.filter((e) => {
+  //     const { rfc } = getUserInfo();
+  //     e.rfc = rfc;
+  //     return e.tipoPersona.includes(this.tipoPersona);
+  //   });
+  // },
+  // updated() {
+  //   this.arrayFiles = this.arrayFiles.filter((e) => {
+  //     const { rfc } = getUserInfo();
+  //     e.rfc = rfc;
+  //     return e.tipoPersona.includes(this.tipoPersona);
+  //   });
+  // },
 };
 </script>
 

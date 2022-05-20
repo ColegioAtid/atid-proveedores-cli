@@ -1,10 +1,10 @@
 import { getUserInfo } from "@/helpers/utils";
 import ProveedoresService from "../services/proveedores-service";
 
-export const sendFilesproveedor = async ({ state }) => {
+export const sendFilesproveedor = async (_ , files ) => {
   let filesPromises = [];
-  for (let i = 0; i < state.filesUpload.length; i++) {
-    filesPromises.push(ProveedoresService.uploadFiles(state.filesUpload[i]));
+  for (let i = 0; i < files.length; i++) {
+    filesPromises.push(ProveedoresService.uploadFiles(files[i].file));
   }
   await Promise.all(filesPromises);
 };

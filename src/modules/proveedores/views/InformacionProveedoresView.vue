@@ -44,7 +44,7 @@
 
             <v-card-text
               class="text-body-1 text-center"
-              v-if="!datosProveedor || !datosProveedor.datosGenerales"
+              v-if="!getDataProveedor() || !getDataProveedor().datosGenerales"
             >
               <p>
                 <strong
@@ -56,49 +56,50 @@
             <v-card-text class="text-body-1" v-else>
               <p>
                 <strong>Nombre de la empresa: </strong>
-                {{ datosProveedor.datosGenerales.nombre_empresa }}
+                {{ getDataProveedor().datosGenerales.nombre_empresa }}
               </p>
-              <p><strong>RFC: </strong> {{ datosProveedor.rfc }}</p>
+              <p><strong>RFC: </strong> {{ getDataProveedor().rfc }}</p>
               <p>
-                <strong>Persona: </strong> {{ datosProveedor.tipo_persona }}
+                <strong>Persona: </strong> {{ getDataProveedor().tipo_persona }}
               </p>
               <p>
                 <strong>Dirección fiscal: </strong>
-                {{ datosProveedor.datosGenerales.domicilio_fiscal }}
+                {{ getDataProveedor().datosGenerales.domicilio_fiscal }}
               </p>
               <p>
                 <strong>Razón social: </strong>
-                {{ datosProveedor.datosGenerales.razon_social }}
+                {{ getDataProveedor().datosGenerales.razon_social }}
               </p>
               <p>
                 <strong>Nombre de contacto: </strong>
-                {{ datosProveedor.datosGenerales.nombre_proveedor }}
-                {{ datosProveedor.datosGenerales.appa_proveedor }}
-                {{ datosProveedor.datosGenerales.apma_proveedor }}
+                {{ getDataProveedor().datosGenerales.nombre_proveedor }}
+                {{ getDataProveedor().datosGenerales.appa_proveedor }}
+                {{ getDataProveedor().datosGenerales.apma_proveedor }}
               </p>
               <p>
                 <strong>Correo de contacto: </strong>
-                {{ datosProveedor.correo }}
+                {{ getDataProveedor().correo }}
               </p>
               <p>
                 <strong>Número de contacto principal: </strong>
-                {{ datosProveedor.datosGenerales.numero_prim }}
+                {{ getDataProveedor().datosGenerales.numero_prim }}
               </p>
               <p>
                 <strong>Número de contacto secundario: </strong>
-                {{ datosProveedor.datosGenerales.numero_sec }}
+                {{ getDataProveedor().datosGenerales.numero_sec }}
               </p>
             </v-card-text>
           </div>
         </v-expand-transition>
       </v-card>
     </v-col>
+    <!-- {{getDataProveedor()}} -->
   </v-row>
 </template>
 
 <script>
-import { buildErrorMessage } from "@/helpers/utils";
-import { mapActions, mapMutations } from "vuex";
+// import { buildErrorMessage } from "@/helpers/utils";
+import {  mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -106,38 +107,11 @@ export default {
       datosProveedor: {},
     };
   },
-  methods: {
-    /*  VUEX  */
-    ...mapMutations("shared", [
-      "setShowErrorOrSuccessAlert",
-      "setOverlayState",
-    ]),
-    ...mapActions("proveedores", ["getDataproveedor"]),
-
-    /** FUNCIÓN QUE SIRVE PARA OBTENER LOS DATOS REGISTRADOS
-     * DE LOS PROVEEDORES
-     */
-    async getDataProveedor() {
-      try {
-        this.setOverlayState({
-          text: "Obteniendo información, espere por favor",
-          visible: true,
-        });
-        let { proveedorData } = await this.getDataproveedor();
-        this.datosProveedor = proveedorData;
-        this.setOverlayState({ text: "", visible: false });
-
-      } catch (error) {
-        this.setShowErrorOrSuccessAlert({
-          message: buildErrorMessage(error),
-          errorOnPetition: true,
-        });
-        this.setOverlayState({ text: "", visible: false });
-      }
-    },
+  computed: {
+    ...mapGetters("proveedores",["getDataProveedor"]),
   },
   created() {
-    this.getDataProveedor();
+    this.datosProveedor = this.getDataProveedor();
   },
 };
 </script>

@@ -70,7 +70,7 @@
 
 <script>
 import AuthService from "@/services/AuthService";
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -79,22 +79,34 @@ export default {
         {
           title: "Datos generales",
           icon: "mdi-home-circle",
-          route: { name: "datos-generales-proveedores", params: {} },
+          route: {
+            name: "datos-generales-proveedores",
+            params: null,
+          },
         },
         {
           title: "Actualización de datos",
           icon: "mdi-sign-text",
-          route: { name: "datos-proveedores", params: {} },
+          route: {
+            name: "datos-proveedores",
+            params: null,
+          },
         },
         {
           title: "Actualización de documentos",
           icon: "mdi-file-send",
-          route: { name: "documentos-proveedores", params: {} },
+          route: {
+            name: "documentos-proveedores",
+            params: null,
+          },
         },
         {
           title: "Registro",
           icon: "mdi-border-color",
-          route: { name: "registro-proveedores", params: {} },
+          route: {
+            name: "registro-proveedores",
+            params: null,
+          },
         },
       ],
       datosProveedor: {},
@@ -102,6 +114,7 @@ export default {
   },
   methods: {
     ...mapActions("proveedores", ["getDataproveedor"]),
+    ...mapMutations("proveedores",["setDataProveedor"]),
     /**
      * LLeva al usuario a otra pantalla
      */
@@ -121,6 +134,7 @@ export default {
       try {
         let { proveedorData } = await this.getDataproveedor();
         this.datosProveedor = proveedorData;
+        this.setDataProveedor(this.datosProveedor);
         if (!this.datosProveedor.datosGenerales) {
           this.rutasNavigator = this.rutasNavigator.filter((ruta) => {
             return (
@@ -130,9 +144,7 @@ export default {
           });
         } else {
           this.rutasNavigator = this.rutasNavigator.filter((ruta) => {
-            return (
-              ruta.title != "Registro"
-            );
+            return ruta.title != "Registro";
           });
         }
       } catch (error) {
@@ -143,6 +155,9 @@ export default {
   created() {
     this.getDataProveedor();
   },
+  // updated() {
+  //   this.getDataProveedor();
+  // },
 };
 </script>
 

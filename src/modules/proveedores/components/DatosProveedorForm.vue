@@ -67,6 +67,7 @@
           color="teal"
           v-model="dataProveedorForm.numero_prim"
           :rules="phoneRules"
+          maxlength="10"
           label="Número de contacto principal"
           required
         ></v-text-field>
@@ -77,6 +78,7 @@
           color="teal"
           v-model="dataProveedorForm.numero_sec"
           :rules="phoneRules"
+          maxlength="10"
           label="Número de contacto secundario"
           required
         ></v-text-field>
@@ -86,6 +88,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "DatosProveedorForm",
   props: ["data", "isPost"],
@@ -113,6 +116,9 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters("proveedores", ["getDataProveedor"]),
+  },
   watch: {
     dataProveedorForm: {
       handler: function () {
@@ -124,12 +130,10 @@ export default {
       },
       deep: true,
     },
-    data: {
-      deep: true,
-      handler: function () {
-        if (!this.isPost) this.dataProveedorForm = this.data;
-      },
-    },
+  },
+  mounted() {
+    if (!this.isPost)
+      this.dataProveedorForm = this.getDataProveedor().datosGenerales;
   },
 };
 </script>
