@@ -1,10 +1,10 @@
 import { getUserInfo } from "@/helpers/utils";
 import ProveedoresService from "../services/proveedores-service";
 
-export const sendFilesproveedor = async (_ , files ) => {
+export const sendFilesproveedor = async (_, files) => {
   let filesPromises = [];
   for (let i = 0; i < files.length; i++) {
-    filesPromises.push(ProveedoresService.uploadFiles(files[i].file));
+    filesPromises.push(ProveedoresService.uploadFiles(files[i]));
   }
   await Promise.all(filesPromises);
 };
@@ -27,6 +27,12 @@ export const updateDataProv = async ({ state }) => {
   await ProveedoresService.updateDataProveedor(state.datosProveedor);
 };
 
-export const updateFile = async (_, file) =>{
+export const updateFile = async (_, file) => {
   await ProveedoresService.updateFile(file);
-}
+};
+
+export const incrementHistorico = async () => {
+  let { rfc } = getUserInfo();
+  let data = await ProveedoresService.incrementHistorico(rfc);
+  return data.data;
+};

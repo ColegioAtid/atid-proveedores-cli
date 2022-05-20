@@ -83,6 +83,15 @@ class ProveedoresService extends Service {
       dataToUpdate
     );
   }
+
+  incrementHistorico(rfcProveedor) {
+    createProveedoresAPIConnection.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${getAuthToken()}`;
+    return createProveedoresAPIConnection.get(
+      `/proveedores/historico-increment?rfc=${rfcProveedor}`
+    );
+  }
 }
 
 export default new ProveedoresService();

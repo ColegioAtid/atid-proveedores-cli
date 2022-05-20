@@ -157,7 +157,7 @@ export default {
       "setShowErrorOrSuccessAlert",
       "setOverlayState",
     ]),
-    ...mapActions('proveedores', ["updateFile"]),
+    ...mapActions('proveedores', ["updateFile","incrementHistorico"]),
 
     async updateFiles() {
       this.setOverlayState({
@@ -176,6 +176,7 @@ export default {
           file = { ...file, ["idHist"]: this.getDataProveedor().id_historico +1 };
         }
         await this.updateFile(file);
+        if(file.nameFile === "OPINIONCUMPLIMIENTO") await this.incrementHistorico();
         this.setShowErrorOrSuccessAlert({
           message: "¡Información guardada exitosamente!",
           success: true,

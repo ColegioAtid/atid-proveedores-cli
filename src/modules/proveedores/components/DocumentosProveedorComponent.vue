@@ -42,9 +42,9 @@
 
 <script>
 import { getUserInfo } from "@/helpers/utils";
+import { mapGetters } from "vuex";
 export default {
   name: "DocumentosProveedorComponent",
-  props: ["tipoPersona"],
   data() {
     return {
       valid: true,
@@ -59,7 +59,7 @@ export default {
         {
           filetag: "Opinión de cumplimiento",
           tipoPersona: ["FÍSICA", "MORAL"],
-          filename: "OPINIONCUMPLIMIENTO",
+          filename: "HISTORICO_OPINIONCUMPLIMIENTO_1",
           file: null,
           rfc: null,
         },
@@ -124,16 +124,21 @@ export default {
       },
       deep: true,
     },
-    tipoPersona: {
-      deep: true,
-      handler: function () {
-        this.arrayFiles = this.arrayFiles.filter((e) => {
-          const { rfc } = getUserInfo();
-          e.rfc = rfc;
-          return e.tipoPersona.includes(this.tipoPersona);
-        });
-      },
+  },
+  computed: {
+    ...mapGetters("proveedores", ["getDataProveedor"]),
+  },
+  methods: {
+    init() {
+      this.arrayFiles = this.arrayFiles.filter((e) => {
+        const { rfc } = getUserInfo();
+        e.rfc = rfc;
+        return e.tipoPersona.includes(this.getDataProveedor().tipo_persona);
+      });
     },
+  },
+  mounted() {
+    this.init();
   },
 };
 </script>
