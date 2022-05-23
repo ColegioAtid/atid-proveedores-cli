@@ -7,3 +7,7 @@ export const getDocumentos = ( state ) => () => {
 export const getDataProveedor = ( state ) => () => {
     return state.dataProveedor;
 }
+
+export const getRutasNavigator = ( state ) => () => {
+    return state.rutasNavigator;
+}

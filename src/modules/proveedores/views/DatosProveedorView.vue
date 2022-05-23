@@ -96,7 +96,7 @@ export default {
       "setOverlayState",
     ]),
     ...mapMutations("proveedores", ["setCorreoUpdate", "setDataForm"]),
-    ...mapActions("proveedores", ["updateCorreoProv", "updateDataProv"]),
+    ...mapActions("proveedores", ["updateCorreoProv", "updateDataProv","getDataproveedor"]),
 
     /* MÉTODOS DE COMPONENTE */
 
@@ -112,12 +112,12 @@ export default {
       });
       try {
         await this.updateDataProv();
+        await this.getDataproveedor();
         this.setShowErrorOrSuccessAlert({
           message: "¡Información guardada exitosamente!",
           success: true,
         });
-        this.setOverlayState({ text: "", visible: false });
-        window.location.reload();
+        this.setOverlayState({ text: "", visible: false });        
       } catch (error) {
         // Error
         this.setShowErrorOrSuccessAlert({
@@ -142,12 +142,12 @@ export default {
       });
       try {
         await this.updateCorreoProv();
+        await this.getDataproveedor();
         this.setShowErrorOrSuccessAlert({
           message: "¡Información guardada exitosamente!",
           success: true,
         });
-        this.setOverlayState({ text: "", visible: false });
-        window.location.reload();
+        this.setOverlayState({ text: "", visible: false });        
       } catch (error) {
         // Error
         this.setShowErrorOrSuccessAlert({
@@ -168,14 +168,6 @@ export default {
   },
   computed: {
     ...mapGetters("proveedores", ["getDataProveedor"]),
-  },
-  created() {
-    // if (!this.getDataProveedor()) {
-    //   this.$router.push("/proveedores");
-    // } else {
-    // this.datosGeneralesInfo = this.getDataProveedor().datosGenerales;
-    // this.correoUpdate.correoNuevo = this.getDataProveedor().correo;
-    // }
   },
 };
 </script>

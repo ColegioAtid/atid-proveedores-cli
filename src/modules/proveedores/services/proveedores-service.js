@@ -10,7 +10,7 @@ class ProveedoresService extends Service {
     super();
   }
 
-  uploadFiles(payload) {
+  uploadFiles(payload,idHistorico) {
     let formData = new FormData();
     let fileCopy = new File(
       [payload.file],
@@ -18,7 +18,24 @@ class ProveedoresService extends Service {
     );
     formData.append("pdf", fileCopy);
     return createFileAPIConnection.post(
-      "/media/upload-proveedores-file",
+      `/media/upload-proveedores-file/${idHistorico}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  }
+  updateFile(payload) {
+    let formData = new FormData();
+    let fileCopy = new File(
+      [payload.file],
+      `${payload.rfc}_${payload.nameFile}.pdf`
+    );
+    formData.append("pdf", fileCopy);
+    return createFileAPIConnection.post(
+      `/media/update-proveedores-file/${payload.rfc}`,
       formData,
       {
         headers: {
@@ -41,21 +58,39 @@ class ProveedoresService extends Service {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    return createProveedoresAPIConnection.post('/proveedores/registra-datos-proveedor', data);
+    return createProveedoresAPIConnection.post(
+      "/proveedores/registra-datos-proveedor",
+      data
+    );
   }
 
   updateCorreoProv(dataToUpdate) {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    return createProveedoresAPIConnection.put('/proveedores/update-correo', dataToUpdate);
+    return createProveedoresAPIConnection.put(
+      "/proveedores/update-correo",
+      dataToUpdate
+    );
   }
 
   updateDataProveedor(dataToUpdate) {
     createProveedoresAPIConnection.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${getAuthToken()}`;
-    return createProveedoresAPIConnection.put('/proveedores/update-data', dataToUpdate);
+    return createProveedoresAPIConnection.put(
+      "/proveedores/update-data",
+      dataToUpdate
+    );
+  }
+
+  incrementHistorico(rfcProveedor) {
+    createProveedoresAPIConnection.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${getAuthToken()}`;
+    return createProveedoresAPIConnection.put(
+      `/proveedores/historico-increment?rfc=${rfcProveedor}`
+    );
   }
 }
 

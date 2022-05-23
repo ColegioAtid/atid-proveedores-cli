@@ -42,9 +42,9 @@
 
 <script>
 import { getUserInfo } from "@/helpers/utils";
+import { mapGetters } from "vuex";
 export default {
   name: "DocumentosProveedorComponent",
-  props: ["tipoPersona"],
   data() {
     return {
       valid: true,
@@ -52,28 +52,28 @@ export default {
         {
           filetag: " Constancia de situación fiscal ",
           tipoPersona: ["FÍSICA", "MORAL"],
-          filename: "CONSTANCIAFISCAL.pdf",
+          filename: "CONSTANCIAFISCAL",
           file: null,
           rfc: null,
         },
         {
           filetag: "Opinión de cumplimiento",
           tipoPersona: ["FÍSICA", "MORAL"],
-          filename: "OPINIONCUMPLIMIENTO.pdf",
+          filename: "OPINIONCUMPLIMIENTO",
           file: null,
           rfc: null,
         },
         {
           filetag: "Carátula de estado de cuenta",
           tipoPersona: ["FÍSICA", "MORAL"],
-          filename: "CARATULACUENTA.pdf",
+          filename: "COMPROBANTEDOMICILIO",
           file: null,
           rfc: null,
         },
         {
           filetag: "Comprobante de domicilio",
           tipoPersona: ["FÍSICA", "MORAL"],
-          filename: "COMPROBANTEDOMICILIO.pdf",
+          filename: "CARATULACUENTA",
           file: null,
           rfc: null,
         },
@@ -81,20 +81,20 @@ export default {
           filetag:
             "Actualización de cambio de domicilio ante el SAT (último cambio  realizado)",
           tipoPersona: ["FÍSICA", "MORAL"],
-          filename: "ACTUALIZACIONDOMICILIOSAT.pdf",
+          filename: "ACTUALIZACIONDOMICILIOSAT",
           file: null,
           rfc: null,
         },
         {
           filetag: "Acta constitutiva",
           tipoPersona: ["MORAL"],
-          filename: "ACTACONSTITUTIVA.pdf",
+          filename: "ACTACONSTITUTIVA",
           file: null,
           rfc: null,
         },
         {
           filetag: "Poder notarial",
-          filename: "PODERNOTARIAL.pdf",
+          filename: "PODERNOTARIAL",
           tipoPersona: ["MORAL"],
           file: null,
           rfc: null,
@@ -102,7 +102,7 @@ export default {
         {
           filetag: "INE del representante legal",
           tipoPersona: ["MORAL"],
-          filename: "INE.pdf",
+          filename: "INE",
           file: null,
           rfc: null,
         },
@@ -124,16 +124,21 @@ export default {
       },
       deep: true,
     },
-    tipoPersona: {
-      deep: true,
-      handler: function (){
-        this.arrayFiles = this.arrayFiles.filter((e) => {
-          const { rfc } = getUserInfo();
-          e.rfc = rfc;
-          return e.tipoPersona.includes(this.tipoPersona);
-        });
-      },
+  },
+  computed: {
+    ...mapGetters("proveedores", ["getDataProveedor"]),
+  },
+  methods: {
+    init() {
+      this.arrayFiles = this.arrayFiles.filter((e) => {
+        const { rfc } = getUserInfo();
+        e.rfc = rfc;
+        return e.tipoPersona.includes(this.getDataProveedor().tipo_persona);
+      });
     },
+  },
+  mounted() {
+    this.init();
   },
 };
 </script>

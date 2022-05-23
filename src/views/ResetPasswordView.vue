@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid id="custom-bg">
     <v-row class="text-center" justify="center">
       <v-col cols="12">
         <v-img
@@ -24,7 +24,7 @@
         <v-row align="center" justify="center">
           <v-col cols="12" sm="12" md="">
             <v-card class="elevation-12" shaped>
-              <v-window v-model="stepWindow">                
+              <v-window v-model="stepWindow">
                 <v-window-item :value="1">
                   <v-row class="fill-height">
                     <v-col cols="12" md="12">
@@ -43,7 +43,7 @@
                         <v-form
                           ref="registroProveedorRefForm"
                           v-model="validRegistroForm"
-                        >                         
+                        >
                           <v-text-field
                             filled
                             :disabled="loadingProcess"
@@ -88,7 +88,7 @@
                           <v-icon left> mdi-send </v-icon>
                           Restablecer
                         </v-btn>
-                      </div>                      
+                      </div>
                     </v-col>
                   </v-row>
                 </v-window-item>
@@ -96,33 +96,33 @@
             </v-card>
           </v-col>
         </v-row>
-      </v-col>      
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { buildErrorMessage } from '@/helpers/utils';
-import AuthService from '../services/AuthService'
-import { mapMutations } from 'vuex';
+import { buildErrorMessage } from "@/helpers/utils";
+import AuthService from "../services/AuthService";
+import { mapMutations } from "vuex";
 export default {
   name: "LoginView",
 
   data: () => ({
-    currentYear: new Date().getFullYear(),    
-    validRegistroForm: false, 
-    token:"",
-    resetPasswordForm: {     
+    currentYear: new Date().getFullYear(),
+    validRegistroForm: false,
+    token: "",
+    resetPasswordForm: {
       password: "",
       passwordConfirm: "",
-      token:""
-    },    
+      token: "",
+    },
     stepWindow: 1,
     loadingProcess: false,
     showPassword: false,
 
     rules: {
-      required: (value) => !!value || "Campo requerido.",     
+      required: (value) => !!value || "Campo requerido.",
       strongPassword: (value) => {
         const pattern = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
         return (
@@ -130,7 +130,7 @@ export default {
           "Min. 8 caracteres con almenos una mayúscula, un número y un caracter especial."
         );
       },
-    },       
+    },
   }),
 
   computed: {
@@ -143,62 +143,76 @@ export default {
         value === this.resetPasswordForm.password ||
         "Las contraseñas no coinciden.";
     },
-
-    
   },
   methods: {
-  /* Vuex */
-  ...mapMutations("shared", [
+    /* Vuex */
+    ...mapMutations("shared", [
       "setShowErrorOrSuccessAlert",
       "setOverlayState",
     ]),
 
     resetPassword: async function () {
       try {
-        this.setOverlayState({ text: "Restableciendo password...", visible: true });
-        this.resetPasswordForm.token = this.token
-        await AuthService.changePassword(this.resetPasswordForm)
-        this.setOverlayState({ text: "", visible: false })
-        this.$router.push("/")
+        this.setOverlayState({
+          text: "Restableciendo password...",
+          visible: true,
+        });
+        this.resetPasswordForm.token = this.token;
+        await AuthService.changePassword(this.resetPasswordForm);
+        this.setOverlayState({ text: "", visible: false });
+        this.$router.push("/");
         this.setShowErrorOrSuccessAlert({
           message: "Password restablecido exitosamente!",
           success: true,
-        })
-      } catch (error) {        
-        this.setOverlayState({ text: "", visible: false })
+        });
+      } catch (error) {
+        this.setOverlayState({ text: "", visible: false });
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
           errorOnPetition: true,
-        })        
-      }      
+        });
+      }
     },
-    validToken: async function(){
+    validToken: async function () {
       try {
         this.setOverlayState({ text: "Validando...", visible: true });
-        this.token = this.$route.params.token
-        const resp = await AuthService.validToken(this.token)
+        this.token = this.$route.params.token;
+        const resp = await AuthService.validToken(this.token);
         this.setOverlayState({ text: "", visible: false });
-        if(!resp.data.valid){
+        if (!resp.data.valid) {
           this.setShowErrorOrSuccessAlert({
-          message: "Token inválido",
-          errorOnPetition: true,
-          })
-          this.$router.push("/")
-        }                
+            message: "Token inválido",
+            errorOnPetition: true,
+          });
+          this.$router.push("/");
+        }
       } catch (error) {
-        this.$router.push("/")
+        this.$router.push("/");
         this.setOverlayState({ text: "", visible: false });
         this.setShowErrorOrSuccessAlert({
           message: buildErrorMessage(error),
           errorOnPetition: true,
-        })
+        });
       }
-      
-    }
+    },
   },
-  created(){
-    this.validToken()
-  }
-
+  created() {
+    this.validToken();
+  },
 };
 </script>
+<style lang="scss" scoped>
+#custom-bg {
+  background: #da22ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #9733ee,
+    #da22ff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #9733ee,
+    #da22ff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+</style>

@@ -1,33 +1,39 @@
 <template>
-  <v-row no-gutters>
-    <v-col cols="12">
-      <v-card class="mx-auto my-6 pa-4" shaped>
-        <h3 class="display-1 text-center">
-          Sistema de registro para proveedores
-        </h3>
-        <p class="my-5 mx-7">
-          Por favor, ingresa los siguientes datos para poder darte de alta en el
-          sistema:
-        </p>
+  <v-container>
+    <progress-component
+      v-if="!getDataProveedor()"
+      :color="'purple'"
+      :size="80"
+    />
+    <v-row no-gutters v-else>
+      <v-col cols="12">
+        <v-card class="mx-auto my-6 pa-4" shaped>
+          <h3 class="display-1 text-center">
+            Sistema de registro para proveedores
+          </h3>
+          <p class="my-5 mx-7">
+            Por favor, ingresa los siguientes datos para poder darte de alta en
+            el sistema:
+          </p>
 
-        <datos-proveedor-form @validForm="recibeDataProv" :isPost="true" />
-        <documentos-proveedor-component
-          :tipoPersona="tipoPersona"
-          @validDocs="recibeDocs"
-        />
-        <v-card-actions>
-          <v-btn
-            :disabled="verificaValidsForms"
-            color="teal"
-            class="white--text pa-6"
-            @click="sendForm"
-          >
-            Enviar
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+          <datos-proveedor-form @validForm="recibeDataProv" :isPost="true" />
+          <documentos-proveedor-component
+            @validDocs="recibeDocs"
+          />
+          <v-card-actions>
+            <v-btn
+              :disabled="verificaValidsForms"
+              color="teal"
+              class="white--text pa-6"
+              @click="sendForm"
+            >
+              Enviar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -35,8 +41,9 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 import DatosProveedorForm from "../components/DatosProveedorForm.vue";
 import DocumentosProveedorComponent from "../components/DocumentosProveedorComponent.vue";
 import { buildErrorMessage } from "@/helpers/utils";
+import ProgressComponent from '@/components/ProgressComponent.vue';
 export default {
-  components: { DatosProveedorForm, DocumentosProveedorComponent },
+  components: { DatosProveedorForm, DocumentosProveedorComponent, ProgressComponent },
   name: "ProveedorHomeView",
   data() {
     return {
@@ -44,17 +51,16 @@ export default {
       isValidProveedoresData: false,
       isValidDocsData: false,
       files: [],
-      tipoPersona: null
     };
   },
   methods: {
     /* VUEX */
-    ...mapMutations("proveedores", ["setDataForm", "setDocumentos"]),
+    ...mapMutations("proveedores", ["setDataForm"]),
     ...mapMutations("shared", [
       "setShowErrorOrSuccessAlert",
       "setOverlayState",
     ]),
-    ...mapActions("proveedores", ["sendFilesproveedor", "sendDataProveedor"]),
+    ...mapActions("proveedores", ["sendFilesproveedor", "sendDataProveedor","getDataproveedor"]),
     /* MÉTODOS DE COMPONENTE */
 
     /**
@@ -68,18 +74,17 @@ export default {
       });
 
       this.setDataForm(this.dataFormProveedores);
-      this.setDocumentos({ documentos: this.files });
 
       try {
-        await this.sendFilesproveedor(this.files);
+        await this.sendFilesproveedor({files:this.files, tipo:'POST'});
         await this.sendDataProveedor();
+        await this.getDataproveedor();
         this.setShowErrorOrSuccessAlert({
           message: "¡Información guardada exitosamente!",
           success: true,
         });
         this.setOverlayState({ text: "", visible: false });
-        window.location.reload();
-        this.$router.push("/proveedores");
+        this.$router.push({name:'datos-generales-proveedores'});
       } catch (error) {
         // Error
         this.setShowErrorOrSuccessAlert({
@@ -103,13 +108,13 @@ export default {
      * del EMIT del componente hijo "documentos-proveedor-component"
      * para setear la información en el state
      */
-    recibeDocs({dataFilesInputs, isValid}) {
+    recibeDocs({ dataFilesInputs, isValid }) {
       this.isValidDocsData = isValid;
       this.files = dataFilesInputs;
     },
   },
   computed: {
-    ...mapGetters("proveedores", ["getDataProveedor", "getDocumentos"]),
+    ...mapGetters("proveedores", ["getDataProveedor"]),
     /**
      * Verifica que los componentes sean válidos
      */
@@ -119,9 +124,6 @@ export default {
       }
       return true;
     },
-  },
-  mounted() {
-    this.tipoPersona = this.getDataProveedor().tipo_persona;
   },
 };
 </script>

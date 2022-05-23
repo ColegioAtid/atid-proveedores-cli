@@ -13,4 +13,5 @@ export default () => ({
   },
   dataProveedor:null,
   correoToUpdate: null,
+  rutasNavigator: []
 });

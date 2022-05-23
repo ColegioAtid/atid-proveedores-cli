@@ -38,7 +38,7 @@
       />
       <v-list v-else>
         <v-list-item
-          v-for="item in rutasNavigator"
+          v-for="item in getRutasNavigator()"
           :key="item.title"
           link
           @click="goTo(item.route)"
@@ -75,7 +75,7 @@
 
 <script>
 import AuthService from "@/services/AuthService";
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import ProgressComponent from "@/components/ProgressComponent.vue";
 export default {
   components: {
@@ -84,7 +84,7 @@ export default {
   data() {
     return {
       showNavigator: false,
-      rutasNavigator: [
+      /* rutasNavigator: [
         {
           title: "Datos generales",
           icon: "mdi-home-circle",
@@ -117,10 +117,13 @@ export default {
             params: null,
           },
         },
-      ],
+      ], */
       datosProveedor: {},
       isLoading:false,
     };
+  },
+  computed:{
+    ...mapGetters("proveedores",["getRutasNavigator"])
   },
   methods: {
     ...mapActions("proveedores", ["getDataproveedor"]),
@@ -143,21 +146,9 @@ export default {
     async init() {
       this.isLoading = true;
       try {
-        let { proveedorData } = await this.getDataproveedor();
-        this.datosProveedor = proveedorData;
-        this.setDataProveedor(this.datosProveedor);
-        if (!this.datosProveedor.datosGenerales) {
-          this.rutasNavigator = this.rutasNavigator.filter((ruta) => {
-            return (
-              ruta.title != "Actualización de datos" &&
-              ruta.title != "Actualización de documentos"
-            );
-          });
-        } else {
-          this.rutasNavigator = this.rutasNavigator.filter((ruta) => {
-            return ruta.title != "Registro";
-          });
-        }
+        await this.getDataproveedor();
+        /* this.datosProveedor = proveedorData;
+        this.setDataProveedor(this.datosProveedor); */        
         this.isLoading = false;
       } catch (error) {
         console.log(error);

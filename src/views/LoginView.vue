@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid id="custom-bg">
     <v-row class="text-center" justify="center">
       <v-col cols="12">
         <v-img
@@ -312,13 +312,11 @@
       <!-- DIALOG -->
       <v-dialog v-model="mensajeRecuperacion" persistent max-width="600px">
         <v-card>
-          <v-card-title>
-            <span class="text-h5"
-              >Por favor, ingresa tu RFC registrada y te llegará un link al
-              correo que registraste para poder actualizar tu password.</span
-            >
-          </v-card-title>
+          <v-card-title class="text-h5 grey lighten-2">
+          Restablecer contraseña
+        </v-card-title>          
           <v-card-text>
+            Por favor, ingresa tu RFC, recibirás un correo para restablecer tu contraseña.
             <v-container>
               <v-row>
                 <v-col cols="12">
@@ -534,3 +532,18 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+#custom-bg {
+  background: #a8ff78; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #78ffd6,
+    #a8ff78
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #78ffd6,
+    #a8ff78
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+</style>
