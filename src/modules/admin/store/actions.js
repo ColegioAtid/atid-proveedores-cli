@@ -205,3 +205,29 @@ export const correoAvisoExpiracionAction = async ({ commit }, message) => {
       )      
     }
 }
+
+export const getFilesProveedorListAction = async ({ commit },rfc) => {    
+    try { 
+      // Conecta con el servicio para eliminar
+      const data = await AdminService.getFilesProveedorFromServer(rfc)      
+      // Cierra overlay      
+      commit('setListaProveedoresFiles',data.data)            
+                  
+    } catch (error) {
+      // Cerrar overlay
+      commit(
+        'shared/setOverlayState',
+        {text: "", visible: false},
+        { root: true }
+      )
+      // Mensaje de error
+      commit(
+        'shared/setShowErrorOrSuccessAlert', 
+        {message: buildErrorMessage(error),errorOnPetition: true,},
+        {root: true}
+      )      
+    }
+}
+
+
+

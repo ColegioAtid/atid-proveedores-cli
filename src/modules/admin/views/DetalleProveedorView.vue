@@ -90,16 +90,30 @@
         <v-card-subtitle>
           Documentos anexados por el proveedor
         </v-card-subtitle>
-        <v-card-text>
-          <div class="mt-7" v-for="i in [1, 2, 3, 4, 5]" :key="i">
-            <p class="text-center display-5">Nombre del archivo</p>
+        <v-card-text v-if="getListaFilesProveedores().general.length !== 0">
+          <div class="mt-7" v-for="documento in getListaFilesProveedores().general" :key="documento">
+            <h3 class="text-center display-5">{{getFileNameTag(documento)}}</h3>
+            <div class="text-center ma-3">
+              <v-btn
+              small
+              color="purple"
+              outlined
+              rounded
+              v-if="getFileNameTag(documento) === 'Opinión de cumplimiento'"
+            >
+              Ver historial
+            </v-btn>
+            </div>
             <iframe
               width="100%"
               height="400"
-              :src="`https://www.atid.edu.mx/proveedoresDocumentos/0000_DOCUMENTO${i}.pdf`"
+              :src="`https://www.atid.edu.mx/proveedoresDocumentos/${documento}`"
               frameborder="0"
             />
           </div>
+        </v-card-text>
+        <v-card-text v-else>
+          <p>Sin documentos registrados</p>
         </v-card-text>
       </v-card>
     </v-sheet>
@@ -174,7 +188,7 @@
   </v-container>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -187,13 +201,28 @@ export default {
         bodyMessage: "",
         correoProveedor:""
       },
+      documetntos:[
+        {nameOnServer:'COMPROBANTEDOMICILIO', fileTag:'Comprobante de domicilio'},
+        {nameOnServer:'OPINIONCUMPLIMIENTO', fileTag:'Opinión de cumplimiento'},
+        {nameOnServer:'CONSTANCIAFISCAL', fileTag:'Constancia de situación fiscal'},
+        {nameOnServer:'CARATULACUENTA', fileTag:'Carátula de estado de cuenta'},
+        {nameOnServer:'ACTUALIZACIONDOMICILIOSAT', fileTag:'Actualización de cambio de domicilio ante el SAT'},
+        {nameOnServer:'ACTACONSTITUTIVA', fileTag:'Acta constitutiva'},
+        {nameOnServer:'PODERNOTARIAL', fileTag:'Poder notarial'},
+        {nameOnServer:'INE', fileTag:'INE del representante'},
+      ]
     };
+  },
+  computed:{
+    ...mapGetters('admin',['getListaFilesProveedores']),
+    
   },
   methods: {
     /* Vuex */
     ...mapActions('admin',[
       'actualizaEstatusProveedorAction',
       'enviaCorreoIndividualAction',
+      'getFilesProveedorListAction'
       ]),
     /* Local */
     validarInformacion: async function () {
@@ -208,12 +237,22 @@ export default {
       await this.enviaCorreoIndividualAction(this.customMailMessage)
     },
 
-    init:function(){
+    getFileNameTag: function(filename){
+      console.log(filename);
+      const nombreArchivo = this.documetntos.find((f) => filename.includes(f.nameOnServer))
+      return nombreArchivo.fileTag;
+      //return filename;
+    },
+
+    init:async function(){
       this.datosProveedor = this.$route.params.dataProveedor
-      if(!this.datosProveedor)
+      if(!this.datosProveedor){
         this.$router.go(-1)
-      else
+      }else{
+        await this.getFilesProveedorListAction(this.datosProveedor.rfc);
         this.estatusProveedor = this.datosProveedor.estatus           
+      }
+      
     }
   },
   created() {

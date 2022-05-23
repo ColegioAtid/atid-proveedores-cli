@@ -1,5 +1,5 @@
 import { getAuthToken } from "@/helpers/utils";
-import { createProveedoresAPIConnection } from "@/services/http-common";
+import { createFileAPIConnection, createProveedoresAPIConnection } from "@/services/http-common";
 import { Service } from "@/services/serivce";
 
 
@@ -61,6 +61,16 @@ class AdminServe extends Service{
     enviaCorreoAvisoExpiracion(message){
         createProveedoresAPIConnection.defaults.headers.common['Authorization'] = `Bearer ${ getAuthToken() }`;
         return createProveedoresAPIConnection.post('/admin/correo-aviso-expiracion',message)
+    }
+
+    /**
+     * Obtiene la lista de archivos del servior de
+     * un proveedor en específico.
+     * @param {*} rfc 
+     * @returns {Promise}
+     */
+    getFilesProveedorFromServer(rfc){
+        return createFileAPIConnection.get(`/media/list-proveedores-files/${rfc}`); 
     }
 }
 
