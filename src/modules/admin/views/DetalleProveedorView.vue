@@ -90,7 +90,7 @@
         <v-card-subtitle>
           Documentos anexados por el proveedor
         </v-card-subtitle>
-        <v-card-text v-if="getListaFilesProveedores().general.length !== 0">
+        <v-card-text v-if="getListaFilesProveedores()">
           <div class="mt-7" v-for="documento in getListaFilesProveedores().general" :key="documento">
             <h3 class="text-center display-5">{{getFileNameTag(documento)}}</h3>
             <div class="text-center ma-3">
@@ -99,6 +99,7 @@
               color="purple"
               outlined
               rounded
+              @click="$router.push({name:'historial-documentos'})"
               v-if="getFileNameTag(documento) === 'Opinión de cumplimiento'"
             >
               Ver historial
@@ -238,7 +239,7 @@ export default {
     },
 
     getFileNameTag: function(filename){
-      console.log(filename);
+      
       const nombreArchivo = this.documetntos.find((f) => filename.includes(f.nameOnServer))
       return nombreArchivo.fileTag;
       //return filename;

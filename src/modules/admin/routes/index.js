@@ -22,6 +22,11 @@ export default {
             name: "detalle-proveedor",
             component: () => import(/* webpackChunkName: "DetalleProveedorView" */ '@/modules/admin/views/DetalleProveedorView.vue'),
         },
+        {
+            path: "historial-documentos",
+            name: "historial-documentos",
+            component: () => import(/* webpackChunkName: "HistorialView" */ '@/modules/admin/views/HistorialView.vue'),
+        },
 
     ]
 }
