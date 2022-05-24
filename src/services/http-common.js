@@ -14,7 +14,7 @@ import axios from "axios";
  * Crea una conexión con la API media-proveedores-atid
  */
 export const createFileAPIConnection = axios.create({
-  baseURL: (process.env.VUE_APP_DEBUG)? process.env.VUE_APP_API_UPLOAD_FILES : process.env.VUE_APP_API_UPLOAD_FILES_PROD,
+  baseURL: process.env.VUE_APP_API_UPLOAD_FILES,
   headers: {
     "Content-type": "application/json",
   },
@@ -24,7 +24,7 @@ export const createFileAPIConnection = axios.create({
   * Crea una conexión con la API proveedores-atid-api
   */
  export const createProveedoresAPIConnection = axios.create({
-     baseURL: (process.env.VUE_APP_DEBUG)? process.env.VUE_APP_API_PROVEEDORES : process.env.VUE_APP_API_PROVEEDORES_PROD,
+     baseURL: process.env.VUE_APP_API_PROVEEDORES,
      headers: {      
        Accept: "applicacion/json",
        "Content-type": "application/json",      
