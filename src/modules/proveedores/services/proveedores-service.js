@@ -10,7 +10,7 @@ class ProveedoresService extends Service {
     super();
   }
 
-  uploadFiles(payload,idHistorico) {
+  uploadFiles(payload, idHistorico) {
     let formData = new FormData();
     let fileCopy = new File(
       [payload.file],
@@ -43,6 +43,10 @@ class ProveedoresService extends Service {
         },
       }
     );
+  }
+
+  deleteFilesServer() {
+    return createFileAPIConnection.get("/media/delete-local-files");
   }
 
   getDataProveedor(rfcProveedor) {

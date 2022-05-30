@@ -10,8 +10,11 @@ export const sendFilesproveedor = async ({ state }, {files, tipo}) => {
       );
     }
     await Promise.all(filesPromises);
+    await ProveedoresService.deleteFilesServer()
+
   }else{    
-    await ProveedoresService.uploadFiles(files, state.dataProveedor.id_historico)
+    await ProveedoresService.uploadFiles(files, state.dataProveedor.id_historico);
+    await ProveedoresService.deleteFilesServer();
   }
 };
 
@@ -39,3 +42,4 @@ export const incrementHistorico = async () => {
   let data = await ProveedoresService.incrementHistorico(rfc);
   return data.data;
 };
+
