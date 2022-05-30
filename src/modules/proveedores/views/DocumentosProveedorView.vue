@@ -25,13 +25,9 @@
 
           <v-card-text>
             <div class="text-body-1">
-              <v-form v-model="isValidForm">
-                <v-col>
+              <v-form ref="updateDocsForm" v-model="isValidForm">
+                <v-col cols="12">
                   <v-select
-                    cols="12"
-                    lg="6"
-                    md="6"
-                    sm="12"
                     color="#1f886f"
                     item-color="#1f886f"
                     v-model="selectInput"
@@ -46,7 +42,7 @@
                     :rules="generalRules"
                   ></v-select>
                 </v-col>
-                <v-col cols="12" lg="6" md="6" sm="12">
+                <v-col cols="12">
                   <v-file-input
                     v-model="fileSelected"
                     :rules="documentosRules"
@@ -180,6 +176,8 @@ export default {
         await this.sendFilesproveedor({ files: file, tipo: "PUT" });
         if (file.filename === "OPINIONCUMPLIMIENTO")
           await this.incrementHistorico();
+          this.fileSelected = null;
+          this.selectInput = null;
         this.setShowErrorOrSuccessAlert({
           message: "¡Información guardada exitosamente!",
           success: true,
