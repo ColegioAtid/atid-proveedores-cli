@@ -3,7 +3,7 @@ import {
   createFileAPIConnection,
   createProveedoresAPIConnection,
 } from "@/services/http-common";
-import { getAuthToken } from "@/helpers/utils";
+import { getAuthToken, getUserInfo } from "@/helpers/utils";
 
 class ProveedoresService extends Service {
   constructor() {
@@ -46,7 +46,8 @@ class ProveedoresService extends Service {
   }
 
   deleteFilesServer() {
-    return createFileAPIConnection.get("/media/delete-local-files");
+    const { rfc } = getUserInfo();
+    return createFileAPIConnection.get(`/media/delete-local-files/${rfc}`);
   }
 
   getDataProveedor(rfcProveedor) {
