@@ -62,7 +62,7 @@ class AuthService extends Service{
      * @returns {Promise}
      */
     changePassword(form){
-        return createProveedoresAPIConnection.post(`/authorize/change-password/`,form)        
+        return createProveedoresAPIConnection.put(`/authorize/change-password/`,form)        
     }
 
     /**
