@@ -74,12 +74,12 @@ export default {
       showNavigator: false,
       rutasNavigator: [
         {
-          title: "Lista de proveedores",
+          title: "Proveedores válidos",
           icon: "mdi-format-list-checks",
           route: { name: "lista-proveedores", params: {} },
         },
         {
-          title: "Sin validar ",
+          title: "Proveedores sin validar ",
           icon: "mdi-account-alert",
           route: { name: "no-validados", params: {} },
         },
