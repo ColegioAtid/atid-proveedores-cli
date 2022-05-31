@@ -515,7 +515,6 @@ export default {
         const resp = await AuthService.sendResetPassword({
           rfc: this.rfcRecuperacion,
         });
-        console.log(resp);
         this.setOverlayState({ text: "", visible: false });
         this.setShowErrorOrSuccessAlert({
           message: "Se envió link al correo " + resp.data.correo,
